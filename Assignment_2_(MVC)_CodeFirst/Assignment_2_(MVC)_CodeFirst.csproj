@@ -168,8 +168,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AssignmentsController.cs" />
+    <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SchoolsController.cs" />
+    <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Controllers\TrainersController.cs" />
     <Compile Include="CustomAnotations\CurrentDateAttribute.cs" />
     <Compile Include="CustomAnotations\DateSmallerAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -178,6 +182,10 @@
     <Compile Include="Migrations\202110131458458_Initial.cs" />
     <Compile Include="Migrations\202110131458458_Initial.Designer.cs">
       <DependentUpon>202110131458458_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110131823321_second.cs" />
+    <Compile Include="Migrations\202110131823321_second.Designer.cs">
+      <DependentUpon>202110131823321_second.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -198,6 +206,8 @@
     <Compile Include="Repositories\StudentRepo.cs" />
     <Compile Include="Repositories\TrainerRepo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Static\Globals.cs" />
+    <Compile Include="ViewModels\SchoolViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -257,6 +267,26 @@
     <Content Include="Views\Schools\Index.cshtml" />
     <Content Include="Views\Schools\Create.cshtml" />
     <Content Include="Views\Schools\Edit.cshtml" />
+    <Content Include="Views\Courses\Create.cshtml" />
+    <Content Include="Views\Courses\Delete.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Courses\Edit.cshtml" />
+    <Content Include="Views\Courses\Index.cshtml" />
+    <Content Include="Views\Assignments\Create.cshtml" />
+    <Content Include="Views\Assignments\Delete.cshtml" />
+    <Content Include="Views\Assignments\Details.cshtml" />
+    <Content Include="Views\Assignments\Edit.cshtml" />
+    <Content Include="Views\Assignments\Index.cshtml" />
+    <Content Include="Views\Trainers\Create.cshtml" />
+    <Content Include="Views\Trainers\Delete.cshtml" />
+    <Content Include="Views\Trainers\Details.cshtml" />
+    <Content Include="Views\Trainers\Edit.cshtml" />
+    <Content Include="Views\Trainers\Index.cshtml" />
+    <Content Include="Views\Students\Create.cshtml" />
+    <Content Include="Views\Students\Delete.cshtml" />
+    <Content Include="Views\Students\Details.cshtml" />
+    <Content Include="Views\Students\Edit.cshtml" />
+    <Content Include="Views\Students\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -277,6 +307,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202110131458458_Initial.resx">
       <DependentUpon>202110131458458_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110131823321_second.resx">
+      <DependentUpon>202110131823321_second.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

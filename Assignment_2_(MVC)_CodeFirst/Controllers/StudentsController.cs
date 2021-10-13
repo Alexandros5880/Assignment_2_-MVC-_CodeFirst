@@ -8,109 +8,110 @@ using System.Web;
 using System.Web.Mvc;
 using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
-using Assignment_2__MVC__CodeFirst.Repositories;
-using Assignment_2__MVC__CodeFirst.ViewModels;
 using Assignment_2__MVC__CodeFirst.Static;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers
 {
-    public class SchoolsController : Controller
+    public class StudentsController : Controller
     {
-        // GET: Schools
+
+        // GET: Students
         public ActionResult Index()
         {
-            return View(Globals.schoolRepo.GetAll());
+            return View(Globals.studentRepo.GetAll());
         }
 
-        // GET: Schools/Details/5
+        // GET: Students/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
-            if (school == null)
+            Student student = Globals.studentRepo.Get(id);
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            return View(school);
+            return View(student);
         }
 
-        // GET: Schools/Create
+        // GET: Students/Create
         public ActionResult Create()
         {
-            return View(new School());
+            return View(new Student());
         }
 
+        // POST: Students/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,StartDate")] School school)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,StartDate")] Student student)
         {
             if (ModelState.IsValid)
             {
-                Globals.schoolRepo.Add(school);
+                Globals.studentRepo.Add(student);
                 Globals.DbHundler.Save();
                 return RedirectToAction("Index");
             }
 
-            return View(school);
+            return View(student);
         }
 
-        // GET: Schools/Edit/5
+        // GET: Students/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
-            if (school == null)
+            Student student = Globals.studentRepo.Get(id);
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            SchoolViewModel schoolViewModel = new SchoolViewModel();
-            schoolViewModel.School = school;
-            schoolViewModel.Courses = school.Courses;
-            schoolViewModel.Trainers = school.Trainers;
-            schoolViewModel.Students = school.Students;
-            return View(schoolViewModel);
+            return View(student);
         }
 
+        // POST: Students/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,StartDate")] School school)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,StartDate")] Student student)
         {
             if (ModelState.IsValid)
             {
-                Globals.schoolRepo.Update(school);
+                Globals.studentRepo.Update(student);
                 Globals.DbHundler.Save();
                 return RedirectToAction("Index");
             }
-            return View(school);
+            return View(student);
         }
 
-        // GET: Schools/Delete/5
+        // GET: Students/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
-            if (school == null)
+            Student student = Globals.studentRepo.Get(id);
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            return View(school);
+            return View(student);
         }
 
-        // POST: Schools/Delete/5
+        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Globals.schoolRepo.Delete(Globals.schoolRepo.Get(id));
+            Student student = Globals.studentRepo.Get(id);
+            Globals.studentRepo.Delete(student);
             Globals.DbHundler.Save();
             return RedirectToAction("Index");
         }
@@ -126,6 +127,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 Globals.studentRepo.Dispose();
                 Globals.DbHundler.Dispose();
                 base.Dispose(disposing);
+            }
+            base.Dispose(disposing);
         }
     }
 }

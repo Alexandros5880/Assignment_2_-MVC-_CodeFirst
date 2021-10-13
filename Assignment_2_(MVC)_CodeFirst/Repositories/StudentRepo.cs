@@ -44,9 +44,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public void Update(Student obj)
         {
-            Student student = this._context.Students
-                                  .Find(obj.ID);
-            this._context.Entry(student).State = EntityState.Modified;
+            this._context.Entry(obj).State = EntityState.Modified;
         }
 
         protected virtual void Dispose(bool disposing)

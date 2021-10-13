@@ -14,7 +14,6 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         public string Name { get; set; }
 
         [DataType(DataType.Date)]
-        [CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
         public DateTime StartDate { get; set; }
 
         public ICollection<Course> Courses { get; set; }

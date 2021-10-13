@@ -46,9 +46,31 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public void Update(School obj)
         {
+            this._context.Entry(obj).State = EntityState.Modified;
+        }
+
+        public void AddCourse(int id, Course course)
+        {
             School school = this._context.Schools
-                                .Find(obj.ID);
-            this._context.Entry(school).State = EntityState.Modified;
+                                .Include(s => s.Courses)
+                                .FirstOrDefault(s => s.ID == id);
+            school.Courses.Add(course);
+        }
+
+        public void AddTrainer(int id, Trainer trainer)
+        {
+            School school = this._context.Schools
+                                .Include(s => s.Trainers)
+                                .FirstOrDefault(s => s.ID == id);
+            school.Trainers.Add(trainer);
+        }
+
+        public void AddStudent(int id, Student student)
+        {
+            School school = this._context.Schools
+                                .Include(s => s.Students)
+                                .FirstOrDefault(s => s.ID == id);
+            school.Students.Add(student);
         }
 
         protected virtual void Dispose(bool disposing)

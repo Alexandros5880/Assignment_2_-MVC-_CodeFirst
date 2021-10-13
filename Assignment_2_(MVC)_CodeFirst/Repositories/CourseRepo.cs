@@ -42,9 +42,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public void Update(Course obj)
         {
-            Course course = this._context.Courses
-                                .Find(obj.ID);
-            this._context.Entry(course).State = EntityState.Modified;
+            this._context.Entry(obj).State = EntityState.Modified;
         }
 
         protected virtual void Dispose(bool disposing)

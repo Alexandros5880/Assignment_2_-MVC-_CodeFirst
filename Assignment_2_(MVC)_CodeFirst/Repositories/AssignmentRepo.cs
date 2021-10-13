@@ -44,9 +44,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public void Update(Assignment obj)
         {
-            Assignment assignment = this._context.Assignents
-                                    .Find(obj.ID);
-            this._context.Entry(assignment).State = EntityState.Modified;
+            this._context.Entry(obj).State = EntityState.Modified;
         }
 
         protected virtual void Dispose(bool disposing)

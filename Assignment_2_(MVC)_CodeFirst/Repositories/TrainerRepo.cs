@@ -42,9 +42,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public void Update(Trainer obj)
         {
-            Trainer trainer = this._context.Trainers
-                                  .Find(obj.ID);
-            this._context.Entry(trainer).State = EntityState.Modified;
+            this._context.Entry(obj).State = EntityState.Modified;
         }
 
         protected virtual void Dispose(bool disposing)
