@@ -21,6 +21,8 @@ namespace Assignment_2__MVC__CodeFirst.ViewModels
         public int SchoolID { get; set; }
         public IEnumerable<int> SelectedCourses { get; set; }
         public IEnumerable<int> SelectedAssignments { get; set; }
+        public IEnumerable<Course> MyCourses { get; set; }
+        public IEnumerable<Assignment> MyAssignments { get; set; }
         public IEnumerable<SelectListItem> Courses { get; set; }
         public IEnumerable<SelectListItem> Assignments { get; set; }
         public SelectList Schools { get; set; }

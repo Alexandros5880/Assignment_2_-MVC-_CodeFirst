@@ -49,6 +49,62 @@
         </div>
     </div>
 
+    <br />
+
+    <div class="form-group">
+        <dt>
+            Courses
+        </dt>
+        <dd>
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    @foreach (var c in Model.MyCourses)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
+                                @Html.ActionLink("Remove", "Delete", "Courses", new { id = c.ID }, null)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </dd>
+    </div>
+
+    <div class="form-group">
+        <dt>
+            Assignments
+        </dt>
+        <dd>
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    @foreach (var a in Model.MyAssignments)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
+                                @Html.ActionLink("Remove", "Delete", "Assignments", new { id = a.ID }, null)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </dd>
+    </div>
+
+    <br />
+
     <div class="form-group">
         @Html.LabelFor(model => model.SelectedCourses, "Add Courses", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -74,7 +130,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", "Schools")
 </div>
 
 @section Scripts {

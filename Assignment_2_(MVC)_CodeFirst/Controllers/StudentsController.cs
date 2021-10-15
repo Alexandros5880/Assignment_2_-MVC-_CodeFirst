@@ -44,8 +44,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         }
 
         // POST: Students/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,FirstName,LastName,StartDate")] Student student)
@@ -84,9 +82,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                     Text = course.Title,
                     Value = course.ID.ToString()
                 };
-                if (student.Courses.Contains(course))
-                    selectList.Selected = true;
-                coursesSelectListItems.Add(selectList);
+                if (!student.Courses.Contains(course))
+                    coursesSelectListItems.Add(selectList);
             }
 
             List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
@@ -97,9 +94,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                     Text = assignment.Title,
                     Value = assignment.ID.ToString()
                 };
-                if (student.Assignments.Contains(assignment))
-                    selectList.Selected = true;
-                assignmentSelectListItems.Add(selectList);
+                if(!student.Assignments.Contains(assignment))    
+                    assignmentSelectListItems.Add(selectList);
             }
 
             StudentViewModel studentView = new StudentViewModel()
@@ -113,14 +109,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 SelectedAssignments = new List<int>(),
                 Courses = coursesSelectListItems,
                 Assignments = assignmentSelectListItems,
-                Schools = schools
+                Schools = schools,
+                MyCourses = student.Courses,
+                MyAssignments = student.Assignments
             };
             return View(studentView);
         }
 
         // POST: Students/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentViewModel studentView)
@@ -171,9 +167,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                     Text = course.Title,
                     Value = course.ID.ToString()
                 };
-                if (studentDB.Courses.Contains(course))
-                    selectList.Selected = true;
-                coursesSelectListItems.Add(selectList);
+                if (!studentDB.Courses.Contains(course))
+                    coursesSelectListItems.Add(selectList);
             }
 
             List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
@@ -184,9 +179,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                     Text = assignment.Title,
                     Value = assignment.ID.ToString()
                 };
-                if (studentDB.Assignments.Contains(assignment))
-                    selectList.Selected = true;
-                assignmentSelectListItems.Add(selectList);
+                if (!studentDB.Assignments.Contains(assignment))
+                    assignmentSelectListItems.Add(selectList);
             }
 
             StudentViewModel studentView2 = new StudentViewModel()
@@ -200,7 +194,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 SelectedAssignments = new List<int>(),
                 Courses = coursesSelectListItems,
                 Assignments = assignmentSelectListItems,
-                Schools = schools
+                Schools = schools,
+                MyCourses = studentDB.Courses,
+                MyAssignments = studentDB.Assignments
             };
             return View(studentView2);
         }
