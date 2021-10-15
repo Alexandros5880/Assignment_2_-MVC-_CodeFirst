@@ -68,7 +68,38 @@
                             <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
                             <td>
                                 @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
-                                @Html.ActionLink("Remove", "Delete", "Courses", new { id = c.ID }, null)
+                                @*@Ajax.ActionLink("Remove", "RemoveCourse", "Students", new { studentId = Model.ID, courseId = c.ID }, new AjaxOptions { HttpMethod = "POST" })*@
+                                <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);"><a>Remove</a></div>
+                                <script type = "text/javascript">
+                                    function removeCourseFromStudent(studentId, courseId) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Students/RemoveCourse",
+                                            data: JSON.stringify(
+                                                {
+                                                    "studentId": studentId,
+                                                    "courseId": courseId
+                                                }
+                                            ),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (response) {
+                                                if (response != null) {
+                                                    alert("Course Removed.");
+                                                } else {
+                                                    alert("Something went wrong");
+                                                }
+                                                location.reload();
+                                            },
+                                            failure: function (response) {
+                                                location.reload();
+                                            },
+                                            error: function (response) {
+                                                location.reload();
+                                            }
+                                        });
+                                    };
+                                </script>
                             </td>
                         </tr>
                     }
@@ -94,7 +125,38 @@
                             <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
                             <td>
                                 @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
-                                @Html.ActionLink("Remove", "Delete", "Assignments", new { id = a.ID }, null)
+                                @*@Html.ActionLink("Remove", "Delete", "Assignments", new { id = a.ID }, null)*@
+                                <div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);"><a>Remove</a></div>
+                                <script type="text/javascript">
+                                    function removeAssignmentFromStudent(studentId, assignmentId) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Students/RemoveAssignment",
+                                            data: JSON.stringify(
+                                                {
+                                                    "studentId": studentId,
+                                                    "assignmentId": assignmentId
+                                                }
+                                            ),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (response) {
+                                                if (response != null) {
+                                                    alert("Course Removed.");
+                                                } else {
+                                                    alert("Something went wrong");
+                                                }
+                                                location.reload();
+                                            },
+                                            failure: function (response) {
+                                                location.reload();
+                                            },
+                                            error: function (response) {
+                                                location.reload();
+                                            }
+                                        });
+                                    };
+                                </script>
                             </td>
                         </tr>
                     }
