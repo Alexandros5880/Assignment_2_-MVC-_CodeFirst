@@ -76,9 +76,31 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == student.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var courses = new SelectList(Globals.courseRepo.GetAll(), "ID", "Title");
-            var selectedCourse = courses.FirstOrDefault(x => int.Parse(x.Value) == student.ID);
-            if (selectedCourse != null) selectedCourse.Selected = true;
+            List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
+            foreach( Course course in Globals.courseRepo.GetAll() )
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = course.Title,
+                    Value = course.ID.ToString()
+                };
+                if (student.Courses.Contains(course))
+                    selectList.Selected = true;
+                coursesSelectListItems.Add(selectList);
+            }
+
+            List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
+            foreach (Assignment assignment in Globals.assignmentRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = assignment.Title,
+                    Value = assignment.ID.ToString()
+                };
+                if (student.Assignments.Contains(assignment))
+                    selectList.Selected = true;
+                assignmentSelectListItems.Add(selectList);
+            }
 
             StudentViewModel studentView = new StudentViewModel()
             {
@@ -87,10 +109,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 LastName = student.LastName,
                 StartDate = student.StartDate,
                 SchoolID = student.School.ID,
-                Courses = student.Courses,
-                Assignments = student.Assignments,
-                AllCourses = courses,
-                AllSchools = schools
+                SelectedCourses = new List<int>(),
+                SelectedAssignments = new List<int>(),
+                Courses = coursesSelectListItems,
+                Assignments = assignmentSelectListItems,
+                Schools = schools
             };
             return View(studentView);
         }
@@ -107,8 +130,22 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             studentDB.LastName = studentView.LastName;
             studentDB.StartDate = studentView.StartDate;
             studentDB.School = Globals.schoolRepo.Get(studentView.SchoolID);
-            studentDB.Courses = studentView.Courses;
-            studentDB.Assignments = studentView.Assignments;
+            studentDB.Courses.Clear();
+            var courses = Globals.courseRepo.GetAll();
+            foreach (var id in studentView.SelectedCourses)
+            {
+                var selectedCourse = Globals.courseRepo.Get(id);
+                if (courses.Contains(selectedCourse)) 
+                    studentDB.Courses.Add(selectedCourse);
+            }
+            studentDB.Assignments.Clear();
+            var assignments = Globals.assignmentRepo.GetAll();
+            foreach (var id in studentView.SelectedAssignments)
+            {
+                var selectedAssignment = Globals.assignmentRepo.Get(id);
+                if (assignments.Contains(selectedAssignment))
+                    studentDB.Assignments.Add(selectedAssignment);
+            }
 
             string stdata = $@"ID: {studentDB.ID}  
                                Name: {studentDB.FullName}  
@@ -126,9 +163,31 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == studentDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var courses = new SelectList(Globals.courseRepo.GetAll(), "ID", "Title");
-            var selectedCourse = courses.FirstOrDefault(x => int.Parse(x.Value) == studentDB.ID);
-            if (selectedCourse != null) selectedCourse.Selected = true;
+            List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
+            foreach (Course course in Globals.courseRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = course.Title,
+                    Value = course.ID.ToString()
+                };
+                if (studentDB.Courses.Contains(course))
+                    selectList.Selected = true;
+                coursesSelectListItems.Add(selectList);
+            }
+
+            List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
+            foreach (Assignment assignment in Globals.assignmentRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = assignment.Title,
+                    Value = assignment.ID.ToString()
+                };
+                if (studentDB.Assignments.Contains(assignment))
+                    selectList.Selected = true;
+                assignmentSelectListItems.Add(selectList);
+            }
 
             StudentViewModel studentView2 = new StudentViewModel()
             {
@@ -137,12 +196,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 LastName = studentDB.LastName,
                 StartDate = studentDB.StartDate,
                 SchoolID = studentDB.School.ID,
-                Courses = studentDB.Courses,
-                Assignments = studentDB.Assignments,
-                AllCourses = courses,
-                AllSchools = schools
+                SelectedCourses = new List<int>(),
+                SelectedAssignments = new List<int>(),
+                Courses = coursesSelectListItems,
+                Assignments = assignmentSelectListItems,
+                Schools = schools
             };
-
             return View(studentView2);
         }
 

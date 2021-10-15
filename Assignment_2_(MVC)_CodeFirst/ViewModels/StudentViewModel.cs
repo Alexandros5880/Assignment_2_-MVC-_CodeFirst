@@ -13,22 +13,16 @@ namespace Assignment_2__MVC__CodeFirst.ViewModels
     public class StudentViewModel
     {
         public int ID { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
-
         public int SchoolID { get; set; }
-
-        public ICollection<Course> Courses { get; set; }
-
-        public ICollection<Assignment> Assignments { get; set; }
-
-        public SelectList AllCourses { get; set; }
-        public SelectList AllSchools { get; set; }
+        public IEnumerable<int> SelectedCourses { get; set; }
+        public IEnumerable<int> SelectedAssignments { get; set; }
+        public IEnumerable<SelectListItem> Courses { get; set; }
+        public IEnumerable<SelectListItem> Assignments { get; set; }
+        public SelectList Schools { get; set; }
     }
 }

@@ -44,19 +44,27 @@
     <div class="form-group">
         @Html.LabelFor(model => model.SchoolID, "School", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.SchoolID, Model.AllSchools as SelectList, "Select School", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.SchoolID, Model.Schools as SelectList, "Select School", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.SchoolID, "", new { @class = "text-danger" })
         </div>
     </div>
-    @*
-        <div class="form-group">
-            @Html.LabelFor(model => model.Courses, "Add Course", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.ListBoxFor(model => model.Courses, Model.AllCourses as SelectList, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Courses, "", new { @class = "text-danger" })
-            </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedCourses, "Add Courses", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.SelectedCourses, Model.Courses, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SelectedCourses, "", new { @class = "text-danger" })
         </div>
-    *@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedAssignments, "Add Assignments", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.SelectedAssignments, Model.Assignments, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SelectedAssignments, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />
