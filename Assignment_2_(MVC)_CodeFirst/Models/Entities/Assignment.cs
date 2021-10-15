@@ -14,11 +14,13 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         public string Title { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
-        [DateSmaller(AddMonths = 1, ErrorMessage = "Date must be smaller than date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DateBigger(AddMonths = 1, ErrorMessage = "Date must be smaller than date")]
         public DateTime EndDate { get; set; }
 
         public ICollection<Student> Students { get; set; }

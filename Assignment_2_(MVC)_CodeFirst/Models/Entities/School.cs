@@ -14,6 +14,7 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         public string Name { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
         public ICollection<Course> Courses { get; set; }

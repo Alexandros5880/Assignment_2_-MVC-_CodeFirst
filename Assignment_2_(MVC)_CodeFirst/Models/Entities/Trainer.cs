@@ -22,10 +22,14 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         public string FullName { get => $"{this.FirstName} {this.LastName}"; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [ForeignKey("School")]
+        public int SchoolId { get; set; }
+        
         public School School { get; set; }
 
         public ICollection<Course> Courses { get; set; }

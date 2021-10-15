@@ -39,6 +39,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Trainers/Create
         public ActionResult Create()
         {
+            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll().ToList(), "ID", "Name");
             return View(new Trainer());
         }
 
@@ -47,7 +48,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,StartDate")] Trainer trainer)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,StartDate,School")] Trainer trainer)
         {
             if (ModelState.IsValid)
             {
@@ -71,6 +72,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll().ToList(), "ID", "Name");
             return View(trainer);
         }
 
@@ -120,12 +122,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                Globals.schoolRepo.Dispose();
-                Globals.courseRepo.Dispose();
-                Globals.assignmentRepo.Dispose();
-                Globals.trainerRepo.Dispose();
-                Globals.studentRepo.Dispose();
-                Globals.DbHundler.Dispose();
+                //Globals.schoolRepo.Dispose();
+                //Globals.courseRepo.Dispose();
+                //Globals.assignmentRepo.Dispose();
+                //Globals.trainerRepo.Dispose();
+                //Globals.studentRepo.Dispose();
+                //Globals.DbHundler.Dispose();
                 base.Dispose(disposing);
             }
             base.Dispose(disposing);

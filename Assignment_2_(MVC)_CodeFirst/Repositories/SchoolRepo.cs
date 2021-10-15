@@ -44,6 +44,13 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                                         .Include(s => s.Students.Select(st => st.Courses));
         }
 
+        public IEnumerable<Course> GetAllCourses(int? id)
+        {
+            return this._context.Courses
+                            .Include(c => c.Students)
+                            .Where(c => c.School.ID == id);
+        }
+
         public void Update(School obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;

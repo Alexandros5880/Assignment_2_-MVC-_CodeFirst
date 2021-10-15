@@ -15,7 +15,7 @@ namespace Assignment_2__MVC__CodeFirst.CustomAnotations
         public override bool IsValid(object value)
         {
             var dt = (DateTime)value;
-            if (dt >= DateTime.Now)
+            if (dt >= DateTime.Now.AddHours(-20))
             {
                 return true;
             }

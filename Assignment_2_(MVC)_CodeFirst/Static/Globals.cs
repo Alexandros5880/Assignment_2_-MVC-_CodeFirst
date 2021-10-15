@@ -15,5 +15,21 @@ namespace Assignment_2__MVC__CodeFirst.Static
         public static AssignmentRepo assignmentRepo;
         public static TrainerRepo trainerRepo;
         public static StudentRepo studentRepo;
+
+        static Globals()
+        {
+            if (DbHundler == null)
+                DbHundler = new RepositoryHundler();
+            if (schoolRepo == null)
+                schoolRepo = DbHundler.GetSchoolRepo();
+            if (courseRepo == null)
+                courseRepo = DbHundler.GetCourseRepo();
+            if (assignmentRepo == null)
+                assignmentRepo = DbHundler.GetAssignmentRepo();
+            if (trainerRepo == null)
+                trainerRepo = DbHundler.GetTrainerRepo();
+            if (studentRepo == null)
+                studentRepo = DbHundler.GetStudentRepo();
+        }
     }
 }

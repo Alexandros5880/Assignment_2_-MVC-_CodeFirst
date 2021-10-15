@@ -3,7 +3,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class INITIAL : DbMigration
     {
         public override void Up()
         {
@@ -12,7 +12,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        Title = c.String(nullable: false, maxLength: 5),
+                        Title = c.String(nullable: false),
                         StartDate = c.DateTime(nullable: false),
                         EndDate = c.DateTime(nullable: false),
                     })
@@ -23,8 +23,8 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        FirstName = c.String(nullable: false, maxLength: 5),
-                        LastName = c.String(nullable: false, maxLength: 5),
+                        FirstName = c.String(nullable: false),
+                        LastName = c.String(nullable: false),
                         StartDate = c.DateTime(nullable: false),
                         School_ID = c.Int(nullable: false),
                     })
@@ -37,24 +37,24 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        Title = c.String(nullable: false, maxLength: 5),
+                        Title = c.String(nullable: false),
                         StartDate = c.DateTime(nullable: false),
                         EndDate = c.DateTime(nullable: false),
-                        Trainer_ID = c.Int(),
                         School_ID = c.Int(nullable: false),
+                        Trainer_ID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Trainers", t => t.Trainer_ID)
                 .ForeignKey("dbo.Schools", t => t.School_ID, cascadeDelete: true)
-                .Index(t => t.Trainer_ID)
-                .Index(t => t.School_ID);
+                .ForeignKey("dbo.Trainers", t => t.Trainer_ID, cascadeDelete: true)
+                .Index(t => t.School_ID)
+                .Index(t => t.Trainer_ID);
             
             CreateTable(
                 "dbo.Schools",
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 5),
+                        Name = c.String(nullable: false),
                         StartDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
@@ -64,14 +64,14 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        FirstName = c.String(nullable: false, maxLength: 5),
-                        LastName = c.String(nullable: false, maxLength: 5),
+                        FirstName = c.String(nullable: false),
+                        LastName = c.String(nullable: false),
                         StartDate = c.DateTime(nullable: false),
-                        School_ID = c.Int(nullable: false),
+                        SchoolId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Schools", t => t.School_ID, cascadeDelete: true)
-                .Index(t => t.School_ID);
+                .ForeignKey("dbo.Schools", t => t.SchoolId, cascadeDelete: false)
+                .Index(t => t.SchoolId);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -149,8 +149,8 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                         Assignment_ID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Student_ID, t.Assignment_ID })
-                .ForeignKey("dbo.Students", t => t.Student_ID, cascadeDelete: true)
-                .ForeignKey("dbo.Assignments", t => t.Assignment_ID, cascadeDelete: true)
+                .ForeignKey("dbo.Students", t => t.Student_ID, cascadeDelete: false)
+                .ForeignKey("dbo.Assignments", t => t.Assignment_ID, cascadeDelete: false)
                 .Index(t => t.Student_ID)
                 .Index(t => t.Assignment_ID);
             
@@ -176,11 +176,11 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Students", "School_ID", "dbo.Schools");
+            DropForeignKey("dbo.Courses", "Trainer_ID", "dbo.Trainers");
             DropForeignKey("dbo.CourseStudents", "Student_ID", "dbo.Students");
             DropForeignKey("dbo.CourseStudents", "Course_ID", "dbo.Courses");
             DropForeignKey("dbo.Courses", "School_ID", "dbo.Schools");
-            DropForeignKey("dbo.Trainers", "School_ID", "dbo.Schools");
-            DropForeignKey("dbo.Courses", "Trainer_ID", "dbo.Trainers");
+            DropForeignKey("dbo.Trainers", "SchoolId", "dbo.Schools");
             DropForeignKey("dbo.StudentAssignments", "Assignment_ID", "dbo.Assignments");
             DropForeignKey("dbo.StudentAssignments", "Student_ID", "dbo.Students");
             DropIndex("dbo.CourseStudents", new[] { "Student_ID" });
@@ -193,9 +193,9 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.Trainers", new[] { "School_ID" });
-            DropIndex("dbo.Courses", new[] { "School_ID" });
+            DropIndex("dbo.Trainers", new[] { "SchoolId" });
             DropIndex("dbo.Courses", new[] { "Trainer_ID" });
+            DropIndex("dbo.Courses", new[] { "School_ID" });
             DropIndex("dbo.Students", new[] { "School_ID" });
             DropTable("dbo.CourseStudents");
             DropTable("dbo.StudentAssignments");

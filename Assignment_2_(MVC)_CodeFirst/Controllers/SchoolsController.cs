@@ -119,13 +119,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                Globals.schoolRepo.Dispose();
-                Globals.courseRepo.Dispose();
-                Globals.assignmentRepo.Dispose();
-                Globals.trainerRepo.Dispose();
-                Globals.studentRepo.Dispose();
-                Globals.DbHundler.Dispose();
+                //Globals.schoolRepo.Dispose();
+                //Globals.courseRepo.Dispose();
+                //Globals.assignmentRepo.Dispose();
+                //Globals.trainerRepo.Dispose();
+                //Globals.studentRepo.Dispose();
+                //Globals.DbHundler.Dispose();
                 base.Dispose(disposing);
+            }
         }
     }
 }

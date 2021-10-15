@@ -38,6 +38,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
+            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            ViewBag.TrainerId = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
             return View(new Course()); ;
         }
 
@@ -46,7 +48,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,StartDate,EndDate")] Course course)
+        public ActionResult Create([Bind(Include = "ID,Title,StartDate,EndDate,School,Trainer")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +72,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            ViewBag.TrainerId = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
             return View(course);
         }
 
@@ -119,12 +123,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                Globals.schoolRepo.Dispose();
-                Globals.courseRepo.Dispose();
-                Globals.assignmentRepo.Dispose();
-                Globals.trainerRepo.Dispose();
-                Globals.studentRepo.Dispose();
-                Globals.DbHundler.Dispose();
+                //Globals.schoolRepo.Dispose();
+                //Globals.courseRepo.Dispose();
+                //Globals.assignmentRepo.Dispose();
+                //Globals.trainerRepo.Dispose();
+                //Globals.studentRepo.Dispose();
+                //Globals.DbHundler.Dispose();
                 base.Dispose(disposing);
             }
             base.Dispose(disposing);

@@ -34,6 +34,52 @@
             @Html.DisplayFor(model => model.StartDate)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Courses)
+        </dt>
+
+        <dd>
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th></th>
+                </tr>
+                @foreach (var c in Model.Courses)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Courses", new { id = c.ID }, null) |
+                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
+                            @Html.ActionLink("Delete", "Delete", "Courses", new { id = c.ID }, null)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Assignments)
+        </dt>
+
+        <dd>
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th></th>
+                </tr>
+                @foreach (var a in Model.Assignments)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Assignments", new { id = a.ID }, null) |
+                            @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
+                            @Html.ActionLink("Delete", "Delete", "Assignments", new { id = a.ID }, null)
+                        </td>
+                    </tr>
+                }
+            </table>
     </dl>
 </div>
 <p>
