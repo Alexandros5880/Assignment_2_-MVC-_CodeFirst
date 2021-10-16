@@ -52,117 +52,107 @@
     <br />
 
     <div class="form-group">
-        <dt>
-            Courses
-        </dt>
-        <dd>
-            <div class="col-md-10">
-                <table>
+        @Html.LabelFor(model => model.Courses, "Courses", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <table>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var c in Model.MyCourses)
+                {
                     <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    @foreach (var c in Model.MyCourses)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
-                            <td>
-                                @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
-                                @*@Ajax.ActionLink("Remove", "RemoveCourse", "Students", new { studentId = Model.ID, courseId = c.ID }, new AjaxOptions { HttpMethod = "POST" })*@
-                                <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);"><a>Remove</a></div>
-                                <script type = "text/javascript">
-                                    function removeCourseFromStudent(studentId, courseId) {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "/Students/RemoveCourse",
-                                            data: JSON.stringify(
-                                                {
-                                                    "studentId": studentId,
-                                                    "courseId": courseId
-                                                }
-                                            ),
-                                            contentType: "application/json; charset=utf-8",
-                                            dataType: "json",
-                                            success: function (response) {
-                                                if (response != null) {
-                                                    alert("Course Removed.");
-                                                } else {
-                                                    alert("Something went wrong");
-                                                }
-                                                location.reload();
-                                            },
-                                            failure: function (response) {
-                                                location.reload();
-                                            },
-                                            error: function (response) {
-                                                location.reload();
+                        <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
+                            <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);" style="float: right;"><a>Remove</a></div>
+                            <script type="text/javascript">
+                                function removeCourseFromStudent(studentId, courseId) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/Students/RemoveCourse",
+                                        data: JSON.stringify(
+                                            {
+                                                "studentId": studentId,
+                                                "courseId": courseId
                                             }
-                                        });
-                                    };
-                                </script>
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
-        </dd>
+                                        ),
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (response) {
+                                            if (response != null) {
+                                                alert("Course Removed.");
+                                            } else {
+                                                alert("Something went wrong");
+                                            }
+                                            location.reload();
+                                        },
+                                        failure: function (response) {
+                                            location.reload();
+                                        },
+                                        error: function (response) {
+                                            location.reload();
+                                        }
+                                    });
+                                };
+                            </script>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
 
     <div class="form-group">
-        <dt>
-            Assignments
-        </dt>
-        <dd>
-            <div class="col-md-10">
-                <table>
+        @Html.LabelFor(model => model.Assignments, "Assignments", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <table>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var a in Model.MyAssignments)
+                {
                     <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    @foreach (var a in Model.MyAssignments)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
-                            <td>
-                                @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
-                                @*@Html.ActionLink("Remove", "Delete", "Assignments", new { id = a.ID }, null)*@
-                                <div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);"><a>Remove</a></div>
-                                <script type="text/javascript">
-                                    function removeAssignmentFromStudent(studentId, assignmentId) {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "/Students/RemoveAssignment",
-                                            data: JSON.stringify(
-                                                {
-                                                    "studentId": studentId,
-                                                    "assignmentId": assignmentId
-                                                }
-                                            ),
-                                            contentType: "application/json; charset=utf-8",
-                                            dataType: "json",
-                                            success: function (response) {
-                                                if (response != null) {
-                                                    alert("Course Removed.");
-                                                } else {
-                                                    alert("Something went wrong");
-                                                }
-                                                location.reload();
-                                            },
-                                            failure: function (response) {
-                                                location.reload();
-                                            },
-                                            error: function (response) {
-                                                location.reload();
+                        <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
+                            <div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);" style="float: right;"><a>Remove</a></div>
+                            <script type="text/javascript">
+                                function removeAssignmentFromStudent(studentId, assignmentId) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/Students/RemoveAssignment",
+                                        data: JSON.stringify(
+                                            {
+                                                "studentId": studentId,
+                                                "assignmentId": assignmentId
                                             }
-                                        });
-                                    };
-                                </script>
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
-        </dd>
+                                        ),
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (response) {
+                                            if (response != null) {
+                                                alert("Course Removed.");
+                                            } else {
+                                                alert("Something went wrong");
+                                            }
+                                            location.reload();
+                                        },
+                                        failure: function (response) {
+                                            location.reload();
+                                        },
+                                        error: function (response) {
+                                            location.reload();
+                                        }
+                                    });
+                                };
+                            </script>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
 
     <br />
