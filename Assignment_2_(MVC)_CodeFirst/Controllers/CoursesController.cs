@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Static;
+using Assignment_2__MVC__CodeFirst.ViewModels;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers
 {
@@ -62,31 +63,114 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Course course = Globals.courseRepo.Get(id);
             if (course == null)
-            {
                 return HttpNotFound();
+
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
+            if (selectedSchool != null) selectedSchool.Selected = true;
+
+            var trainers = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
+            var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
+            if (selectedTrainer != null) selectedTrainer.Selected = true;
+
+            List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
+            foreach (Student student in Globals.studentRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = student.FullName,
+                    Value = student.ID.ToString()
+                };
+                if (!course.Students.Contains(student))
+                    studentsSelectListItems.Add(selectList);
             }
-            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
-            ViewBag.TrainerId = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
-            return View(course);
+
+            CourseViewModel courseView = new CourseViewModel()
+            {
+                ID = course.ID,
+                Title = course.Title,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                SchoolId = course.School.ID,
+                TrainerId = course.Trainer.ID,
+                SelectedStudents = new List<int>(),
+                MyStudents = course.Students,
+                Students = studentsSelectListItems,
+                Schools = schools,
+                Trainers = trainers
+            };
+
+            return View(courseView);
         }
 
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Title,StartDate,EndDate")] Course course)
+        public ActionResult Edit(CourseViewModel courseView)
         {
+            Course courseDB = Globals.courseRepo.Get(courseView.ID);
+            courseDB.Title = courseView.Title;
+            courseDB.StartDate = courseView.StartDate;
+            courseDB.EndDate = courseView.EndDate;
+            courseDB.School = Globals.schoolRepo.Get(courseView.SchoolId);
+            courseDB.Trainer = Globals.trainerRepo.Get(courseView.TrainerId);
+            if(courseView.SelectedStudents != null)
+            {
+                var students = Globals.studentRepo.GetAll();
+                foreach(var id in courseView.SelectedStudents)
+                {
+                    var selectedStudent = Globals.studentRepo.Get(id);
+                    if (students.Contains(selectedStudent))
+                        courseDB.Students.Add(selectedStudent);
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                Globals.courseRepo.Update(course);
+                Globals.courseRepo.Update(courseDB);
                 Globals.DbHundler.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Schools", new { id = courseDB.School.ID });
             }
-            return View(course);
+
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
+            if (selectedSchool != null) selectedSchool.Selected = true;
+
+            var trainers = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
+            var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
+            if (selectedTrainer != null) selectedTrainer.Selected = true;
+
+            List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
+            foreach (Student student in Globals.studentRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = student.FullName,
+                    Value = student.ID.ToString()
+                };
+                if (!courseDB.Students.Contains(student))
+                    studentsSelectListItems.Add(selectList);
+            }
+
+            CourseViewModel courseView2 = new CourseViewModel()
+            {
+                ID = courseDB.ID,
+                Title = courseDB.Title,
+                StartDate = courseDB.StartDate,
+                EndDate = courseDB.EndDate,
+                SchoolId = courseDB.School.ID,
+                TrainerId = courseDB.Trainer.ID,
+                SelectedStudents = new List<int>(),
+                MyStudents = courseDB.Students,
+                Students = studentsSelectListItems,
+                Schools = schools,
+                Trainers = trainers
+            };
+
+            return View(courseView2);
         }
 
         // GET: Courses/Delete/5
@@ -113,6 +197,63 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             Globals.courseRepo.Delete(course);
             Globals.DbHundler.Save();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult RemoveStudent(int? courseId, int? studentId)
+        {
+            if (studentId == null || courseId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            Course course = Globals.courseRepo.Get(courseId);
+            Student courseStudent = Globals.studentRepo.Get(studentId);
+            if (course == null ||courseStudent == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            course.Students.Remove(courseStudent);
+
+            if (ModelState.IsValid)
+            {
+                Globals.courseRepo.Update(course);
+                Globals.DbHundler.Save();
+                return RedirectToAction("Details", "Schools", new { id = course.School.ID });
+            }
+
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
+            if (selectedSchool != null) selectedSchool.Selected = true;
+
+            var trainers = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
+            var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
+            if (selectedTrainer != null) selectedTrainer.Selected = true;
+
+            List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
+            foreach (Student student in Globals.studentRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = student.FullName,
+                    Value = student.ID.ToString()
+                };
+                if (!course.Students.Contains(student))
+                    studentsSelectListItems.Add(selectList);
+            }
+
+            CourseViewModel courseView2 = new CourseViewModel()
+            {
+                ID = course.ID,
+                Title = course.Title,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                SchoolId = course.School.ID,
+                TrainerId = course.Trainer.ID,
+                SelectedStudents = new List<int>(),
+                MyStudents = course.Students,
+                Students = studentsSelectListItems,
+                Schools = schools,
+                Trainers = trainers
+            };
+
+            return View(courseView2);
         }
 
         protected override void Dispose(bool disposing)

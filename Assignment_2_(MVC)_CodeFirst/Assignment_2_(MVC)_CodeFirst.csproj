@@ -203,6 +203,7 @@
     <Compile Include="Repositories\TrainerRepo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Static\Globals.cs" />
+    <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\SchoolViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
     <Compile Include="ViewModels\TrainerViewModel.cs" />

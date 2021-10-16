@@ -23,7 +23,7 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
+        //[CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
         public DateTime StartDate { get; set; }
 
         [Required]

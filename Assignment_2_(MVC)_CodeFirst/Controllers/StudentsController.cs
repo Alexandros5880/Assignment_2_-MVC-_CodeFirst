@@ -211,17 +211,28 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             return View(student);
         }
 
-        [HttpPost]
-        public ActionResult RemoveAssignment(int? studentId, int? assignmentId)
+        // POST: Students/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            if (studentId == null || assignmentId == null)
+            Student student = Globals.studentRepo.Get(id);
+            Globals.studentRepo.Delete(student);
+            Globals.DbHundler.Save();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult RemoveCourse(int? studentId, int? courseId)
+        {
+            if (studentId == null || courseId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Student student = Globals.studentRepo.Get(studentId);
-            Assignment studentAssignment = Globals.assignmentRepo.Get(assignmentId);
-            if (student == null || studentAssignment == null)
+            Course studentCourse = Globals.courseRepo.Get(courseId);
+            if (student == null || studentCourse == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            student.Assignments.Remove(studentAssignment);
+            student.Courses.Remove(studentCourse);
 
             if (ModelState.IsValid)
             {
@@ -276,28 +287,17 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             return View(studentView);
         }
 
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Student student = Globals.studentRepo.Get(id);
-            Globals.studentRepo.Delete(student);
-            Globals.DbHundler.Save();
-            return RedirectToAction("Index");
-        }
-
         [HttpPost]
-        public ActionResult RemoveCourse(int? studentId, int? courseId)
+        public ActionResult RemoveAssignment(int? studentId, int? assignmentId)
         {
-            if (studentId == null || courseId == null)
+            if (studentId == null || assignmentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Student student = Globals.studentRepo.Get(studentId);
-            Course studentCourse = Globals.courseRepo.Get(courseId);
-            if (student == null || studentCourse == null)
+            Assignment studentAssignment = Globals.assignmentRepo.Get(assignmentId);
+            if (student == null || studentAssignment == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            student.Courses.Remove(studentCourse);
+            student.Assignments.Remove(studentAssignment);
 
             if (ModelState.IsValid)
             {
