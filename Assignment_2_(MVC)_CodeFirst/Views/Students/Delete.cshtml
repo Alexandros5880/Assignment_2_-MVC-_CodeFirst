@@ -10,32 +10,39 @@
 <div>
     <h4>Student</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+    <div class="container">
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
+            <div class="col-md-9">
+                @Html.DisplayFor(model => model.FirstName)
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(model => model.LastName)
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
+            <div class="col-md-9">
+                @Html.DisplayFor(model => model.LastName)
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </div>
 
-    </dl>
+            <div class="col-md-9">
+                @Html.DisplayFor(model => model.StartDate)
+            </div>
+        </div>
+
+    </div>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
