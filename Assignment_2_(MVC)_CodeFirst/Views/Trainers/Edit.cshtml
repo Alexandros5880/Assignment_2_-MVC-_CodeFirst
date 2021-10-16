@@ -1,4 +1,4 @@
-﻿@model Assignment_2__MVC__CodeFirst.Models.Entities.Trainer
+﻿@model Assignment_2__MVC__CodeFirst.ViewModels.TrainerViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -42,10 +42,74 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.School, "School", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.SchoolId, "School", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.SchoolId, new SelectList(Assignment_2__MVC__CodeFirst.Static.Globals.schoolRepo.GetAll(), "ID", "Name") as SelectList, Model.School.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.School, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.SchoolId, new SelectList(Assignment_2__MVC__CodeFirst.Static.Globals.schoolRepo.GetAll(), "ID", "Name") as SelectList, "Select School", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SchoolId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Courses, "Courses", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <table>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var c in Model.MyCourses)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
+                            <div onclick="removeCourseFromTrainer(@Model.ID, @c.ID);" style="float: right;"><a>Remove</a></div>
+                            <script type="text/javascript">
+                                function removeCourseFromTrainer(trainerId, courseId) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/Trainers/RemoveCourse",
+                                        data: JSON.stringify(
+                                            {
+                                                "trainerId": trainerId,
+                                                "courseId": courseId
+                                            }
+                                        ),
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (response) {
+                                            if (response != null) {
+                                                alert("Course Removed.");
+                                            } else {
+                                                alert("Something went wrong");
+                                            }
+                                            location.reload();
+                                        },
+                                        failure: function (response) {
+                                            location.reload();
+                                        },
+                                        error: function (response) {
+                                            location.reload();
+                                        }
+                                    });
+                                };
+                            </script>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedCourses, "Add Courses", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.SelectedCourses, Model.Courses, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SelectedCourses, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -58,7 +122,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", "Schools")
 </div>
 
 @section Scripts {

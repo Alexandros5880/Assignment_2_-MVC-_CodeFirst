@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Static;
+using Assignment_2__MVC__CodeFirst.ViewModels;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers
 {
@@ -44,8 +45,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         }
 
         // POST: Trainers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,FirstName,LastName,StartDate,School")] Trainer trainer)
@@ -64,32 +63,101 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Trainer trainer = Globals.trainerRepo.Get(id);
             if (trainer == null)
-            {
                 return HttpNotFound();
+
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == trainer.ID);
+            if (selectedSchool != null) selectedSchool.Selected = true;
+
+            List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
+            foreach (Course course in Globals.courseRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = course.Title,
+                    Value = course.ID.ToString()
+                };
+                if (!trainer.Courses.Contains(course))
+                    coursesSelectListItems.Add(selectList);
             }
-            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll().ToList(), "ID", "Name");
-            return View(trainer);
+
+            TrainerViewModel trainerView = new TrainerViewModel()
+            {
+                ID = trainer.ID,
+                FirstName = trainer.FirstName,
+                LastName = trainer.LastName,
+                StartDate = trainer.StartDate,
+                SchoolId = trainer.SchoolId,
+                SelectedCourses = new List<int>(),
+                Courses = coursesSelectListItems,
+                Schools = schools,
+                MyCourses = trainer.Courses
+            };
+
+            return View(trainerView);
         }
 
         // POST: Trainers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,StartDate")] Trainer trainer)
+        public ActionResult Edit(TrainerViewModel trainerView)
         {
+            Trainer trainerDB = Globals.trainerRepo.Get(trainerView.ID);
+            trainerDB.FirstName = trainerView.FirstName;
+            trainerDB.LastName = trainerView.LastName;
+            trainerDB.StartDate = trainerView.StartDate;
+            trainerDB.School = Globals.schoolRepo.Get(trainerView.SchoolId);
+            if (trainerView.SelectedCourses != null)
+            {
+                var courses = Globals.courseRepo.GetAll();
+                foreach (var id in trainerView.SelectedCourses)
+                {
+                    var selectedCourse = Globals.courseRepo.Get(id);
+                    if (courses.Contains(selectedCourse))
+                        trainerDB.Courses.Add(selectedCourse);
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                Globals.trainerRepo.Update(trainer);
+                Globals.trainerRepo.Update(trainerDB);
                 Globals.DbHundler.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Schools", new { id = trainerDB.School.ID });
             }
-            return View(trainer);
+
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == trainerDB.ID);
+            if (selectedSchool != null) selectedSchool.Selected = true;
+
+            List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
+            foreach (Course course in Globals.courseRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = course.Title,
+                    Value = course.ID.ToString()
+                };
+                if (!trainerDB.Courses.Contains(course))
+                    coursesSelectListItems.Add(selectList);
+            }
+
+            TrainerViewModel trainerView2 = new TrainerViewModel()
+            {
+                ID = trainerDB.ID,
+                FirstName = trainerDB.FirstName,
+                LastName = trainerDB.LastName,
+                StartDate = trainerDB.StartDate,
+                SchoolId = trainerDB.SchoolId,
+                SelectedCourses = new List<int>(),
+                Courses = coursesSelectListItems,
+                Schools = schools,
+                MyCourses = trainerDB.Courses
+            };
+
+            return View(trainerView2);
         }
 
         // GET: Trainers/Delete/5
@@ -116,6 +184,57 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             Globals.trainerRepo.Delete(trainer);
             Globals.DbHundler.Save();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult RemoveCourse(int? trainerId, int? courseId)
+        {
+            if (trainerId == null || courseId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            Trainer trainer = Globals.trainerRepo.Get(trainerId);
+            Course trainerCourse = Globals.courseRepo.Get(courseId);
+            if (trainer == null || trainerCourse == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            trainer.Courses.Remove(trainerCourse);
+
+            if (ModelState.IsValid)
+            {
+                Globals.trainerRepo.Update(trainer);
+                Globals.DbHundler.Save();
+                return RedirectToAction("Details", "Schools", new { id = trainer.School.ID });
+            }
+
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == trainer.ID);
+            if (selectedSchool != null) selectedSchool.Selected = true;
+
+            List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
+            foreach (Course course in Globals.courseRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = course.Title,
+                    Value = course.ID.ToString()
+                };
+                if (!trainer.Courses.Contains(course))
+                    coursesSelectListItems.Add(selectList);
+            }
+
+            TrainerViewModel trainerView2 = new TrainerViewModel()
+            {
+                ID = trainer.ID,
+                FirstName = trainer.FirstName,
+                LastName = trainer.LastName,
+                StartDate = trainer.StartDate,
+                SchoolId = trainer.SchoolId,
+                SelectedCourses = new List<int>(),
+                Courses = coursesSelectListItems,
+                Schools = schools,
+                MyCourses = trainer.Courses
+            };
+
+            return View(trainerView2);
         }
 
         protected override void Dispose(bool disposing)
