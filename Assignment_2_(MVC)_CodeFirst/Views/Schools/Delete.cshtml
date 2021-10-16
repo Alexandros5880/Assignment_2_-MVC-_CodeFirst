@@ -10,24 +10,29 @@
 <div>
     <h4>School</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+    <div class="container">
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
+            <div class="col-md-9">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </div>
 
-    </dl>
+            <div class="col-md-9">
+                @Html.DisplayFor(model => model.StartDate)
+            </div>
+        </div>
+
+    </div>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
