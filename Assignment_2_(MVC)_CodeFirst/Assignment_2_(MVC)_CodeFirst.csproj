@@ -179,9 +179,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202110141334013_INITIAL.cs" />
-    <Compile Include="Migrations\202110141334013_INITIAL.Designer.cs">
-      <DependentUpon>202110141334013_INITIAL.cs</DependentUpon>
+    <Compile Include="Migrations\202110171548116_Initial.cs" />
+    <Compile Include="Migrations\202110171548116_Initial.Designer.cs">
+      <DependentUpon>202110171548116_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -203,6 +203,7 @@
     <Compile Include="Repositories\TrainerRepo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Static\Globals.cs" />
+    <Compile Include="ViewModels\AssignmentViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\SchoolViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
@@ -307,8 +308,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202110141334013_INITIAL.resx">
-      <DependentUpon>202110141334013_INITIAL.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202110171548116_Initial.resx">
+      <DependentUpon>202110171548116_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

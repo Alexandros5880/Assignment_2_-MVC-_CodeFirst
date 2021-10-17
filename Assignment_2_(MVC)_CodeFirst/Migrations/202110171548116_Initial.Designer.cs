@@ -7,13 +7,13 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class INITIAL : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(INITIAL));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "202110141334013_INITIAL"; }
+            get { return "202110171548116_Initial"; }
         }
         
         string IMigrationMetadata.Source

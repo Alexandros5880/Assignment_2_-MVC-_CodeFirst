@@ -1,4 +1,4 @@
-﻿@model Assignment_2__MVC__CodeFirst.Models.Entities.Assignment
+﻿@model Assignment_2__MVC__CodeFirst.ViewModels.AssignmentViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -11,42 +11,114 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Assignment</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
+<div class="form-horizontal">
+    <h4>Assignment</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SchoolId, "School", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.SchoolId, Model.Schools as SelectList, "Select School", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SchoolId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Students, "Students", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <table>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var st in Model.MyStudents)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => st.FullName)&emsp;</td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Students", new { id = st.ID }, null) |
+                            <div onclick="removeStudentFromAssignment(@Model.ID, @st.ID);" style="float: right;"><a>Remove</a></div>
+                            <script type="text/javascript">
+                                function removeStudentFromAssignment(assignmentId, studentId) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/Assignments/RemoveStudent",
+                                        data: JSON.stringify(
+                                            {
+                                                "assignmentId": assignmentId,
+                                                "studentId": studentId
+                                            }
+                                        ),
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (response) {
+                                            if (response != null) {
+                                                alert("Course Removed.");
+                                            } else {
+                                                alert("Something went wrong");
+                                            }
+                                            location.reload();
+                                        },
+                                        failure: function (response) {
+                                            location.reload();
+                                        },
+                                        error: function (response) {
+                                            location.reload();
+                                        }
+                                    });
+                                };
+                            </script>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedStudents, "Add Student", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.SelectedStudents, Model.Students, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SelectedStudents, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>

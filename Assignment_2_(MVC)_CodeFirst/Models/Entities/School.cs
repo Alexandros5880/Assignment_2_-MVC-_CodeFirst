@@ -18,6 +18,7 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         public DateTime StartDate { get; set; }
 
         public ICollection<Course> Courses { get; set; }
+        public ICollection<Assignment> Assignments { get; set; }
         public ICollection<Trainer> Trainers { get; set; }
         public ICollection<Student> Students { get; set; }
     }

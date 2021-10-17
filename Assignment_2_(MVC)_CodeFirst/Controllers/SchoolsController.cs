@@ -40,13 +40,18 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Schools/Create
         public ActionResult Create()
         {
-            return View(new School());
+            SchoolViewModel schoolViewModel = new SchoolViewModel();
+            return View(schoolViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,StartDate")] School school)
+        public ActionResult Create(SchoolViewModel schoolView)
         {
+            School school = new School();
+            school.Name = schoolView.School.Name;
+            school.StartDate = schoolView.School.StartDate;
+
             if (ModelState.IsValid)
             {
                 Globals.schoolRepo.Add(school);
@@ -54,7 +59,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(school);
+            return View(schoolView);
         }
 
         // GET: Schools/Edit/5
@@ -79,15 +84,24 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,StartDate")] School school)
+        public ActionResult Edit(SchoolViewModel schoolView)
         {
+            School school = new School();
+            school.Name = schoolView.School.Name;
+            school.StartDate = schoolView.School.StartDate;
+            school.Courses = schoolView.School.Courses;
+            school.Assignments = schoolView.School.Assignments;
+            school.Trainers = schoolView.School.Trainers;
+            school.Students = schoolView.School.Students;
+
             if (ModelState.IsValid)
             {
                 Globals.schoolRepo.Update(school);
                 Globals.DbHundler.Save();
                 return RedirectToAction("Index");
             }
-            return View(school);
+
+            return View(schoolView);
         }
 
         // GET: Schools/Delete/5

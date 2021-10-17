@@ -25,10 +25,6 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         //[CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
         public DateTime StartDate { get; set; }
-
-        [Required]
-        [ForeignKey("School")]
-        public int SchoolId { get; set; }
         
         public School School { get; set; }
 

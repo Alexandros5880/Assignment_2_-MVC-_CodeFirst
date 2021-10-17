@@ -39,22 +39,98 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
-            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
-            return View(new Student());
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
+            foreach (Course course in Globals.courseRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = course.Title,
+                    Value = course.ID.ToString()
+                };
+                coursesSelectListItems.Add(selectList);
+            }
+            List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
+            foreach (Assignment assignment in Globals.assignmentRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = assignment.Title,
+                    Value = assignment.ID.ToString()
+                };
+                assignmentSelectListItems.Add(selectList);
+            }
+
+            StudentViewModel studentView = new StudentViewModel()
+            {
+                SelectedCourses = new List<int>(),
+                SelectedAssignments = new List<int>(),
+                Courses = coursesSelectListItems,
+                Assignments = assignmentSelectListItems,
+                Schools = schools
+            };
+            return View(studentView);
         }
 
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,StartDate")] Student student)
+        public ActionResult Create(StudentViewModel studentView)
         {
+            Student student = new Student();
+            student.FirstName = studentView.FirstName;
+            student.LastName = studentView.LastName;
+            student.StartDate = studentView.StartDate;
+            student.School = Globals.schoolRepo.Get(studentView.SchoolId);
+            if (studentView.SelectedCourses != null)
+            {
+                var courses = Globals.courseRepo.GetAll();
+                foreach (var id in studentView.SelectedCourses)
+                {
+                    var selectedCourse = Globals.courseRepo.Get(id);
+                    if (courses.Contains(selectedCourse))
+                    { 
+                        if (student.Courses != null)
+                        {
+                            student.Courses.Add(selectedCourse);
+                        } 
+                        else
+                        {
+                            student.Courses = new List<Course>();
+                            student.Courses.Add(selectedCourse);
+                        }
+                    }
+                        
+                }
+            }
+            if (studentView.SelectedAssignments != null)
+            {
+                var assignments = Globals.assignmentRepo.GetAll();
+                foreach (var id in studentView.SelectedAssignments)
+                {
+                    var selectedAssignment = Globals.assignmentRepo.Get(id);
+                    if (assignments.Contains(selectedAssignment))
+                    {
+                        if (student.Assignments != null)
+                        {
+                            student.Assignments.Add(selectedAssignment);
+                        }
+                        else
+                        {
+                            student.Assignments = new List<Assignment>();
+                            student.Assignments.Add(selectedAssignment);
+                        }
+                    }
+                        
+                }
+            }
             if (ModelState.IsValid)
             {
                 Globals.studentRepo.Add(student);
                 Globals.DbHundler.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Schools", new { id = student.School.ID });
             }
-            return View(student);
+            return View(studentView);
         }
 
         // GET: Students/Edit/5

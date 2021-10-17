@@ -1,4 +1,4 @@
-﻿@model Assignment_2__MVC__CodeFirst.Models.Entities.Course
+﻿@model Assignment_2__MVC__CodeFirst.ViewModels.CourseViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -40,18 +40,28 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.School, "School", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.SchoolId, "School", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.School, ViewBag.SchoolId as SelectList, "Select School", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.School, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.SchoolId, Model.Schools as SelectList, "Select School", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SchoolId, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Trainer, "Trainer", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.TrainerId, "Trainer", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Trainer, ViewBag.TrainerId as SelectList, "Select Trainer", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Trainer, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.TrainerId, Model.Trainers as SelectList, "Select Trainer", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.TrainerId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedStudents, "Add Students", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.SelectedStudents, Model.Students, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SelectedStudents, "", new { @class = "text-danger" })
         </div>
     </div>
 

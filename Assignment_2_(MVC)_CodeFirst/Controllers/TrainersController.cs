@@ -40,23 +40,65 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Trainers/Create
         public ActionResult Create()
         {
-            ViewBag.SchoolId = new SelectList(Globals.schoolRepo.GetAll().ToList(), "ID", "Name");
-            return View(new Trainer());
+            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
+            foreach (Course course in Globals.courseRepo.GetAll())
+            {
+                SelectListItem selectList = new SelectListItem()
+                {
+                    Text = course.Title,
+                    Value = course.ID.ToString()
+                };
+                coursesSelectListItems.Add(selectList);
+            }
+            TrainerViewModel trainerView = new TrainerViewModel()
+            {
+                SelectedCourses = new List<int>(),
+                Courses = coursesSelectListItems,
+                Schools = schools
+            };
+            return View(trainerView);
         }
 
         // POST: Trainers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,StartDate,School")] Trainer trainer)
+        public ActionResult Create(TrainerViewModel trainerView)
         {
+            Trainer trainer = new Trainer();
+            trainer.FirstName = trainerView.FirstName;
+            trainer.LastName = trainerView.LastName;
+            trainer.StartDate = trainerView.StartDate;
+            trainer.School = Globals.schoolRepo.Get(trainerView.SchoolId);
+            if (trainerView.SelectedCourses != null)
+            {
+                var courses = Globals.courseRepo.GetAll();
+                foreach (var id in trainerView.SelectedCourses)
+                {
+                    var selectedCourse = Globals.courseRepo.Get(id);
+                    if (courses.Contains(selectedCourse))
+                    {
+                        if (trainer.Courses != null)
+                        {
+                            trainer.Courses.Add(selectedCourse);
+                        }
+                        else
+                        {
+                            trainer.Courses = new List<Course>();
+                            trainer.Courses.Add(selectedCourse);
+                        }
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
                 Globals.trainerRepo.Add(trainer);
                 Globals.DbHundler.Save();
                 return RedirectToAction("Index");
+                return RedirectToAction("Details", "Schools", new { id = trainer.School.ID });
             }
 
-            return View(trainer);
+            return View(trainerView);
         }
 
         // GET: Trainers/Edit/5
@@ -90,7 +132,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 FirstName = trainer.FirstName,
                 LastName = trainer.LastName,
                 StartDate = trainer.StartDate,
-                SchoolId = trainer.SchoolId,
+                SchoolId = trainer.School.ID,
                 SelectedCourses = new List<int>(),
                 Courses = coursesSelectListItems,
                 Schools = schools,
@@ -150,7 +192,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 FirstName = trainerDB.FirstName,
                 LastName = trainerDB.LastName,
                 StartDate = trainerDB.StartDate,
-                SchoolId = trainerDB.SchoolId,
+                SchoolId = trainerDB.School.ID,
                 SelectedCourses = new List<int>(),
                 Courses = coursesSelectListItems,
                 Schools = schools,
@@ -227,7 +269,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 FirstName = trainer.FirstName,
                 LastName = trainer.LastName,
                 StartDate = trainer.StartDate,
-                SchoolId = trainer.SchoolId,
+                SchoolId = trainer.School.ID,
                 SelectedCourses = new List<int>(),
                 Courses = coursesSelectListItems,
                 Schools = schools,
