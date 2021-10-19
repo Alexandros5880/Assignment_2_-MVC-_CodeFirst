@@ -28,12 +28,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = Globals.courseRepo.Get(id);
+            Course course = Globals.courseRepo.GetWithRelated(id);
             if (course == null)
             {
                 return HttpNotFound();
             }
-            course.Students = Globals.courseRepo.GetStudents(course.ID);
             return View(course);
         }
 
@@ -111,11 +110,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Course course = Globals.courseRepo.Get(id);
+            Course course = Globals.courseRepo.GetWithRelated(id);
             if (course == null)
                 return HttpNotFound();
-
-            course.Students = Globals.courseRepo.GetStudents(course.ID);
 
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
@@ -160,7 +157,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CourseViewModel courseView)
         {
-            Course courseDB = Globals.courseRepo.Get(courseView.ID);
+            Course courseDB = Globals.courseRepo.GetWithRelated(courseView.ID);
             courseDB.Title = courseView.Title;
             courseDB.StartDate = courseView.StartDate;
             courseDB.EndDate = courseView.EndDate;
@@ -183,8 +180,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 Globals.DbHundler.Save();
                 return RedirectToAction("Details", "Schools", new { id = courseDB.School.ID });
             }
-
-            courseDB.Students = Globals.courseRepo.GetStudents(courseDB.ID);
 
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
@@ -231,12 +226,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = Globals.courseRepo.Get(id);
+            Course course = Globals.courseRepo.GetWithRelated(id);
             if (course == null)
             {
                 return HttpNotFound();
             }
-            course.Students = Globals.courseRepo.GetStudents(course.ID);
             return View(course);
         }
 
@@ -256,8 +250,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (studentId == null || courseId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Course course = Globals.courseRepo.Get(courseId);
-            course.Students = Globals.courseRepo.GetStudents(course.ID);
+            Course course = Globals.courseRepo.GetWithRelated(courseId);
             Student courseStudent = Globals.studentRepo.Get(studentId);
             if (course == null ||courseStudent == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -271,7 +264,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 return RedirectToAction("Details", "Schools", new { id = course.School.ID });
             }
 
-            course.Students = Globals.courseRepo.GetStudents(course.ID);
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
