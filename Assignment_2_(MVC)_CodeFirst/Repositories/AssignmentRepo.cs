@@ -46,13 +46,19 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             this._context.Entry(obj).State = EntityState.Modified;
         }
         
-        public ICollection<Student> GetStudents(int id)
+        public Assignment GetWithRelated(int? id)
         {
-            return Globals.studentRepo.GetAll()
-                .Where(s => s.Assignments.Contains(this.Get(id)))
-                .ToList();
+            return this._context.Assignents
+                .Include(a => a.Students)
+                .FirstOrDefault(a => a.ID == id);
         }
 
+        public ICollection<Assignment> GetAllWithRelated()
+        {
+            return this._context.Assignents
+                .Include(a => a.Students)
+                .ToList();
+        }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

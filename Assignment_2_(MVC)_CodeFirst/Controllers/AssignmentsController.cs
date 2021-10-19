@@ -29,12 +29,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Assignment assignment = Globals.assignmentRepo.Get(id);
+            Assignment assignment = Globals.assignmentRepo.GetWithRelated(id);
             if (assignment == null)
             {
                 return HttpNotFound();
             }
-            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
             return View(assignment);
         }
 
@@ -110,15 +109,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Assignment assignment = Globals.assignmentRepo.Get(id);
+            Assignment assignment = Globals.assignmentRepo.GetWithRelated(id);
             if (assignment == null)
                 return HttpNotFound();
-
-            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignment.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
-
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
             foreach (Student student in Globals.studentRepo.GetAll())
             {
@@ -130,7 +126,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 if (!assignment.Students.Contains(student))
                     studentsSelectListItems.Add(selectList);
             }
-
             AssignmentViewModel assignmentView = new AssignmentViewModel()
             {
                 ID = assignment.ID,
@@ -143,7 +138,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 SchoolId = assignment.School.ID,
                 Schools = schools
             };
-
             return View(assignmentView);
         }
 
@@ -152,7 +146,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AssignmentViewModel assignmentView)
         {
-            Assignment assignmentDB = Globals.assignmentRepo.Get(assignmentView.ID);
+            Assignment assignmentDB = Globals.assignmentRepo.GetWithRelated(assignmentView.ID);
             assignmentDB.Title = assignmentView.Title;
             assignmentDB.StartDate = assignmentView.StartDate;
             assignmentDB.EndDate = assignmentView.EndDate;
@@ -167,19 +161,15 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                         assignmentDB.Students.Add(student);
                 }
             }
-
             if (ModelState.IsValid)
             {
                 Globals.assignmentRepo.Update(assignmentDB);
                 Globals.DbHundler.Save();
                 return RedirectToAction("Details", "Schools", new { id = assignmentDB.School.ID });
             }
-
-            assignmentDB.Students = Globals.assignmentRepo.GetStudents(assignmentDB.ID);
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignmentDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
-
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
             foreach (Student student in Globals.studentRepo.GetAll())
             {
@@ -191,7 +181,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 if (!assignmentDB.Students.Contains(student))
                     studentsSelectListItems.Add(selectList);
             }
-
             AssignmentViewModel assignmentView2 = new AssignmentViewModel()
             {
                 ID = assignmentDB.ID,
@@ -204,7 +193,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 SchoolId = assignmentDB.School.ID,
                 Schools = schools
             };
-
             return View(assignmentView2);
         }
 
@@ -228,8 +216,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Assignment assignment = Globals.assignmentRepo.Get(id);
-            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
+            Assignment assignment = Globals.assignmentRepo.GetWithRelated(id);
             Globals.assignmentRepo.Delete(assignment);
             Globals.DbHundler.Save();
             return RedirectToAction("Details", "Schools", new { id = assignment.School.ID });
@@ -240,8 +227,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (assignmentId == null || studentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Assignment assignment = Globals.assignmentRepo.Get(assignmentId);
-            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
+            Assignment assignment = Globals.assignmentRepo.GetWithRelated(assignmentId);
             Student assignmentStudent = Globals.studentRepo.Get(studentId);
             if (assignment == null || assignmentStudent == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
