@@ -11,13 +11,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public class StudentsController : ApiController, IMyController<IHttpActionResult, Student>
     {
+        [HttpPost]
         public IHttpActionResult Create(Student obj)
         {
             Globals.studentRepo.Add(obj);
             Globals.DbHundler.Save();
             return Ok(obj);
         }
-
+        [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
             var student = Globals.studentRepo.Get(id);
@@ -25,7 +26,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.DbHundler.Save();
             return Ok(student);
         }
-
+        [HttpGet]
         public IHttpActionResult Get(int id)
         {
             var student = Globals.studentRepo.Get(id);
@@ -33,7 +34,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             //student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
             return Ok(student);
         }
-
+        [HttpGet]
         public IHttpActionResult GetAll()
         {
             var students = Globals.studentRepo.GetAll();
@@ -44,7 +45,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             //}
             return Ok(students);
         }
-
+        [HttpPut]
         public IHttpActionResult Update(int id, Student obj)
         {
             var student = Globals.studentRepo.Get(id);

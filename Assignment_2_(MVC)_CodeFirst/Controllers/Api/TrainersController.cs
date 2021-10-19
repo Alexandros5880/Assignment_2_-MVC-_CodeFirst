@@ -11,13 +11,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public class TrainersController : ApiController, IMyController<IHttpActionResult, Trainer>
     {
+        [HttpPost]
         public IHttpActionResult Create(Trainer obj)
         {
             Globals.trainerRepo.Add(obj);
             Globals.DbHundler.Save();
             return Ok(obj);
         }
-
+        [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
             var trainer = Globals.trainerRepo.Get(id);
@@ -25,14 +26,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.DbHundler.Save();
             return Ok(trainer);
         }
-
+        [HttpGet]
         public IHttpActionResult Get(int id)
         {
             var trainer = Globals.trainerRepo.Get(id);
             //trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
             return Ok(trainer);
         }
-
+        [HttpGet]
         public IHttpActionResult GetAll()
         {
             var trainers = Globals.trainerRepo.GetAll();
@@ -42,7 +43,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             //}
             return Ok(trainers);
         }
-
+        [HttpPut]
         public IHttpActionResult Update(int id, Trainer obj)
         {
             var trainer = Globals.trainerRepo.Get(id);
