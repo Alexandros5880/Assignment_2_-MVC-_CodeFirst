@@ -34,6 +34,22 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            school.Courses = Globals.courseRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            school.Assignments = Globals.assignmentRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            school.Trainers = Globals.trainerRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            school.Students = Globals.studentRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
             return View(school);
         }
 
@@ -49,9 +65,13 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Create(SchoolViewModel schoolView)
         {
             School school = new School();
-            school.Name = schoolView.School.Name;
-            school.StartDate = schoolView.School.StartDate;
-
+            school.ID = schoolView.ID;
+            school.Name = schoolView.Name;
+            school.StartDate = schoolView.StartDate;
+            school.Courses = schoolView.Courses;
+            school.Assignments = schoolView.Assignments;
+            school.Trainers = schoolView.Trainers;
+            school.Students = schoolView.Students;
             if (ModelState.IsValid)
             {
                 Globals.schoolRepo.Add(school);
@@ -75,10 +95,25 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 return HttpNotFound();
             }
             SchoolViewModel schoolViewModel = new SchoolViewModel();
-            schoolViewModel.School = school;
-            schoolViewModel.Courses = school.Courses;
-            schoolViewModel.Trainers = school.Trainers;
-            schoolViewModel.Students = school.Students;
+            schoolViewModel.ID = school.ID;
+            schoolViewModel.Name = school.Name;
+            schoolViewModel.StartDate = school.StartDate;
+            schoolViewModel.Courses = Globals.courseRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            schoolViewModel.Assignments = Globals.assignmentRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            schoolViewModel.Trainers = Globals.trainerRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            schoolViewModel.Students = Globals.studentRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
             return View(schoolViewModel);
         }
 
@@ -87,20 +122,19 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Edit(SchoolViewModel schoolView)
         {
             School school = new School();
-            school.Name = schoolView.School.Name;
-            school.StartDate = schoolView.School.StartDate;
-            school.Courses = schoolView.School.Courses;
-            school.Assignments = schoolView.School.Assignments;
-            school.Trainers = schoolView.School.Trainers;
-            school.Students = schoolView.School.Students;
-
+            school.ID = schoolView.ID;
+            school.Name = schoolView.Name;
+            school.StartDate = schoolView.StartDate;
+            school.Courses = schoolView.Courses;
+            school.Assignments = schoolView.Assignments;
+            school.Trainers = schoolView.Trainers;
+            school.Students = schoolView.Students;
             if (ModelState.IsValid)
             {
                 Globals.schoolRepo.Update(school);
                 Globals.DbHundler.Save();
                 return RedirectToAction("Index");
             }
-
             return View(schoolView);
         }
 
@@ -116,6 +150,22 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            school.Courses = Globals.courseRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            school.Assignments = Globals.assignmentRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            school.Trainers = Globals.trainerRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
+            school.Students = Globals.studentRepo
+                .GetAll()
+                .Where(s => s.School.ID == school.ID)
+                .ToList();
             return View(school);
         }
 
@@ -126,7 +176,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             Globals.schoolRepo.Delete(Globals.schoolRepo.Get(id));
             Globals.DbHundler.Save();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Schools", new { id = id });
         }
 
         protected override void Dispose(bool disposing)

@@ -5,7 +5,7 @@ using Assignment_2__MVC__CodeFirst.CustomAnotations;
 
 namespace Assignment_2__MVC__CodeFirst.Models.Entities
 {
-    public class School
+    public class School : IMyEntities
     {
         public int ID { get; set; }
 

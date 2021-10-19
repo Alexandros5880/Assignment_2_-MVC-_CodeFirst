@@ -31,53 +31,17 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public School Get(int? id)
         {
-            return this._context.Schools.Include(s => s.Courses.Select(c => c.Students))
-                                        .Include(s => s.Trainers.Select(t => t.Courses))
-                                        .Include(s => s.Students.Select(st => st.Courses))
-                                        .FirstOrDefault(s => s.ID == id);
+            return this._context.Schools.FirstOrDefault(s => s.ID == id);
         }
 
         public IEnumerable<School> GetAll()
         {
-            return this._context.Schools.Include(s => s.Courses.Select(c => c.Students))
-                                        .Include(s => s.Trainers.Select(t => t.Courses))
-                                        .Include(s => s.Students.Select(st => st.Courses));
-        }
-
-        public IEnumerable<Course> GetAllCourses(int? id)
-        {
-            return this._context.Courses
-                            .Include(c => c.Students)
-                            .Where(c => c.School.ID == id);
+            return this._context.Schools;
         }
 
         public void Update(School obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;
-        }
-
-        public void AddCourse(int id, Course course)
-        {
-            School school = this._context.Schools
-                                .Include(s => s.Courses)
-                                .FirstOrDefault(s => s.ID == id);
-            school.Courses.Add(course);
-        }
-
-        public void AddTrainer(int id, Trainer trainer)
-        {
-            School school = this._context.Schools
-                                .Include(s => s.Trainers)
-                                .FirstOrDefault(s => s.ID == id);
-            school.Trainers.Add(trainer);
-        }
-
-        public void AddStudent(int id, Student student)
-        {
-            School school = this._context.Schools
-                                .Include(s => s.Students)
-                                .FirstOrDefault(s => s.ID == id);
-            school.Students.Add(student);
         }
 
         protected virtual void Dispose(bool disposing)

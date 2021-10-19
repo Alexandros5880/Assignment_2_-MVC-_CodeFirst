@@ -31,13 +31,13 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public Course Get(int? id)
         {
-            return this._context.Courses.Include(c => c.Students)
-                                 .FirstOrDefault(c => c.ID == id);
+            return this._context.Courses
+                    .FirstOrDefault(c => c.ID == id);
         }
 
         public IEnumerable<Course> GetAll()
         {
-            return this._context.Courses.Include(c => c.Students);
+            return this._context.Courses;
         }
 
         public void Update(Course obj)

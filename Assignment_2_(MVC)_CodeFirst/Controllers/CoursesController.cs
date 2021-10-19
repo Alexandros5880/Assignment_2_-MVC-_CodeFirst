@@ -33,6 +33,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            course.Students = Globals.studentRepo.GetAll()
+                .Where(s => s.Courses.Contains(course))
+                .ToList();
             return View(course);
         }
 
@@ -114,6 +117,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (course == null)
                 return HttpNotFound();
 
+            course.Students = Globals.studentRepo.GetAll()
+                .Where(s => s.Courses.Contains(course))
+                .ToList();
+
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
@@ -181,6 +188,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 return RedirectToAction("Details", "Schools", new { id = courseDB.School.ID });
             }
 
+            courseDB.Students = Globals.studentRepo.GetAll()
+                .Where(s => s.Courses.Contains(courseDB))
+                .ToList();
+
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
@@ -231,6 +242,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            course.Students = Globals.studentRepo.GetAll()
+                .Where(s => s.Courses.Contains(course))
+                .ToList();
             return View(course);
         }
 
