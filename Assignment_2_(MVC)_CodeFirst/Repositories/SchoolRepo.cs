@@ -32,7 +32,8 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public School Get(int? id)
         {
-            return this._context.Schools.FirstOrDefault(s => s.ID == id);
+            return this._context.Schools
+                .FirstOrDefault(s => s.ID == id);
         }
 
         public IEnumerable<School> GetAll()

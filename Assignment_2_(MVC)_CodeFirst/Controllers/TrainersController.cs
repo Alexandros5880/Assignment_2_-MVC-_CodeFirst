@@ -34,6 +34,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
             return View(trainer);
         }
 
@@ -110,6 +111,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (trainer == null)
                 return HttpNotFound();
 
+            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
+
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == trainer.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
@@ -170,6 +173,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 return RedirectToAction("Details", "Schools", new { id = trainerDB.School.ID });
             }
 
+            trainerDB.Courses = Globals.trainerRepo.GetCourses(trainerDB.ID);
+
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == trainerDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
@@ -214,6 +219,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
             return View(trainer);
         }
 
@@ -234,6 +240,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (trainerId == null || courseId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Trainer trainer = Globals.trainerRepo.Get(trainerId);
+            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
             Course trainerCourse = Globals.courseRepo.Get(courseId);
             if (trainer == null || trainerCourse == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

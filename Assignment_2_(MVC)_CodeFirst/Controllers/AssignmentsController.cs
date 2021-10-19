@@ -241,6 +241,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (assignmentId == null || studentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Assignment assignment = Globals.assignmentRepo.Get(assignmentId);
+            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
             Student assignmentStudent = Globals.studentRepo.Get(studentId);
             if (assignment == null || assignmentStudent == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

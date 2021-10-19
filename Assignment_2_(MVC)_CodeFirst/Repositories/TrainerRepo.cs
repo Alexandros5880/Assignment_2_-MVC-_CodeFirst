@@ -1,5 +1,6 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -31,18 +32,25 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public Trainer Get(int? id)
         {
-            return this._context.Trainers.Include(t => t.Courses)
-                                         .FirstOrDefault(t => t.ID == id);
+            return this._context.Trainers
+                .FirstOrDefault(t => t.ID == id);
         }
 
         public IEnumerable<Trainer> GetAll()
         {
-            return this._context.Trainers.Include(t => t.Courses);
+            return this._context.Trainers;
         }
 
         public void Update(Trainer obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;
+        }
+
+        public ICollection<Course> GetCourses(int id)
+        {
+            return Globals.courseRepo.GetAll()
+                .Where(c => c.Trainer.ID == id)
+                .ToList();
         }
 
         protected virtual void Dispose(bool disposing)

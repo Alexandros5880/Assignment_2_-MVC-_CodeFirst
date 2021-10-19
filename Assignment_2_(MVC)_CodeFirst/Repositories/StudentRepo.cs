@@ -32,14 +32,12 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public Student Get(int? id)
         {
             return this._context.Students
-                                .Include(s => s.Courses)
-                                .Include(s => s.Assignments)
-                                .FirstOrDefault(s => s.ID == id);
+                .FirstOrDefault(s => s.ID == id);
         }
 
         public IEnumerable<Student> GetAll()
         {
-            return this._context.Students.Include(s => s.Courses);
+            return this._context.Students;
         }
 
         public void Update(Student obj)
