@@ -65,35 +65,65 @@
                         <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
                         <td>
                             @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
-                            <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);" style="float: right;"><a>Remove</a></div>
+                            <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeCourseFromStudent(studentId, courseId) {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "/Students/RemoveCourse",
-                                        data: JSON.stringify(
-                                            {
-                                                "studentId": studentId,
-                                                "courseId": courseId
-                                            }
-                                        ),
-                                        contentType: "application/json; charset=utf-8",
-                                        dataType: "json",
-                                        success: function (response) {
-                                            if (response != null) {
-                                                alert("Course Removed.");
-                                            } else {
-                                                alert("Something went wrong");
-                                            }
-                                            location.reload();
-                                        },
-                                        failure: function (response) {
-                                            location.reload();
-                                        },
-                                        error: function (response) {
-                                            location.reload();
+
+                                    bootbox.confirm("Are you sure you want to delete?", function (result) {
+                                        if (result) {
+                                            $.ajax({
+                                                url: "/Students/RemoveCourse",
+                                                type: "post",
+                                                data: JSON.stringify(
+                                                    {
+                                                        "studentId": studentId,
+                                                        "courseId": courseId
+                                                    }
+                                                ),
+                                                success: function (data, textStatus, jqXHR) {
+                                                    var parent = $("div[data-id=`" + studentId + "`]").parent;
+                                                    console.log(parent);
+                                                },
+                                                error: function (jqXHR, textStatus, errorThrown) {
+
+                                                }
+                                            });
+                                            //.done(function (data) {
+
+                                            //}).fail(function (error) {
+                                            //    var parent = $("div[data-id=`" + studentId + "`]").parent;
+                                            //    console.log(parent);
+                                            //});
                                         }
                                     });
+
+
+                                    //$.ajax({
+                                    //    type: "POST",
+                                    //    url: "/Students/RemoveCourse",
+                                    //    data: JSON.stringify(
+                                    //        {
+                                    //            "studentId": studentId,
+                                    //            "courseId": courseId
+                                    //        }
+                                    //    ),
+                                    //    contentType: "application/json; charset=utf-8",
+                                    //    dataType: "json",
+                                    //    success: function (response) {
+                                    //        if (response != null) {
+                                    //            alert("Course Removed.");
+                                    //        } else {
+                                    //            alert("Something went wrong");
+                                    //        }
+                                    //        location.reload();
+                                    //    },
+                                    //    failure: function (response) {
+                                    //        location.reload();
+                                    //    },
+                                    //    error: function (response) {
+                                    //        location.reload();
+                                    //    }
+                                    //});
                                 };
                             </script>
                         </td>
@@ -117,12 +147,10 @@
                         <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
                         <td>
                             @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
-                            <div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);" style="float: right;"><a>Remove</a></div>
-                            <button class="btn-link js-delete" onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);">Delete</button>
+                            @*<div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID); return false;" style="float: right;"><a>Remove</a></div>*@
+                            <button class="btn-link js-delete" onclick="return removeAssignmentFromStudent(@Model.ID, @a.ID);">Delete</button>
                             <script type="text/javascript">
                                 function removeAssignmentFromStudent(studentId, assignmentId) {
-
-
                                     var button = $(this);
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
@@ -139,39 +167,12 @@
                                                 dataType: "json"
                                             }).done(function (data) {
                                                 console.log(data);
+                                                return false;
                                             }).fail(function (error) {
                                                 console.log(error);
                                             });
                                         }
                                     });
-
-
-                                    //$.ajax({
-                                    //    type: "POST",
-                                    //    url: "/Students/RemoveAssignment",
-                                    //    data: JSON.stringify(
-                                    //        {
-                                    //            "studentId": studentId,
-                                    //            "assignmentId": assignmentId
-                                    //        }
-                                    //    ),
-                                    //    contentType: "application/json; charset=utf-8",
-                                    //    dataType: "json",
-                                    //    success: function (response) {
-                                    //        if (response != null) {
-                                    //            alert("Course Removed.");
-                                    //        } else {
-                                    //            alert("Something went wrong");
-                                    //        }
-                                    //        location.reload();
-                                    //    },
-                                    //    failure: function (response) {
-                                    //        location.reload();
-                                    //    },
-                                    //    error: function (response) {
-                                    //        location.reload();
-                                    //    }
-                                    //});
                                 };
                             </script>
                         </td>

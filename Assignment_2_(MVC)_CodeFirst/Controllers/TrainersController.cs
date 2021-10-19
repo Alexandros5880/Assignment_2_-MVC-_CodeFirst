@@ -29,7 +29,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trainer trainer = Globals.trainerRepo.GetWithRelated(id);
+            Trainer trainer = Globals.trainerRepo.Get(id);
             if (trainer == null)
             {
                 return HttpNotFound();
@@ -106,7 +106,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Trainer trainer = Globals.trainerRepo.GetWithRelated(id);
+            Trainer trainer = Globals.trainerRepo.Get(id);
             if (trainer == null)
                 return HttpNotFound();
 
@@ -148,7 +148,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Edit(TrainerViewModel trainerView)
         {
             Trainer trainerDB = Globals.trainerRepo
-                .GetWithRelated(trainerView.ID);
+                .Get(trainerView.ID);
             trainerDB.FirstName = trainerView.FirstName;
             trainerDB.LastName = trainerView.LastName;
             trainerDB.StartDate = trainerView.StartDate;
@@ -212,7 +212,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trainer trainer = Globals.trainerRepo.GetWithRelated(id);
+            Trainer trainer = Globals.trainerRepo.Get(id);
             if (trainer == null)
             {
                 return HttpNotFound();
@@ -237,7 +237,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (trainerId == null || courseId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Trainer trainer = Globals.trainerRepo.GetWithRelated(trainerId);
+            Trainer trainer = Globals.trainerRepo.Get(trainerId);
             Course trainerCourse = Globals.courseRepo.Get(courseId);
             if (trainer == null || trainerCourse == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

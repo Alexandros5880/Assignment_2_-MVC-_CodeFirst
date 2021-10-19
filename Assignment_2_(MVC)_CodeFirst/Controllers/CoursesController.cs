@@ -28,7 +28,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = Globals.courseRepo.GetWithRelated(id);
+            Course course = Globals.courseRepo.Get(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -110,7 +110,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Course course = Globals.courseRepo.GetWithRelated(id);
+            Course course = Globals.courseRepo.Get(id);
             if (course == null)
                 return HttpNotFound();
 
@@ -157,7 +157,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CourseViewModel courseView)
         {
-            Course courseDB = Globals.courseRepo.GetWithRelated(courseView.ID);
+            Course courseDB = Globals.courseRepo.Get(courseView.ID);
             courseDB.Title = courseView.Title;
             courseDB.StartDate = courseView.StartDate;
             courseDB.EndDate = courseView.EndDate;
@@ -226,7 +226,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = Globals.courseRepo.GetWithRelated(id);
+            Course course = Globals.courseRepo.Get(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -250,7 +250,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (studentId == null || courseId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Course course = Globals.courseRepo.GetWithRelated(courseId);
+            Course course = Globals.courseRepo.Get(courseId);
             Student courseStudent = Globals.studentRepo.Get(studentId);
             if (course == null ||courseStudent == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

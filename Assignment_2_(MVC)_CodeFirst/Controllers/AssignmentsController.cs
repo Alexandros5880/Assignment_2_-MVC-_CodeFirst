@@ -29,7 +29,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Assignment assignment = Globals.assignmentRepo.GetWithRelated(id);
+            Assignment assignment = Globals.assignmentRepo.Get(id);
             if (assignment == null)
             {
                 return HttpNotFound();
@@ -109,7 +109,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Assignment assignment = Globals.assignmentRepo.GetWithRelated(id);
+            Assignment assignment = Globals.assignmentRepo.Get(id);
             if (assignment == null)
                 return HttpNotFound();
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
@@ -146,7 +146,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AssignmentViewModel assignmentView)
         {
-            Assignment assignmentDB = Globals.assignmentRepo.GetWithRelated(assignmentView.ID);
+            Assignment assignmentDB = Globals.assignmentRepo.Get(assignmentView.ID);
             assignmentDB.Title = assignmentView.Title;
             assignmentDB.StartDate = assignmentView.StartDate;
             assignmentDB.EndDate = assignmentView.EndDate;
@@ -216,7 +216,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Assignment assignment = Globals.assignmentRepo.GetWithRelated(id);
+            Assignment assignment = Globals.assignmentRepo.Get(id);
             Globals.assignmentRepo.Delete(assignment);
             Globals.DbHundler.Save();
             return RedirectToAction("Details", "Schools", new { id = assignment.School.ID });
@@ -227,7 +227,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (assignmentId == null || studentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Assignment assignment = Globals.assignmentRepo.GetWithRelated(assignmentId);
+            Assignment assignment = Globals.assignmentRepo.Get(assignmentId);
             Student assignmentStudent = Globals.studentRepo.Get(studentId);
             if (assignment == null || assignmentStudent == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

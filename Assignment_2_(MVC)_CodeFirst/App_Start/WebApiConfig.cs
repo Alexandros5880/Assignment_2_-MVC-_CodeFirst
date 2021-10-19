@@ -23,6 +23,9 @@ namespace Assignment_2__MVC__CodeFirst.App_Start
             var settings = config.Formatters.JsonFormatter.SerializerSettings;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Formatting = Formatting.Indented;
+
+            // Ignore reference looping
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         }
     }
 }

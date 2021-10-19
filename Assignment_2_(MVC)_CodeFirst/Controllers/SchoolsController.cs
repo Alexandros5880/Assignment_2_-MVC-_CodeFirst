@@ -29,7 +29,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.GetWithRelated(id);
+            School school = Globals.schoolRepo.Get(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -73,7 +73,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.GetWithRelated(id);
+            School school = Globals.schoolRepo.Get(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -113,7 +113,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.GetWithRelated(id);
+            School school = Globals.schoolRepo.Get(id);
             if (school == null)
             {
                 return HttpNotFound();

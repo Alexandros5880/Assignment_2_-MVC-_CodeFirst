@@ -33,12 +33,20 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public School Get(int? id)
         {
             return this._context.Schools
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments)
+                .Include(s => s.Trainers)
+                .Include(s => s.Students)
                 .FirstOrDefault(s => s.ID == id);
         }
 
         public IEnumerable<School> GetAll()
         {
-            return this._context.Schools;
+            return this._context.Schools
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments)
+                .Include(s => s.Trainers)
+                .Include(s => s.Students);
         }
 
         public void Update(School obj)
@@ -46,24 +54,24 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             this._context.Entry(obj).State = EntityState.Modified;
         }
 
-        public School GetWithRelated(int? id)
-        {
-            return this._context.Schools
-                .Include(s => s.Courses)
-                .Include(s => s.Assignments)
-                .Include(s => s.Trainers)
-                .Include(s => s.Students)
-                .FirstOrDefault(s => s.ID == id);
-        }
-        public ICollection<School> GetAllWithRelated()
-        {
-            return this._context.Schools
-                .Include(s => s.Courses)
-                .Include(s => s.Assignments)
-                .Include(s => s.Trainers)
-                .Include(s => s.Students)
-                .ToList();
-        }
+        //public School GetWithRelated(int? id)
+        //{
+        //    return this._context.Schools
+        //        .Include(s => s.Courses)
+        //        .Include(s => s.Assignments)
+        //        .Include(s => s.Trainers)
+        //        .Include(s => s.Students)
+        //        .FirstOrDefault(s => s.ID == id);
+        //}
+        //public ICollection<School> GetAllWithRelated()
+        //{
+        //    return this._context.Schools
+        //        .Include(s => s.Courses)
+        //        .Include(s => s.Assignments)
+        //        .Include(s => s.Trainers)
+        //        .Include(s => s.Students)
+        //        .ToList();
+        //}
 
         protected virtual void Dispose(bool disposing)
         {
