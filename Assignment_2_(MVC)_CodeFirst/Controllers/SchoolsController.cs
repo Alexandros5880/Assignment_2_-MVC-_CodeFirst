@@ -29,15 +29,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
+            School school = Globals.schoolRepo.GetWithRelated(id);
             if (school == null)
             {
                 return HttpNotFound();
             }
-            school.Courses = Globals.schoolRepo.GetCourses(school.ID);
-            school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
-            school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
-            school.Students = Globals.schoolRepo.GetStudents(school.ID);
             return View(school);
         }
 
@@ -77,7 +73,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
+            School school = Globals.schoolRepo.GetWithRelated(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -86,10 +82,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             schoolViewModel.ID = school.ID;
             schoolViewModel.Name = school.Name;
             schoolViewModel.StartDate = school.StartDate;
-            schoolViewModel.Courses = Globals.schoolRepo.GetCourses(school.ID);
-            schoolViewModel.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
-            schoolViewModel.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
-            schoolViewModel.Students = Globals.schoolRepo.GetStudents(school.ID);
             return View(schoolViewModel);
         }
 
@@ -121,15 +113,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
+            School school = Globals.schoolRepo.GetWithRelated(id);
             if (school == null)
             {
                 return HttpNotFound();
             }
-            school.Courses = Globals.schoolRepo.GetCourses(school.ID);
-            school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
-            school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
-            school.Students = Globals.schoolRepo.GetStudents(school.ID);
             return View(school);
         }
 

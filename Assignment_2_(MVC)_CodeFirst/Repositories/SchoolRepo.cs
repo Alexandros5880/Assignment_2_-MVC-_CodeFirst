@@ -46,31 +46,22 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             this._context.Entry(obj).State = EntityState.Modified;
         }
 
-        public ICollection<Course> GetCourses(int id)
+        public School GetWithRelated(int? id)
         {
-            return Globals.courseRepo.GetAll()
-                .Where(c => c.School.ID == id)
-                .ToList();
+            return this._context.Schools
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments)
+                .Include(s => s.Trainers)
+                .Include(s => s.Students)
+                .FirstOrDefault(s => s.ID == id);
         }
-
-        public ICollection<Assignment> GetAssignments(int id)
+        public ICollection<School> GetAllWithRelated()
         {
-            return Globals.assignmentRepo.GetAll()
-                .Where(a => a.School.ID == id)
-                .ToList();
-        }
-
-        public ICollection<Trainer> GetTrainers(int id)
-        {
-            return Globals.trainerRepo.GetAll()
-                .Where(t => t.School.ID == id)
-                .ToList();
-        }
-
-        public ICollection<Student> GetStudents(int id)
-        {
-            return Globals.studentRepo.GetAll()
-                .Where(s => s.School.ID == id)
+            return this._context.Schools
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments)
+                .Include(s => s.Trainers)
+                .Include(s => s.Students)
                 .ToList();
         }
 
