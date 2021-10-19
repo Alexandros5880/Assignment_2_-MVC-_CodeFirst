@@ -1,4 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +13,50 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
     {
         public IHttpActionResult Create(Student obj)
         {
-            throw new NotImplementedException();
+            Globals.studentRepo.Add(obj);
+            Globals.DbHundler.Save();
+            return Ok(obj);
         }
 
         public IHttpActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            var student = Globals.studentRepo.Get(id);
+            Globals.studentRepo.Delete(student);
+            Globals.DbHundler.Save();
+            return Ok(student);
         }
 
         public IHttpActionResult Get(int id)
         {
-            throw new NotImplementedException();
+            var student = Globals.studentRepo.Get(id);
+            //student.Courses = Globals.studentRepo.GetCourses(student.ID);
+            //student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
+            return Ok(student);
         }
 
         public IHttpActionResult GetAll()
         {
-            throw new NotImplementedException();
+            var students = Globals.studentRepo.GetAll();
+            //foreach(var student in students)
+            //{
+            //    student.Courses = Globals.studentRepo.GetCourses(student.ID);
+            //    student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
+            //}
+            return Ok(students);
         }
 
         public IHttpActionResult Update(int id, Student obj)
         {
-            throw new NotImplementedException();
+            var student = Globals.studentRepo.Get(id);
+            student.FirstName = obj.FirstName;
+            student.LastName = obj.LastName;
+            student.StartDate = obj.StartDate;
+            student.School = obj.School;
+            student.Courses = obj.Courses;
+            student.Assignments = obj.Assignments;
+            Globals.studentRepo.Update(student);
+            Globals.DbHundler.Save();
+            return Ok(student);
         }
     }
 }
