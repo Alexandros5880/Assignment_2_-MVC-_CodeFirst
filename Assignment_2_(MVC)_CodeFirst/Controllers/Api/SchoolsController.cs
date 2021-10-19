@@ -22,9 +22,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            Globals.schoolRepo.Delete(Globals.schoolRepo.Get(id));
+            var school = Globals.schoolRepo.Get(id);
+            Globals.schoolRepo.Delete(school);
             Globals.DbHundler.Save();
-            return Ok();
+            return Ok(school);
         }
 
         [HttpGet]

@@ -20,9 +20,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 
         public IHttpActionResult Delete(int id)
         {
-            Globals.courseRepo.Delete(Globals.courseRepo.Get(id));
+            var course = Globals.courseRepo.Get(id);
+            Globals.courseRepo.Delete(course);
             Globals.DbHundler.Save();
-            return Ok();
+            return Ok(course);
         }
 
         public IHttpActionResult Get(int id)
