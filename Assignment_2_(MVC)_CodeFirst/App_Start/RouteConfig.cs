@@ -16,7 +16,11 @@ namespace Assignment_2__MVC__CodeFirst
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Schools", action = "Index", id = UrlParameter.Optional }
+                defaults: new { 
+                    controller = "Schools", 
+                    action = "Index", 
+                    id = UrlParameter.Optional 
+                }
             );
         }
     }

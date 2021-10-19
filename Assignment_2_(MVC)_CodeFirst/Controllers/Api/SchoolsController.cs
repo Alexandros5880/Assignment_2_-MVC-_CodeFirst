@@ -32,6 +32,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             School school = Globals.schoolRepo.Get(id);
             if (school == null) return NotFound();
+            //school.Courses = Globals.schoolRepo.GetCourses(school.ID);
+            //school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
+            //school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
+            //school.Students = Globals.schoolRepo.GetStudents(school.ID);
             return Ok(school);
         }
 
@@ -39,6 +43,13 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         public IHttpActionResult GetAll()
         {
             var schools = Globals.schoolRepo.GetAll();
+            //foreach (School school in schools)
+            //{
+            //    school.Courses = Globals.schoolRepo.GetCourses(school.ID);
+            //    school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
+            //    school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
+            //    school.Students = Globals.schoolRepo.GetStudents(school.ID);
+            //}
             return Ok(schools);
         }
 
@@ -48,10 +59,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             var schoolDB = Globals.schoolRepo.Get(id);
             schoolDB.Name = obj.Name;
             schoolDB.StartDate = obj.StartDate;
-            schoolDB.Courses = obj.Courses;
-            schoolDB.Assignments = obj.Assignments;
-            schoolDB.Trainers = obj.Trainers;
-            schoolDB.Students = obj.Students;
+            //schoolDB.Courses = obj.Courses;
+            //schoolDB.Assignments = obj.Assignments;
+            //schoolDB.Trainers = obj.Trainers;
+            //schoolDB.Students = obj.Students;
             Globals.schoolRepo.Update(schoolDB);
             Globals.DbHundler.Save();
             return Ok(schoolDB);
