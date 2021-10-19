@@ -172,7 +172,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 Globals.assignmentRepo.Update(assignmentDB);
                 Globals.DbHundler.Save();
-                return RedirectToAction("Details", "Schools", new { id = assignmentDB });
+                return RedirectToAction("Details", "Schools", new { id = assignmentDB.School.ID });
             }
 
             assignmentDB.Students = Globals.assignmentRepo.GetStudents(assignmentDB.ID);
@@ -232,7 +232,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
             Globals.assignmentRepo.Delete(assignment);
             Globals.DbHundler.Save();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Schools", new { id = assignment.School.ID });
         }
 
         [HttpPost]

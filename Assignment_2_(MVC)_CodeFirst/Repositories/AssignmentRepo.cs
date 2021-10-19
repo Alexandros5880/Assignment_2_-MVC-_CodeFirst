@@ -48,9 +48,8 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         
         public ICollection<Student> GetStudents(int id)
         {
-            var assignment = Globals.assignmentRepo.Get(id);
             return Globals.studentRepo.GetAll()
-                .Where(s => s.Assignments.Contains(assignment))
+                .Where(s => s.Assignments.Contains(this.Get(id)))
                 .ToList();
         }
 
