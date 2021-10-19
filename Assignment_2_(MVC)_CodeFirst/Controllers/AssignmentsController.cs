@@ -34,6 +34,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
+            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
             return View(assignment);
         }
 
@@ -113,6 +114,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (assignment == null)
                 return HttpNotFound();
 
+            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignment.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
@@ -173,6 +175,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 return RedirectToAction("Details", "Schools", new { id = assignmentDB });
             }
 
+            assignmentDB.Students = Globals.assignmentRepo.GetStudents(assignmentDB.ID);
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignmentDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
@@ -226,13 +229,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Assignment assignment = Globals.assignmentRepo.Get(id);
+            assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
             Globals.assignmentRepo.Delete(assignment);
             Globals.DbHundler.Save();
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public ActionResult RemoveCourse(int? assignmentId, int? studentId)
+        public ActionResult RemoveStudent(int? assignmentId, int? studentId)
         {
             if (assignmentId == null || studentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

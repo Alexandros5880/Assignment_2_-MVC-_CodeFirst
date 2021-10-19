@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System;
+using Assignment_2__MVC__CodeFirst.Static;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
@@ -42,6 +43,34 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public void Update(School obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;
+        }
+
+        public ICollection<Course> GetCourses(int id)
+        {
+            return Globals.courseRepo.GetAll()
+                .Where(c => c.School.ID == id)
+                .ToList();
+        }
+
+        public ICollection<Assignment> GetAssignments(int id)
+        {
+            return Globals.assignmentRepo.GetAll()
+                .Where(a => a.School.ID == id)
+                .ToList();
+        }
+
+        public ICollection<Trainer> GetTrainers(int id)
+        {
+            return Globals.trainerRepo.GetAll()
+                .Where(t => t.School.ID == id)
+                .ToList();
+        }
+
+        public ICollection<Student> GetStudents(int id)
+        {
+            return Globals.studentRepo.GetAll()
+                .Where(s => s.School.ID == id)
+                .ToList();
         }
 
         protected virtual void Dispose(bool disposing)

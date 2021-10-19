@@ -1,5 +1,6 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -32,19 +33,25 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public Assignment Get(int? id)
         {
             return this._context.Assignents
-                        .Include(a => a.Students)
                         .FirstOrDefault(a => a.ID == id);
         }
 
         public IEnumerable<Assignment> GetAll()
         {
-            return this._context.Assignents
-                       .Include(a => a.Students);
+            return this._context.Assignents;
         }
 
         public void Update(Assignment obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;
+        }
+        
+        public ICollection<Student> GetStudents(int id)
+        {
+            var assignment = Globals.assignmentRepo.Get(id);
+            return Globals.studentRepo.GetAll()
+                .Where(s => s.Assignments.Contains(assignment))
+                .ToList();
         }
 
         protected virtual void Dispose(bool disposing)

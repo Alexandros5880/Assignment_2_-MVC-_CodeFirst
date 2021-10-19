@@ -34,22 +34,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
-            school.Courses = Globals.courseRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            school.Assignments = Globals.assignmentRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            school.Trainers = Globals.trainerRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            school.Students = Globals.studentRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
+            school.Courses = Globals.schoolRepo.GetCourses(school.ID);
+            school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
+            school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
+            school.Students = Globals.schoolRepo.GetStudents(school.ID);
             return View(school);
         }
 
@@ -98,22 +86,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             schoolViewModel.ID = school.ID;
             schoolViewModel.Name = school.Name;
             schoolViewModel.StartDate = school.StartDate;
-            schoolViewModel.Courses = Globals.courseRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            schoolViewModel.Assignments = Globals.assignmentRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            schoolViewModel.Trainers = Globals.trainerRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            schoolViewModel.Students = Globals.studentRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
+            schoolViewModel.Courses = Globals.schoolRepo.GetCourses(school.ID);
+            schoolViewModel.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
+            schoolViewModel.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
+            schoolViewModel.Students = Globals.schoolRepo.GetStudents(school.ID);
             return View(schoolViewModel);
         }
 
@@ -150,22 +126,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return HttpNotFound();
             }
-            school.Courses = Globals.courseRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            school.Assignments = Globals.assignmentRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            school.Trainers = Globals.trainerRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
-            school.Students = Globals.studentRepo
-                .GetAll()
-                .Where(s => s.School.ID == school.ID)
-                .ToList();
+            school.Courses = Globals.schoolRepo.GetCourses(school.ID);
+            school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
+            school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
+            school.Students = Globals.schoolRepo.GetStudents(school.ID);
             return View(school);
         }
 
