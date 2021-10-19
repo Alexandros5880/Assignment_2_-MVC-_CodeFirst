@@ -46,17 +46,19 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             this._context.Entry(obj).State = EntityState.Modified;
         }
 
-        public ICollection<Course> GetCourses(int id)
+        public Student GetWithRelated(int? id)
         {
-            return Globals.courseRepo.GetAll()
-                .Where(c => c.Students.Contains(this.Get(id)))
-                .ToList();
+            return this._context.Students
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments)
+                .FirstOrDefault(s => s.ID == id);
         }
 
-        public ICollection<Assignment> GetAssignments(int id)
+        public ICollection<Student> GetAllWithRelated()
         {
-            return Globals.assignmentRepo.GetAll()
-                .Where(a => a.Students.Contains(this.Get(id)))
+            return this._context.Students
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments)
                 .ToList();
         }
 

@@ -28,13 +28,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = Globals.studentRepo.Get(id);
+            Student student = Globals.studentRepo.GetWithRelated(id);
             if (student == null)
             {
                 return HttpNotFound();
             }
-            student.Courses = Globals.studentRepo.GetCourses(student.ID);
-            student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
             return View(student);
         }
 
@@ -62,7 +60,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 };
                 assignmentSelectListItems.Add(selectList);
             }
-
             StudentViewModel studentView = new StudentViewModel()
             {
                 SelectedCourses = new List<int>(),
@@ -140,12 +137,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Student student = Globals.studentRepo.Get(id);
+            Student student = Globals.studentRepo.GetWithRelated(id);
             if (student == null)
                 return HttpNotFound();
-
-            student.Courses = Globals.studentRepo.GetCourses(student.ID);
-            student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
 
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == student.ID);
@@ -198,7 +192,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentViewModel studentView)
         {
-            Student studentDB = Globals.studentRepo.Get(studentView.ID);
+            Student studentDB = Globals.studentRepo.GetWithRelated(studentView.ID);
             studentDB.FirstName = studentView.FirstName;
             studentDB.LastName = studentView.LastName;
             studentDB.StartDate = studentView.StartDate;
@@ -228,11 +222,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 Globals.studentRepo.Update(studentDB);
                 Globals.DbHundler.Save();
-                return RedirectToAction("Details", "Schools", new { id = studentDB.School.ID });
+                return RedirectToAction("Details", "Schools", 
+                    new { id = studentDB.School.ID });
             }
-
-            studentDB.Courses = Globals.studentRepo.GetCourses(studentDB.ID);
-            studentDB.Assignments = Globals.studentRepo.GetAssignments(studentDB.ID);
 
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == studentDB.ID);
@@ -287,13 +279,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = Globals.studentRepo.Get(id);
+            Student student = Globals.studentRepo.GetWithRelated(id);
             if (student == null)
             {
                 return HttpNotFound();
             }
-            student.Courses = Globals.studentRepo.GetCourses(student.ID);
-            student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
             return View(student);
         }
 
@@ -305,7 +295,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             Student student = Globals.studentRepo.Get(id);
             Globals.studentRepo.Delete(student);
             Globals.DbHundler.Save();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Schools",
+                    new { id = student.School.ID });
         }
 
         [HttpPost]
@@ -313,9 +304,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (studentId == null || courseId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Student student = Globals.studentRepo.Get(studentId);
-            student.Courses = Globals.studentRepo.GetCourses(student.ID);
-            student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
+            Student student = Globals.studentRepo.GetWithRelated(studentId);
             Course studentCourse = Globals.courseRepo.Get(courseId);
             if (student == null || studentCourse == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -380,9 +369,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (studentId == null || assignmentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Student student = Globals.studentRepo.Get(studentId);
-            student.Courses = Globals.studentRepo.GetCourses(student.ID);
-            student.Assignments = Globals.studentRepo.GetAssignments(student.ID);
+            Student student = Globals.studentRepo.GetWithRelated(studentId);
             Assignment studentAssignment = Globals.assignmentRepo.Get(assignmentId);
             if (student == null || studentAssignment == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

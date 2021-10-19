@@ -23,7 +23,7 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         [DateBigger(AddMonths = 1, ErrorMessage = "Date must be smaller than date")]
         public DateTime EndDate { get; set; }
 
-        public ICollection<Student> Students { get; set; }
+        public ICollection<Student> Students { get; set; } = new List<Student>();
 
         [Required]
         public School School { get; set; }

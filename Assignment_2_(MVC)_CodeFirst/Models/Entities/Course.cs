@@ -29,7 +29,7 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         [Required]
         public Trainer Trainer { get; set; }
 
-        public ICollection<Student> Students { get; set; }
+        public ICollection<Student> Students { get; set; } = new List<Student>();
 
     }
 }

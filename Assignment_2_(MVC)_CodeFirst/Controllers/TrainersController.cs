@@ -29,12 +29,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trainer trainer = Globals.trainerRepo.Get(id);
+            Trainer trainer = Globals.trainerRepo.GetWithRelated(id);
             if (trainer == null)
             {
                 return HttpNotFound();
             }
-            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
             return View(trainer);
         }
 
@@ -107,11 +106,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Trainer trainer = Globals.trainerRepo.Get(id);
+            Trainer trainer = Globals.trainerRepo.GetWithRelated(id);
             if (trainer == null)
                 return HttpNotFound();
-
-            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
 
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == trainer.ID);
@@ -150,11 +147,13 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(TrainerViewModel trainerView)
         {
-            Trainer trainerDB = Globals.trainerRepo.Get(trainerView.ID);
+            Trainer trainerDB = Globals.trainerRepo
+                .GetWithRelated(trainerView.ID);
             trainerDB.FirstName = trainerView.FirstName;
             trainerDB.LastName = trainerView.LastName;
             trainerDB.StartDate = trainerView.StartDate;
-            trainerDB.School = Globals.schoolRepo.Get(trainerView.SchoolId);
+            trainerDB.School = Globals.schoolRepo
+                .Get(trainerView.SchoolId);
             if (trainerView.SelectedCourses != null)
             {
                 var courses = Globals.courseRepo.GetAll();
@@ -170,10 +169,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 Globals.trainerRepo.Update(trainerDB);
                 Globals.DbHundler.Save();
-                return RedirectToAction("Details", "Schools", new { id = trainerDB.School.ID });
+                return RedirectToAction("Details", "Schools", 
+                    new { id = trainerDB.School.ID });
             }
-
-            trainerDB.Courses = Globals.trainerRepo.GetCourses(trainerDB.ID);
 
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == trainerDB.ID);
@@ -214,12 +212,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trainer trainer = Globals.trainerRepo.Get(id);
+            Trainer trainer = Globals.trainerRepo.GetWithRelated(id);
             if (trainer == null)
             {
                 return HttpNotFound();
             }
-            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
             return View(trainer);
         }
 
@@ -231,7 +228,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             Trainer trainer = Globals.trainerRepo.Get(id);
             Globals.trainerRepo.Delete(trainer);
             Globals.DbHundler.Save();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Schools",
+                    new { id = trainer.School.ID });
         }
 
         [HttpPost]
@@ -239,8 +237,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (trainerId == null || courseId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Trainer trainer = Globals.trainerRepo.Get(trainerId);
-            trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
+            Trainer trainer = Globals.trainerRepo.GetWithRelated(trainerId);
             Course trainerCourse = Globals.courseRepo.Get(courseId);
             if (trainer == null || trainerCourse == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

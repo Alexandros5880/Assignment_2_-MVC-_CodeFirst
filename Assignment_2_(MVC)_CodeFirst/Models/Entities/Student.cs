@@ -29,8 +29,8 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         [Required]
         public School School { get; set; }
 
-        public ICollection<Course> Courses { get; set; }
+        public ICollection<Course> Courses { get; set; } = new List<Course>();
 
-        public ICollection<Assignment> Assignments { get; set; }
+        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     }
 }

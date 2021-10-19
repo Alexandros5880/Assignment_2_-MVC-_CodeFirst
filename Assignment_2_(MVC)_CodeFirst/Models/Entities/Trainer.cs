@@ -28,6 +28,6 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         
         public School School { get; set; }
 
-        public ICollection<Course> Courses { get; set; }
+        public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }
