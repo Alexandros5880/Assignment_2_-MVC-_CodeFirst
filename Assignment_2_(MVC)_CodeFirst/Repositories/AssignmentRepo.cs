@@ -47,20 +47,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         {
             this._context.Entry(obj).State = EntityState.Modified;
         }
-        
-        //public Assignment GetWithRelated(int? id)
-        //{
-        //    return this._context.Assignents
-        //        .Include(a => a.Students)
-        //        .FirstOrDefault(a => a.ID == id);
-        //}
 
-        //public ICollection<Assignment> GetAllWithRelated()
-        //{
-        //    return this._context.Assignents
-        //        .Include(a => a.Students)
-        //        .ToList();
-        //}
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

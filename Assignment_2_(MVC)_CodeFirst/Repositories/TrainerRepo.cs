@@ -48,20 +48,6 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             this._context.Entry(obj).State = EntityState.Modified;
         }
 
-        //public Trainer GetWithRelated(int? id)
-        //{
-        //    return this._context.Trainers
-        //        .Include(t => t.Courses)
-        //        .FirstOrDefault(t => t.ID == id);
-        //}
-
-        //public ICollection<Trainer> GetAllWithRelated()
-        //{
-        //    return this._context.Trainers
-        //        .Include(t => t.Courses)
-        //        .ToList();
-        //}
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
