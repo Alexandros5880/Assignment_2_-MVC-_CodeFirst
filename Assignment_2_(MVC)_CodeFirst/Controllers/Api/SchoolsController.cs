@@ -14,13 +14,17 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpPost]
         public IHttpActionResult Create(School obj)
         {
-            throw new NotImplementedException();
+            Globals.schoolRepo.Add(obj);
+            Globals.DbHundler.Save();
+            return Ok(obj);
         }
 
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            Globals.schoolRepo.Delete(Globals.schoolRepo.Get(id));
+            Globals.DbHundler.Save();
+            return Ok();
         }
 
         [HttpGet]
@@ -41,7 +45,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpPut]
         public IHttpActionResult Update(int id, School obj)
         {
-            throw new NotImplementedException();
+            var schoolDB = Globals.schoolRepo.Get(id);
+            schoolDB.Name = obj.Name;
+            schoolDB.StartDate = obj.StartDate;
+            schoolDB.Courses = obj.Courses;
+            schoolDB.Assignments = obj.Assignments;
+            schoolDB.Trainers = obj.Trainers;
+            schoolDB.Students = obj.Students;
+            Globals.schoolRepo.Update(schoolDB);
+            Globals.DbHundler.Save();
+            return Ok(schoolDB);
         }
     }
 }
