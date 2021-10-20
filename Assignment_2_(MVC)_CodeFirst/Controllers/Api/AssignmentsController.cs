@@ -1,4 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,30 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.assignmentRepo.Update(assignment);
             Globals.DbHundler.Save();
             return Ok(assignment);
+        }
+
+        [Route("api/{Assignments}/{RemoveStudent}"), HttpPost]
+        public IHttpActionResult RemoveStudent([FromBody] AssignmentStudentData data)
+        {
+            if (data.assignmentId == null || data.studentId == null)
+                return BadRequest();
+            Assignment assignment = Globals.assignmentRepo.Get(data.assignmentId);
+            Student student = Globals.studentRepo.Get(data.studentId);
+            if (assignment == null || student == null)
+                return BadRequest();
+
+            assignment.Students.Remove(student);
+            student.Assignments.Remove(assignment);
+
+            if (ModelState.IsValid)
+            {
+                Globals.assignmentRepo.Update(assignment);
+                Globals.studentRepo.Update(student);
+                Globals.DbHundler.Save();
+                return Ok(assignment);
+            }
+
+            return BadRequest("Record Failed");
         }
     }
 }

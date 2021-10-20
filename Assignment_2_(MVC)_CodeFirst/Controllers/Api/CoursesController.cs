@@ -1,4 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
@@ -81,11 +82,5 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             }
             return BadRequest("Record Failed");
         }
-    }
-
-    public class CourseStudentData
-    {
-        public int courseId { get; set; }
-        public int studentId { get; set; }
     }
 }

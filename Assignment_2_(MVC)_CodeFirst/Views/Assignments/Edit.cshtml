@@ -72,7 +72,7 @@
                                         if (result) {
                                             $.ajax({
                                                 type: "POST",
-                                                url: "/Assignments/RemoveStudent",
+                                                url: "api/Assignments/RemoveStudent",
                                                 data: JSON.stringify(
                                                     {
                                                         "assignmentId": assignmentId,
@@ -83,17 +83,16 @@
                                                 dataType: "json",
                                                 success: function (response) {
                                                     if (response != null) {
-                                                        alert("Course Removed.");
+                                                        location.reload();
                                                     } else {
-                                                        alert("Something went wrong");
+                                                        console.log(response);
                                                     }
-                                                    location.reload();
                                                 },
                                                 failure: function (response) {
-                                                    location.reload();
+                                                    console.log(response);
                                                 },
                                                 error: function (response) {
-                                                    location.reload();
+                                                    console.log(response);
                                                 }
                                             });
                                         }

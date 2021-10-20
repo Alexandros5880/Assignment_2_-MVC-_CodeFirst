@@ -222,57 +222,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             return RedirectToAction("Details", "Schools", new { id = assignment.School.ID });
         }
 
-        [HttpPost]
-        public ActionResult RemoveStudent(int? assignmentId, int? studentId)
-        {
-            if (assignmentId == null || studentId == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Assignment assignment = Globals.assignmentRepo.Get(assignmentId);
-            Student assignmentStudent = Globals.studentRepo.Get(studentId);
-            if (assignment == null || assignmentStudent == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            assignment.Students.Remove(assignmentStudent);
-
-            if (ModelState.IsValid)
-            {
-                Globals.assignmentRepo.Update(assignment);
-                Globals.DbHundler.Save();
-                return RedirectToAction("Details", "Schools", new { id = assignmentStudent.School.ID });
-            }
-
-            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
-            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignment.ID);
-            if (selectedSchool != null) selectedSchool.Selected = true;
-
-            List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
-            {
-                SelectListItem selectList = new SelectListItem()
-                {
-                    Text = student.FullName,
-                    Value = student.ID.ToString()
-                };
-                if (!assignment.Students.Contains(student))
-                    studentsSelectListItems.Add(selectList);
-            }
-
-            AssignmentViewModel assignmentView2 = new AssignmentViewModel()
-            {
-                ID = assignment.ID,
-                Title = assignment.Title,
-                StartDate = assignment.StartDate,
-                EndDate = assignment.EndDate,
-                SelectedStudents = new List<int>(),
-                Students = studentsSelectListItems,
-                MyStudents = assignment.Students,
-                SchoolId = assignment.School.ID,
-                Schools = schools
-            };
-
-            return View(assignmentView2);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
