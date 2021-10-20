@@ -1,6 +1,8 @@
-﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
+using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,52 +12,55 @@ using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    public class AssignmentsController : ApiController, IMyController<IHttpActionResult, Assignment>
+    public class AssignmentsController : ApiController, IMyController<IHttpActionResult, AssignmentDto>
     {
         [HttpPost]
-        public IHttpActionResult Create(Assignment obj)
+        public IHttpActionResult Create(AssignmentDto assignmentDto)
         {
-            Globals.assignmentRepo.Add(obj);
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var assignment = Mapper.Map<AssignmentDto, Assignment>(assignmentDto);
+            Globals.assignmentRepo.Add(assignment);
             Globals.DbHundler.Save();
-            return Ok(obj);
+            return Ok(assignmentDto);
         }
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
             var assignment = Globals.assignmentRepo.Get(id);
+            if (assignment == null)
+                return NotFound();
             Globals.assignmentRepo.Delete(assignment);
             Globals.DbHundler.Save();
-            return Ok(assignment);
+            var assignmentDto = Mapper.Map<Assignment, AssignmentDto>(assignment);
+            return Ok(assignmentDto);
         }
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
             var assignment = Globals.assignmentRepo.Get(id);
-            //assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
-            return Ok(assignment);
+            if (assignment == null)
+                return NotFound();
+            var assignmentDto = Mapper.Map<Assignment, AssignmentDto>(assignment);
+            return Ok(assignmentDto);
         }
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var assignments = Globals.assignmentRepo.GetAll();
-            //foreach (var assignment in assignments)
-            //{
-            //    assignment.Students = Globals.assignmentRepo.GetStudents(assignment.ID);
-            //}
+            var assignments = Globals.assignmentRepo.GetAll().Select(Mapper.Map<Assignment, AssignmentDto>);
             return Ok(assignments);
         }
         [HttpPut]
-        public IHttpActionResult Update(int id, Assignment obj)
+        public IHttpActionResult Update(int id, AssignmentDto assignmentDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
             var assignment = Globals.assignmentRepo.Get(id);
-            assignment.Title = obj.Title;
-            assignment.StartDate = obj.StartDate;
-            assignment.EndDate = obj.EndDate;
-            assignment.Students = obj.Students;
-            assignment.School = obj.School;
-            Globals.assignmentRepo.Update(assignment);
+            if (assignment == null)
+                return NotFound();
+            Mapper.Map(assignmentDto, assignment);
             Globals.DbHundler.Save();
-            return Ok(assignment);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         [Route("api/{Assignments}/{RemoveStudent}"), HttpPost]

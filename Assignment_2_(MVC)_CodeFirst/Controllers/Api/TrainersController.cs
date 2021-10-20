@@ -1,6 +1,8 @@
-﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
+using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,52 +12,55 @@ using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    public class TrainersController : ApiController, IMyController<IHttpActionResult, Trainer>
+    public class TrainersController : ApiController, IMyController<IHttpActionResult, TrainerDto>
     {
         [HttpPost]
-        public IHttpActionResult Create(Trainer obj)
+        public IHttpActionResult Create(TrainerDto trainerDto)
         {
-            Globals.trainerRepo.Add(obj);
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var trainer = Mapper.Map<TrainerDto, Trainer>(trainerDto);
+            Globals.trainerRepo.Add(trainer);
             Globals.DbHundler.Save();
-            return Ok(obj);
+            return Ok(trainerDto);
         }
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
             var trainer = Globals.trainerRepo.Get(id);
+            if (trainer == null)
+                return NotFound();
             Globals.trainerRepo.Delete(trainer);
             Globals.DbHundler.Save();
-            return Ok(trainer);
+            var trainerDto = Mapper.Map<Trainer, TrainerDto>(trainer);
+            return Ok(trainerDto);
         }
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
             var trainer = Globals.trainerRepo.Get(id);
-            //trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
-            return Ok(trainer);
+            if (trainer == null)
+                return NotFound();
+            var trainerDto = Mapper.Map<Trainer, TrainerDto>(trainer);
+            return Ok(trainerDto);
         }
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var trainers = Globals.trainerRepo.GetAll();
-            //foreach(var trainer in trainers)
-            //{
-            //    trainer.Courses = Globals.trainerRepo.GetCourses(trainer.ID);
-            //}
+            var trainers = Globals.trainerRepo.GetAll().Select(Mapper.Map<Trainer, TrainerDto>);
             return Ok(trainers);
         }
         [HttpPut]
-        public IHttpActionResult Update(int id, Trainer obj)
+        public IHttpActionResult Update(int id, TrainerDto trainerDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
             var trainer = Globals.trainerRepo.Get(id);
-            trainer.FirstName = obj.FirstName;
-            trainer.LastName = obj.LastName;
-            trainer.StartDate = obj.StartDate;
-            trainer.School = obj.School;
-            trainer.Courses = obj.Courses;
-            Globals.trainerRepo.Update(trainer);
+            if (trainer == null)
+                return NotFound();
+            Mapper.Map(trainerDto, trainer);
             Globals.DbHundler.Save();
-            return Ok(trainer);
+            return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/{Trainers}/{RemoveCourse}"), HttpPost]
         public IHttpActionResult RemoveCourse([FromBody] TrainerCourseData data)

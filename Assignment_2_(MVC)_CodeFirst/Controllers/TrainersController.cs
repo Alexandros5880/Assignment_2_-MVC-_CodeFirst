@@ -94,7 +94,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 Globals.trainerRepo.Add(trainer);
                 Globals.DbHundler.Save();
-                return RedirectToAction("Index");
                 return RedirectToAction("Details", "Schools", new { id = trainer.School.ID });
             }
 

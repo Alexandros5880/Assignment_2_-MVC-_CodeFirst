@@ -1,5 +1,7 @@
-﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
+using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Static;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +11,29 @@ using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    public class SchoolsController : ApiController, IMyController<IHttpActionResult, School>
+    public class SchoolsController : ApiController, IMyController<IHttpActionResult, SchoolDto>
     {
         [HttpPost]
-        public IHttpActionResult Create(School obj)
+        public IHttpActionResult Create(SchoolDto schoolDto)
         {
-            Globals.schoolRepo.Add(obj);
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var school = Mapper.Map<SchoolDto, School>(schoolDto);
+            Globals.schoolRepo.Add(school);
             Globals.DbHundler.Save();
-            return Ok(obj);
+            return Ok(schoolDto);
         }
 
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
             var school = Globals.schoolRepo.Get(id);
+            if (school == null)
+                return NotFound();
             Globals.schoolRepo.Delete(school);
             Globals.DbHundler.Save();
-            return Ok(school);
+            var schoolDto = Mapper.Map<School, SchoolDto>(school);
+            return Ok(schoolDto);
         }
 
         [HttpGet]
@@ -33,40 +41,27 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             School school = Globals.schoolRepo.Get(id);
             if (school == null) return NotFound();
-            //school.Courses = Globals.schoolRepo.GetCourses(school.ID);
-            //school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
-            //school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
-            //school.Students = Globals.schoolRepo.GetStudents(school.ID);
-            return Ok(school);
+            return Ok(Mapper.Map<School, SchoolDto>(school));
         }
 
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var schools = Globals.schoolRepo.GetAll();
-            //foreach (School school in schools)
-            //{
-            //    school.Courses = Globals.schoolRepo.GetCourses(school.ID);
-            //    school.Assignments = Globals.schoolRepo.GetAssignments(school.ID);
-            //    school.Trainers = Globals.schoolRepo.GetTrainers(school.ID);
-            //    school.Students = Globals.schoolRepo.GetStudents(school.ID);
-            //}
+            var schools = Globals.schoolRepo.GetAll().Select(Mapper.Map<School, SchoolDto>);
             return Ok(schools);
         }
 
         [HttpPut]
-        public IHttpActionResult Update(int id, School obj)
+        public IHttpActionResult Update(int id, SchoolDto schoolDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
             var schoolDB = Globals.schoolRepo.Get(id);
-            schoolDB.Name = obj.Name;
-            schoolDB.StartDate = obj.StartDate;
-            //schoolDB.Courses = obj.Courses;
-            //schoolDB.Assignments = obj.Assignments;
-            //schoolDB.Trainers = obj.Trainers;
-            //schoolDB.Students = obj.Students;
-            Globals.schoolRepo.Update(schoolDB);
+            if (schoolDB == null)
+                return NotFound();
+            Mapper.Map(schoolDto, schoolDB);
             Globals.DbHundler.Save();
-            return Ok(schoolDB);
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

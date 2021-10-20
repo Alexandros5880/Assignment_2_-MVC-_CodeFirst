@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Assignment_2__MVC__CodeFirst.CustomAnotations;
+using System.Linq;
+using System.Web;
 
-namespace Assignment_2__MVC__CodeFirst.Models.Entities
+namespace Assignment_2__MVC__CodeFirst.Models.Dto
 {
-    public class School : IEntity
+    public class SchoolDto : IDto
     {
         public int ID { get; set; }
 

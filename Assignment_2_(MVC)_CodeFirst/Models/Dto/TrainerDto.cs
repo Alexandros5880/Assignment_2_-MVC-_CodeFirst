@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Assignment_2__MVC__CodeFirst.CustomAnotations;
+using System.Linq;
+using System.Web;
 
-namespace Assignment_2__MVC__CodeFirst.Models.Entities
+namespace Assignment_2__MVC__CodeFirst.Models.Dto
 {
-    public class Student : IEntity
+    public class TrainerDto : IDto
     {
         public int ID { get; set; }
 
@@ -26,11 +28,8 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         //[CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
         public DateTime StartDate { get; set; }
 
-        [Required]
         public School School { get; set; }
 
         public ICollection<Course> Courses { get; set; } = new List<Course>();
-
-        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     }
 }

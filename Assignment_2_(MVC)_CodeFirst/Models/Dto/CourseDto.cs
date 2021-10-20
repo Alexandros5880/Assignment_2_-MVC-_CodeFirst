@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Assignment_2__MVC__CodeFirst.CustomAnotations;
+using Assignment_2__MVC__CodeFirst.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Assignment_2__MVC__CodeFirst.CustomAnotations;
+using System.Linq;
+using System.Web;
 
-namespace Assignment_2__MVC__CodeFirst.Models.Entities
+namespace Assignment_2__MVC__CodeFirst.Models.Dto
 {
-    public class Course : IEntity
+    public class CourseDto : IDto
     {
         public int ID { get; set; }
 
@@ -30,6 +33,5 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
         public Trainer Trainer { get; set; }
 
         public ICollection<Student> Students { get; set; } = new List<Student>();
-
     }
 }

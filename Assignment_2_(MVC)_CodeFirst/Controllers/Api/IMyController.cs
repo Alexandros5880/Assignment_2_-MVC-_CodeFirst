@@ -1,4 +1,5 @@
-﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
+using Assignment_2__MVC__CodeFirst.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public interface IMyController<R, T> where R : class
-                                  where T : IMyEntities
+                                  where T : IDto
     {
         R GetAll();
         R Get(int id);

@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Assignment_2__MVC__CodeFirst.CustomAnotations;
+using Assignment_2__MVC__CodeFirst.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Assignment_2__MVC__CodeFirst.CustomAnotations;
+using System.Linq;
+using System.Web;
 
-namespace Assignment_2__MVC__CodeFirst.Models.Entities
+namespace Assignment_2__MVC__CodeFirst.Models.Dto
 {
-    public class Course : IEntity
+    public class AssignmentDto : IDto
     {
         public int ID { get; set; }
 
@@ -20,16 +23,12 @@ namespace Assignment_2__MVC__CodeFirst.Models.Entities
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [DateBigger(AddMonths = 1, ErrorMessage = "Date must be upper than date")]
+        [DateBigger(AddMonths = 1, ErrorMessage = "Date must be smaller than date")]
         public DateTime EndDate { get; set; }
-
-        [Required]
-        public School School { get; set; }
-
-        [Required]
-        public Trainer Trainer { get; set; }
 
         public ICollection<Student> Students { get; set; } = new List<Student>();
 
+        [Required]
+        public School School { get; set; }
     }
 }
