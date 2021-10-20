@@ -1,4 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,48 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.studentRepo.Update(student);
             Globals.DbHundler.Save();
             return Ok(student);
+        }
+
+        [Route("api/{Students}/{RemoveCourse}"), HttpPost]
+        public IHttpActionResult RemoveCourse([FromBody] StudentCourseData data)
+        {
+            if (data.studentId == null || data.courseId == null)
+                return BadRequest();
+            Student student = Globals.studentRepo.Get(data.studentId);
+            Course course = Globals.courseRepo.Get(data.courseId);
+            if (student == null || course == null)
+                return BadRequest();
+            student.Courses.Remove(course);
+            course.Students.Remove(student);
+            if (ModelState.IsValid)
+            {
+                Globals.studentRepo.Update(student);
+                Globals.courseRepo.Update(course);
+                Globals.DbHundler.Save();
+                return Ok(student);
+            }
+            return BadRequest("Record Failed");
+        }
+
+        [Route("api/{Students}/{RemoveAssignment}"), HttpPost]
+        public IHttpActionResult RemoveAssignment([FromBody] StudentAssignmentData data)
+        {
+            if (data.studentId == null || data.assignmentId == null)
+                return BadRequest();
+            Student student = Globals.studentRepo.Get(data.studentId);
+            Assignment assignment = Globals.assignmentRepo.Get(data.assignmentId);
+            if (student == null || assignment == null)
+                return BadRequest();
+            student.Assignments.Remove(assignment);
+            assignment.Students.Remove(student);
+            if (ModelState.IsValid)
+            {
+                Globals.studentRepo.Update(student);
+                Globals.assignmentRepo.Update(assignment);
+                Globals.DbHundler.Save();
+                return Ok(student);
+            }
+            return BadRequest("Record Failed");
         }
     }
 }
