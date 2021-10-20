@@ -245,63 +245,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public ActionResult RemoveStudent(int? courseId, int? studentId)
-        {
-            if (studentId == null || courseId == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Course course = Globals.courseRepo.Get(courseId);
-            Student courseStudent = Globals.studentRepo.Get(studentId);
-            if (course == null ||courseStudent == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            course.Students.Remove(courseStudent);
-
-            if (ModelState.IsValid)
-            {
-                Globals.courseRepo.Update(course);
-                Globals.DbHundler.Save();
-                return RedirectToAction("Details", "Schools", new { id = course.School.ID });
-            }
-
-            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
-            var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
-            if (selectedSchool != null) selectedSchool.Selected = true;
-
-            var trainers = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
-            var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
-            if (selectedTrainer != null) selectedTrainer.Selected = true;
-
-            List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
-            {
-                SelectListItem selectList = new SelectListItem()
-                {
-                    Text = student.FullName,
-                    Value = student.ID.ToString()
-                };
-                if (!course.Students.Contains(student))
-                    studentsSelectListItems.Add(selectList);
-            }
-
-            CourseViewModel courseView2 = new CourseViewModel()
-            {
-                ID = course.ID,
-                Title = course.Title,
-                StartDate = course.StartDate,
-                EndDate = course.EndDate,
-                SchoolId = course.School.ID,
-                TrainerId = course.Trainer.ID,
-                SelectedStudents = new List<int>(),
-                MyStudents = course.Students,
-                Students = studentsSelectListItems,
-                Schools = schools,
-                Trainers = trainers
-            };
-
-            return View(courseView2);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

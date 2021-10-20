@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
+    //[Route("api/[controller]")]
     public class CoursesController : ApiController, IMyController<IHttpActionResult, Course>
     {
         [HttpPost]
@@ -34,6 +35,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             return Ok(course);
         }
         [HttpGet]
+        //[Route("api/v1/{Courses}/{GetAll}")]
         public IHttpActionResult GetAll()
         {
             var courses = Globals.courseRepo.GetAll();
@@ -57,5 +59,33 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.DbHundler.Save();
             return Ok(course);
         }
+        [Route("api/{Courses}/{RemoveStudent}"), HttpPost]
+        public IHttpActionResult RemoveStudent([FromBody] CourseStudentData data)
+        {
+            if (data.studentId == null || data.courseId == null)
+                return BadRequest();
+            Course course = Globals.courseRepo.Get(data.courseId);
+            Student student = Globals.studentRepo.Get(data.studentId);
+            if (course == null || student == null)
+                return BadRequest();
+
+            course.Students.Remove(student);
+            student.Courses.Remove(course);
+
+            if (ModelState.IsValid)
+            {
+                Globals.courseRepo.Update(course);
+                Globals.studentRepo.Update(student);
+                Globals.DbHundler.Save();
+                return Ok(course);
+            }
+            return BadRequest("Record Failed");
+        }
+    }
+
+    public class CourseStudentData
+    {
+        public int courseId { get; set; }
+        public int studentId { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace Assignment_2__MVC__CodeFirst.App_Start
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+                name: "DefaultApi1",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );

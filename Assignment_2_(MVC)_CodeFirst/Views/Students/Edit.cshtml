@@ -68,25 +68,8 @@
                             <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeCourseFromStudent(studentId, courseId) {
-
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
-                                            //$.ajax({
-                                            //    url: "/Students/RemoveCourse",
-                                            //    type: "post",
-                                            //    data: JSON.stringify(
-                                            //        {
-                                            //            "studentId": studentId,
-                                            //            "courseId": courseId
-                                            //        }
-                                            //    )
-                                            //});
-                                            //.done(function (data) {
-
-                                            //}).fail(function (error) {
-                                            //    var parent = $("div[data-id=`" + studentId + "`]").parent;
-                                            //    console.log(parent);
-                                            //});
                                             $.ajax({
                                                 type: "POST",
                                                 url: "/Students/RemoveCourse",
@@ -115,6 +98,7 @@
                                             });
                                         }
                                     });
+
                                 };
                             </script>
                         </td>
