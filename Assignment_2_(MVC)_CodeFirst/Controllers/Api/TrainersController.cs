@@ -1,4 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,28 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.trainerRepo.Update(trainer);
             Globals.DbHundler.Save();
             return Ok(trainer);
+        }
+        [Route("api/{Trainers}/{RemoveCourse}"), HttpPost]
+        public IHttpActionResult RemoveCourse([FromBody] TrainerCourseData data)
+        {
+            if (data.trainerId == null || data.courseId == null)
+                return BadRequest();
+            Trainer trainer = Globals.trainerRepo.Get(data.trainerId);
+            Course course = Globals.courseRepo.Get(data.courseId);
+            if (trainer == null || course == null)
+                return BadRequest();
+
+            trainer.Courses.Remove(course);
+            course.Trainer = null;
+
+            if (ModelState.IsValid)
+            {
+                Globals.trainerRepo.Update(trainer);
+                Globals.courseRepo.Update(course);
+                Globals.DbHundler.Save();
+                return Ok(trainer);
+            }
+            return BadRequest("Record Failed");
         }
     }
 }

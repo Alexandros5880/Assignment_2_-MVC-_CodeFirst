@@ -211,6 +211,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Other\AssignmentStudentData.cs" />
     <Compile Include="Models\Other\CourseStudentData.cs" />
+    <Compile Include="Models\Other\TrainerCourseData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AssignmentRepo.cs" />
     <Compile Include="Repositories\CourseRepo.cs" />
