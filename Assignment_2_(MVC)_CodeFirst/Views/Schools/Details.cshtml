@@ -4,52 +4,32 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+
 
 <div class="container">
-    <h4>School</h4>
+
+    <h2>@Model.Name Details:</h2>
     <hr />
-    <div class="container">
 
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.Name)
-            </div>
-            <div class="col-md-9">
-                @Html.DisplayFor(model => model.Name)
-            </div>
-        </div>
+    <div class="form-group">
+        <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Name)</label>:
+        @Html.DisplayFor(model => model.Name)&emsp;&emsp;
+        <label class="font-weight-bold">@Html.DisplayNameFor(model => model.StartDate)</label>:
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
 
-        <br />
-
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.StartDate)
-            </div>
-            <div class="col-md-9">
-                @Html.DisplayFor(model => model.StartDate)
-            </div>
-        </div>
-
-        <br />
-                
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.Courses) | 
-                @Html.ActionLink("New", "Create", "Courses")
-            </div>
-            <div class="col-md-9">
-                <table>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
+    <div class="row">
+        <div>
+            <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Courses)</label> |
+            @Html.ActionLink("New", "Create", "Courses")
+            <div class="table-responsive" style="margin-top: 11px;">
+                <table class="table table-striped table-hover">
                     @foreach (var c in Model.Courses)
                     {
-                        <tr>
-                            <td>@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, null)&emsp;</td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", "Courses", new { id = c.ID }, null) | 
+                        <tr class="text-center" scope="row">
+                            <td scope="col">@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, null)&emsp;</td>
+                            <td scope="col">
+                                @Html.ActionLink("Edit", "Edit", "Courses", new { id = c.ID }, null) |
                                 @Html.ActionLink("Delete", "Delete", "Courses", new { id = c.ID }, null)
                             </td>
                         </tr>
@@ -57,26 +37,22 @@
                 </table>
             </div>
         </div>
+    </div>
 
-        <br />
+    <br />
 
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.Trainers) |
-                @Html.ActionLink("New", "Create", "Trainers")
-            </div>
-            <div class="col-md-9">
-                <table>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
+    <div class="row">
+        <div>
+            <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Trainers)</label> | 
+            @Html.ActionLink("New", "Create", "Trainers")
+            <div class="table-responsive" style="margin-top: 11px;">
+                <table class="table table-striped table-hover">
                     @foreach (var t in Model.Trainers)
                     {
-                        <tr>
-                            <td>@Html.ActionLink(t.FullName, "Details", "Trainers", new { id = t.ID }, null)&emsp;</td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", "Trainers", new { id = t.ID }, null) | 
+                        <tr class="text-center" scope="row">
+                            <td scope="col">@Html.ActionLink(t.FullName, "Details", "Trainers", new { id = t.ID }, null)&emsp;</td>
+                            <td scope="col">
+                                @Html.ActionLink("Edit", "Edit", "Trainers", new { id = t.ID }, null) |
                                 @Html.ActionLink("Delete", "Delete", "Trainers", new { id = t.ID }, null)
                             </td>
                         </tr>
@@ -84,26 +60,22 @@
                 </table>
             </div>
         </div>
-        
-        <br />
+    </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.Students) |
-                @Html.ActionLink("New", "Create", "Students")
-            </div>
-            <div class="col-md-9">
-                <table>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
+    <br />
+
+    <div class="row">
+        <div>
+            <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Trainers)</label> | 
+            @Html.ActionLink("New", "Create", "Students")
+            <div class="table-responsive" style="margin-top: 11px;">
+                <table class="table table-striped table-hover">
                     @foreach (var s in Model.Students)
                     {
-                        <tr>
-                            <td>@Html.ActionLink(s.FullName, "Details", "Students", new { id = s.ID }, null)&emsp;</td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", "Students", new { id = s.ID }, null) | 
+                        <tr class="text-center" scope="row">
+                            <td scope="col">@Html.ActionLink(s.FullName, "Details", "Students", new { id = s.ID }, null)&emsp;</td>
+                            <td scope="col">
+                                @Html.ActionLink("Edit", "Edit", "Students", new { id = s.ID }, null) |
                                 @Html.ActionLink("Delete", "Delete", "Students", new { id = s.ID }, null)
                             </td>
                         </tr>
@@ -111,15 +83,15 @@
                 </table>
             </div>
         </div>
-
-        
     </div>
+
     <br />
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
 
 <style>
     td {
