@@ -20,26 +20,26 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
 
         public void Add(Assignment obj)
         {
-            this._context.Assignents.Add(obj);
+            this._context.Assignments.Add(obj);
         }
 
         public void Delete(Assignment obj)
         {
-            Assignment assignment = this._context.Assignents
+            Assignment assignment = this._context.Assignments
                                     .Find(obj.ID);
-            this._context.Assignents.Remove(assignment);
+            this._context.Assignments.Remove(assignment);
         }
 
         public Assignment Get(int? id)
         {
-            return this._context.Assignents
+            return this._context.Assignments
                 .Include(a => a.Students)
                 .FirstOrDefault(a => a.ID == id);
         }
 
         public IEnumerable<Assignment> GetAll()
         {
-            return this._context.Assignents
+            return this._context.Assignments
                 .Include(a => a.Students);
         }
 

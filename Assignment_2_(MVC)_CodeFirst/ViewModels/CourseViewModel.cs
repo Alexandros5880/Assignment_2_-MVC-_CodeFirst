@@ -13,10 +13,10 @@ namespace Assignment_2__MVC__CodeFirst.ViewModels
         public int ID { get; set; }
         public string Title { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
         public int SchoolId { get; set; }
         public int TrainerId { get; set; }

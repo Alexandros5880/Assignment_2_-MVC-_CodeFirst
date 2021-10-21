@@ -3,7 +3,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -39,12 +39,12 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                         Title = c.String(nullable: false),
                         StartDate = c.DateTime(nullable: false),
                         EndDate = c.DateTime(nullable: false),
-                        School_ID = c.Int(nullable: false),
-                        Trainer_ID = c.Int(nullable: false),
+                        School_ID = c.Int(),
+                        Trainer_ID = c.Int(),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Schools", t => t.School_ID, cascadeDelete: true)
-                .ForeignKey("dbo.Trainers", t => t.Trainer_ID, cascadeDelete: true)
+                .ForeignKey("dbo.Schools", t => t.School_ID)
+                .ForeignKey("dbo.Trainers", t => t.Trainer_ID)
                 .Index(t => t.School_ID)
                 .Index(t => t.Trainer_ID);
             
@@ -179,8 +179,8 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Assignments", "School_ID", "dbo.Schools");
-            DropForeignKey("dbo.Courses", "Trainer_ID", "dbo.Trainers");
             DropForeignKey("dbo.Trainers", "School_ID", "dbo.Schools");
+            DropForeignKey("dbo.Courses", "Trainer_ID", "dbo.Trainers");
             DropForeignKey("dbo.Students", "School_ID", "dbo.Schools");
             DropForeignKey("dbo.StudentCourses", "Course_ID", "dbo.Courses");
             DropForeignKey("dbo.StudentCourses", "Student_ID", "dbo.Students");

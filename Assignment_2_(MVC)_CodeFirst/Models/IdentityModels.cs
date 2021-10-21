@@ -29,7 +29,7 @@ namespace Assignment_2__MVC__CodeFirst.Models
 
         public DbSet<School> Schools { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Assignment> Assignents { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Student> Students { get; set; }
 
