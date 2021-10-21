@@ -159,7 +159,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(c => c.School.ID == 1).ToList()
                 },
                 new Student()
                 {
@@ -167,7 +167,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(c => c.School.ID == 1).ToList()
                 },
                 new Student()
                 {
@@ -175,7 +175,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(c => c.School.ID == 1).ToList()
                 },
                 new Student()
                 {
@@ -183,7 +183,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsa",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(c => c.School.ID == 1).ToList()
                 },
                 new Student()
                 {
@@ -191,7 +191,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(c => c.School.ID == 1).ToList()
                 },
                 new Student()
                 {
@@ -199,7 +199,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsas",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(c => c.School.ID == 1).ToList()
                 }
             };
             students.ForEach(s => context.Students.AddOrUpdate(s));
@@ -213,7 +213,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 1).ToList()
                 },
                 new Assignment()
                 {
@@ -221,7 +221,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 1).ToList()
                 },
                 new Assignment()
                 {
@@ -229,7 +229,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 1).ToList()
                 },
                 new Assignment()
                 {
@@ -237,7 +237,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 1).ToList()
                 },
                 new Assignment()
                 {
@@ -245,7 +245,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 1).ToList()
                 },
                 new Assignment()
                 {
@@ -253,7 +253,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 1).ToList()
                 }
             };
             assignments.ForEach(a => context.Assignments.AddOrUpdate(a));
@@ -370,7 +370,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios2",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 2).ToList()
                 },
                 new Student()
                 {
@@ -378,7 +378,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios2",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 2).ToList()
                 },
                 new Student()
                 {
@@ -386,7 +386,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin2",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 2).ToList()
                 },
                 new Student()
                 {
@@ -394,7 +394,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsa2",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 2).ToList()
                 },
                 new Student()
                 {
@@ -402,7 +402,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin2",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 2).ToList()
                 },
                 new Student()
                 {
@@ -410,7 +410,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsas2",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 2).ToList()
                 }
             };
             students.ForEach(s => context.Students.AddOrUpdate(s));
@@ -424,7 +424,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 2).ToList()
                 },
                 new Assignment()
                 {
@@ -432,7 +432,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 2).ToList()
                 },
                 new Assignment()
                 {
@@ -440,7 +440,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 2).ToList()
                 },
                 new Assignment()
                 {
@@ -448,7 +448,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 2).ToList()
                 },
                 new Assignment()
                 {
@@ -456,7 +456,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 2).ToList()
                 },
                 new Assignment()
                 {
@@ -464,7 +464,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 2),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 2).ToList()
                 }
             };
             assignments.ForEach(a => context.Assignments.AddOrUpdate(a));
@@ -581,7 +581,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios3",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 3).ToList()
                 },
                 new Student()
                 {
@@ -589,7 +589,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios3",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 3).ToList()
                 },
                 new Student()
                 {
@@ -597,7 +597,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin3",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 3).ToList()
                 },
                 new Student()
                 {
@@ -605,7 +605,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsa3",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 3).ToList()
                 },
                 new Student()
                 {
@@ -613,7 +613,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin3",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 3).ToList()
                 },
                 new Student()
                 {
@@ -621,7 +621,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsas3",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 3).ToList()
                 }
             };
             students.ForEach(s => context.Students.AddOrUpdate(s));
@@ -635,7 +635,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 3).ToList()
                 },
                 new Assignment()
                 {
@@ -643,7 +643,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 3).ToList()
                 },
                 new Assignment()
                 {
@@ -651,7 +651,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 3).ToList()
                 },
                 new Assignment()
                 {
@@ -659,7 +659,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 3).ToList()
                 },
                 new Assignment()
                 {
@@ -667,7 +667,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 3).ToList()
                 },
                 new Assignment()
                 {
@@ -675,7 +675,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 3),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 3).ToList()
                 }
             };
             assignments.ForEach(a => context.Assignments.AddOrUpdate(a));
@@ -792,7 +792,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios4",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 4).ToList()
                 },
                 new Student()
                 {
@@ -800,7 +800,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios4",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 4).ToList()
                 },
                 new Student()
                 {
@@ -808,7 +808,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin4",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 4).ToList()
                 },
                 new Student()
                 {
@@ -816,7 +816,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsa4",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 4).ToList()
                 },
                 new Student()
                 {
@@ -824,7 +824,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin4",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 4).ToList()
                 },
                 new Student()
                 {
@@ -832,7 +832,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsas4",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 4).ToList()
                 }
             };
             students.ForEach(s => context.Students.AddOrUpdate(s));
@@ -846,7 +846,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 4).ToList()
                 },
                 new Assignment()
                 {
@@ -854,7 +854,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 4).ToList()
                 },
                 new Assignment()
                 {
@@ -862,7 +862,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 4).ToList()
                 },
                 new Assignment()
                 {
@@ -870,7 +870,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 4).ToList()
                 },
                 new Assignment()
                 {
@@ -878,7 +878,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 4).ToList()
                 },
                 new Assignment()
                 {
@@ -886,7 +886,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 4),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 4).ToList()
                 }
             };
             assignments.ForEach(a => context.Assignments.AddOrUpdate(a));
@@ -1003,7 +1003,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios5",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 5).ToList()
                 },
                 new Student()
                 {
@@ -1011,7 +1011,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Platanios5",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 5).ToList()
                 },
                 new Student()
                 {
@@ -1019,7 +1019,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin5",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 5).ToList()
                 },
                 new Student()
                 {
@@ -1027,7 +1027,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsa5",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 5).ToList()
                 },
                 new Student()
                 {
@@ -1035,7 +1035,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Edwin5",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 5).ToList()
                 },
                 new Student()
                 {
@@ -1043,7 +1043,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     LastName = "Matsas5",
                     StartDate = DateTime.Today.AddMonths(-3),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Courses = context.Courses.ToList()
+                    Courses = context.Courses.Where(s => s.School.ID == 5).ToList()
                 }
             };
             students.ForEach(s => context.Students.AddOrUpdate(s));
@@ -1057,7 +1057,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 5).ToList()
                 },
                 new Assignment()
                 {
@@ -1065,7 +1065,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 5).ToList()
                 },
                 new Assignment()
                 {
@@ -1073,7 +1073,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 5).ToList()
                 },
                 new Assignment()
                 {
@@ -1081,7 +1081,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 5).ToList()
                 },
                 new Assignment()
                 {
@@ -1089,7 +1089,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 5).ToList()
                 },
                 new Assignment()
                 {
@@ -1097,7 +1097,7 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(7),
                     School = context.Schools.FirstOrDefault(s => s.ID == 5),
-                    Students = context.Students.ToList()
+                    Students = context.Students.Where(s => s.School.ID == 5).ToList()
                 }
             };
             assignments.ForEach(a => context.Assignments.AddOrUpdate(a));
