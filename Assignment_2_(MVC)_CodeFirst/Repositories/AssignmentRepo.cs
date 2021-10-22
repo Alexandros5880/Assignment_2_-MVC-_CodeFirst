@@ -37,10 +37,21 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .FirstOrDefault(a => a.ID == id);
         }
 
+        public Assignment GetEmpty(int? id)
+        {
+            return this._context.Assignments
+                .FirstOrDefault(a => a.ID == id);
+        }
+
         public IEnumerable<Assignment> GetAll()
         {
             return this._context.Assignments
                 .Include(a => a.Students);
+        }
+
+        public IEnumerable<Assignment> GetAllEmpty()
+        {
+            return this._context.Assignments;
         }
 
         public void Update(Assignment obj)

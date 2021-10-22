@@ -40,6 +40,12 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .FirstOrDefault(s => s.ID == id);
         }
 
+        public School GetEmpty(int? id)
+        {
+            return this._context.Schools
+                .FirstOrDefault(s => s.ID == id);
+        }
+
         public IEnumerable<School> GetAll()
         {
             return this._context.Schools
@@ -47,6 +53,11 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .Include(s => s.Assignments)
                 .Include(s => s.Trainers)
                 .Include(s => s.Students);
+        }
+
+        public IEnumerable<School> GetAllEmpty()
+        {
+            return this._context.Schools;
         }
 
         public void Update(School obj)

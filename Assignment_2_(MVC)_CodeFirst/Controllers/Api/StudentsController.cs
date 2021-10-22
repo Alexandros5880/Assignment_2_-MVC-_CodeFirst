@@ -38,7 +38,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            var student = Globals.studentRepo.Get(id);
+            var student = Globals.studentRepo.GetEmpty(id);
             if (student == null)
                 return NotFound();
             var studentDto = Mapper.Map<Student, StudentDto>(student);
@@ -47,7 +47,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var students = Globals.studentRepo.GetAll().Select(Mapper.Map<Student, StudentDto>);
+            var students = Globals.studentRepo.GetAllEmpty().Select(Mapper.Map<Student, StudentDto>);
             return Ok(students);
         }
         [HttpPut]
@@ -62,8 +62,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.DbHundler.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
-
-        [Route("api/{Students}/{RemoveCourse}"), HttpPost]
+        [Route("api/v1/{Students}/{RemoveCourse}"), HttpPost]
         public IHttpActionResult RemoveCourse([FromBody] StudentCourseData data)
         {
             if (data.studentId == null || data.courseId == null)
@@ -83,8 +82,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             }
             return BadRequest("Record Failed");
         }
-
-        [Route("api/{Students}/{RemoveAssignment}"), HttpPost]
+        [Route("api/v1/{Students}/{RemoveAssignment}"), HttpPost]
         public IHttpActionResult RemoveAssignment([FromBody] StudentAssignmentData data)
         {
             if (data.studentId == null || data.assignmentId == null)

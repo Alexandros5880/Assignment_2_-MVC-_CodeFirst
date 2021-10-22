@@ -28,8 +28,8 @@ namespace Assignment_2__MVC__CodeFirst.Models.Dto
         //[CurrentDate(ErrorMessage = "Date must be after or equal to current date")]
         public DateTime StartDate { get; set; }
 
-        public School School { get; set; }
+        public SchoolDto School { get; set; }
 
-        public ICollection<Course> Courses { get; set; } = new List<Course>();
+        //public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }

@@ -39,7 +39,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            School school = Globals.schoolRepo.Get(id);
+            School school = Globals.schoolRepo.GetEmpty(id);
             if (school == null) return NotFound();
             return Ok(Mapper.Map<School, SchoolDto>(school));
         }
@@ -47,7 +47,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var schools = Globals.schoolRepo.GetAll().Select(Mapper.Map<School, SchoolDto>);
+            var schools = Globals.schoolRepo.GetAllEmpty().Select(Mapper.Map<School, SchoolDto>);
             return Ok(schools);
         }
 

@@ -29,10 +29,10 @@ namespace Assignment_2__MVC__CodeFirst.Models.Dto
         public DateTime StartDate { get; set; }
 
         [Required]
-        public School School { get; set; }
+        public SchoolDto School { get; set; }
 
-        public ICollection<Course> Courses { get; set; } = new List<Course>();
+        //public ICollection<Course> Courses { get; set; } = new List<Course>();
 
-        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+        //public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     }
 }

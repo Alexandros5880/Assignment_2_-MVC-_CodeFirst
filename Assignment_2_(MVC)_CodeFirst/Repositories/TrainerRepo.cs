@@ -37,10 +37,21 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .FirstOrDefault(t => t.ID == id);
         }
 
+        public Trainer GetEmpty(int? id)
+        {
+            return this._context.Trainers
+                .FirstOrDefault(t => t.ID == id);
+        }
+
         public IEnumerable<Trainer> GetAll()
         {
             return this._context.Trainers
                 .Include(t => t.Courses);
+        }
+
+        public IEnumerable<Trainer> GetAllEmpty()
+        {
+            return this._context.Trainers;
         }
 
         public void Update(Trainer obj)

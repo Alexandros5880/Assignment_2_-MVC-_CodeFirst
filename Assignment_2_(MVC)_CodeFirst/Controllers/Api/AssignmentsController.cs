@@ -38,7 +38,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            var assignment = Globals.assignmentRepo.Get(id);
+            var assignment = Globals.assignmentRepo.GetEmpty(id);
             if (assignment == null)
                 return NotFound();
             var assignmentDto = Mapper.Map<Assignment, AssignmentDto>(assignment);
@@ -47,7 +47,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var assignments = Globals.assignmentRepo.GetAll().Select(Mapper.Map<Assignment, AssignmentDto>);
+            var assignments = Globals.assignmentRepo.GetAllEmpty().Select(Mapper.Map<Assignment, AssignmentDto>);
             return Ok(assignments);
         }
         [HttpPut]
@@ -63,7 +63,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [Route("api/{Assignments}/{RemoveStudent}"), HttpPost]
+        [Route("api/v1/{Assignments}/{RemoveStudent}"), HttpPost]
         public IHttpActionResult RemoveStudent([FromBody] AssignmentStudentData data)
         {
             if (data.assignmentId == null || data.studentId == null)

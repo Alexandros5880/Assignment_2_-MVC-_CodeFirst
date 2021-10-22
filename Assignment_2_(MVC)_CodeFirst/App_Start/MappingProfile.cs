@@ -1,5 +1,6 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

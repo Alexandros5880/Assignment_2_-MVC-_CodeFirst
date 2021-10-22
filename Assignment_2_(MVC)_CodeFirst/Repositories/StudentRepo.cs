@@ -38,11 +38,22 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .FirstOrDefault(s => s.ID == id);
         }
 
+        public Student GetEmpty(int? id)
+        {
+            return this._context.Students
+                .FirstOrDefault(s => s.ID == id);
+        }
+
         public IEnumerable<Student> GetAll()
         {
             return this._context.Students
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments);
+        }
+
+        public IEnumerable<Student> GetAllEmpty()
+        {
+            return this._context.Students;
         }
 
         public void Update(Student obj)

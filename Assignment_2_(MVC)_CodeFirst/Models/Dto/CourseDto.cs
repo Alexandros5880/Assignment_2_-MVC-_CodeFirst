@@ -27,11 +27,11 @@ namespace Assignment_2__MVC__CodeFirst.Models.Dto
         public DateTime EndDate { get; set; }
 
         [Required]
-        public School School { get; set; }
+        public SchoolDto School { get; set; }
 
         [Required]
-        public Trainer Trainer { get; set; }
+        public TrainerDto Trainer { get; set; }
 
-        public ICollection<Student> Students { get; set; } = new List<Student>();
+        //public ICollection<Student> Students { get; set; } = new List<Student>();
     }
 }
