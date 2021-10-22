@@ -11,59 +11,57 @@
     <hr />
     <div class="container">
 
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.FullName)
+        <div class="ditails-form text-center">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="font-weight-bold">@Html.DisplayNameFor(model => model.FullName):</label>
+                </div>
+
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.FullName)
+                </div>
             </div>
 
-            <div class="col-md-9">
-                @Html.DisplayFor(model => model.FullName)
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="font-weight-bold">@Html.DisplayNameFor(model => model.StartDate):</label>
+                </div>
+
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.StartDate)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="font-weight-bold">@Html.DisplayNameFor(model => model.School):</label>
+                </div>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.School.Name)
+                </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.StartDate)
-            </div>
-
-            <div class="col-md-9">
-                @Html.DisplayFor(model => model.StartDate)
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.School)
-            </div>
-            <div class="col-md-9">
-                @Html.DisplayFor(model => model.School.Name)
-            </div>
-        </div>
+        
 
         <br />
 
         <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayNameFor(model => model.Courses)
-            </div>
-            <div class="col-md-9">
-                <table>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    @foreach (var c in Model.Courses)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", "Courses", new { id = c.ID }, null) |
-                                @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
-                                @Html.ActionLink("Delete", "Delete", "Courses", new { id = c.ID }, null)
-                            </td>
-                        </tr>
-                    }
-                </table>
+            <div>
+                <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Courses):</label>
+                <div class="table-responsive" style="margin-top: 11px;">
+                    <table class="table table-striped table-hover">
+                        @foreach (var c in Model.Courses)
+                        {
+                            <tr class="text-center" scope="row">
+                                <td scope="col">@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, null)</td>
+                                <td scope="col">
+                                    @Html.ActionLink("Edit", "Edit", "Courses", new { id = c.ID }, null) | 
+                                    @Html.ActionLink("Delete", "Delete", "Courses", new { id = c.ID }, null)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
             </div>
         </div>
 
