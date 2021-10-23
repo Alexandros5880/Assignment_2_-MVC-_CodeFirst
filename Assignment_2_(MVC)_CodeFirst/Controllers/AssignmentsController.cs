@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Assignment_2__MVC__CodeFirst.Models;
-using Assignment_2__MVC__CodeFirst.Models.Entities;
+﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Static;
 using Assignment_2__MVC__CodeFirst.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers
 {
@@ -38,7 +33,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         }
 
         // GET: Assignments/Create
-        public ActionResult Create()
+        public ActionResult Create(int schoolId)
         {
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
 
@@ -57,7 +52,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 SelectedStudents = new List<int>(),
                 Students = studentsSelectListItems,
-                Schools = schools
+                Schools = schools,
+                SchoolId= schoolId
             };
 
             return View(assignmentView);

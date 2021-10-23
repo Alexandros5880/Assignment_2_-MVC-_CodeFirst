@@ -35,7 +35,7 @@
     <div class="row">
         <div>
             <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Courses)</label> |
-            @Html.ActionLink("New", "Create", "Courses")
+            @Html.ActionLink("New", "Create", "Courses", new { schoolId = @Model.ID }, null)
             <div class="table-responsive" style="margin-top: 11px;">
                 <table class="table table-striped table-hover">
                     @foreach (var c in Model.Courses)
@@ -58,7 +58,7 @@
     <div class="row">
         <div>
             <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Trainers)</label> |
-            @Html.ActionLink("New", "Create", "Trainers")
+            @Html.ActionLink("New", "Create", "Trainers", new { schoolId = @Model.ID }, null)
             <div class="table-responsive" style="margin-top: 11px;">
                 <table class="table table-striped table-hover">
                     @foreach (var t in Model.Trainers)
@@ -81,7 +81,7 @@
     <div class="row">
         <div>
             <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Students)</label> |
-            @Html.ActionLink("New", "Create", "Students")
+            @Html.ActionLink("New", "Create", "Students", new { schoolId = @Model.ID }, null)
             <div class="table-responsive" style="margin-top: 11px;">
                 <table class="table table-striped table-hover">
                     @foreach (var s in Model.Students)
@@ -104,7 +104,7 @@
     <div class="row">
         <div>
             <label class="font-weight-bold">@Html.DisplayNameFor(model => model.Assignments)</label> |
-            @Html.ActionLink("New", "Create", "Assignment")
+            @Html.ActionLink("New", "Create", "Assignments", new { schoolId = @Model.ID }, null)
             <div class="table-responsive" style="margin-top: 11px;">
                 <table class="table table-striped table-hover">
                     @foreach (var s in Model.Assignments)
