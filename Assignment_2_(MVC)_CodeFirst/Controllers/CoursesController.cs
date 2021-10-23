@@ -35,9 +35,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Create(int schoolId)
         {
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
-            var trainers = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
+            var trainers = new SelectList(Globals.trainerRepo.GetAllBySchool(schoolId), "ID", "FullName");
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
+            foreach (Student student in Globals.studentRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -72,7 +72,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             course.Trainer = Globals.trainerRepo.Get(courseView.TrainerId);
             if (courseView.SelectedStudents != null)
             {
-                var students = Globals.studentRepo.GetAll();
+                var students = Globals.studentRepo.GetAllBySchool(course.School.ID);
                 foreach (var id in courseView.SelectedStudents)
                 {
                     var selectedStudent = Globals.studentRepo.Get(id);
@@ -114,12 +114,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var trainers = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
+            var trainers = new SelectList(Globals.trainerRepo.GetAllBySchool(course.School.ID), "ID", "FullName");
             var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedTrainer != null) selectedTrainer.Selected = true;
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
+            foreach (Student student in Globals.studentRepo.GetAllBySchool(course.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -161,7 +161,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             courseDB.Trainer = Globals.trainerRepo.Get(courseView.TrainerId);
             if(courseView.SelectedStudents != null)
             {
-                var students = Globals.studentRepo.GetAll();
+                var students = Globals.studentRepo.GetAllBySchool(courseDB.School.ID);
                 foreach(var id in courseView.SelectedStudents)
                 {
                     var selectedStudent = Globals.studentRepo.Get(id);
@@ -181,12 +181,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var trainers = new SelectList(Globals.trainerRepo.GetAll(), "ID", "FullName");
+            var trainers = new SelectList(Globals.trainerRepo.GetAllBySchool(courseDB.School.ID), "ID", "FullName");
             var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
             if (selectedTrainer != null) selectedTrainer.Selected = true;
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
+            foreach (Student student in Globals.studentRepo.GetAllBySchool(courseDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {

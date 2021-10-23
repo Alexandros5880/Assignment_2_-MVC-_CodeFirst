@@ -1,13 +1,10 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
-using AutoMapper;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
-using System;
-using System.Collections.Generic;
+using AutoMapper;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
@@ -62,7 +59,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.DbHundler.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
-        [Route("api/v1/{Students}/{RemoveCourse}"), HttpPost]
+        [Route("api/Students/RemoveCourse"), HttpPost]
         public IHttpActionResult RemoveCourse([FromBody] StudentCourseData data)
         {
             if (data.studentId == null || data.courseId == null)
@@ -82,7 +79,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             }
             return BadRequest("Record Failed");
         }
-        [Route("api/v1/{Students}/{RemoveAssignment}"), HttpPost]
+        [Route("api/Students/RemoveAssignment"), HttpPost]
         public IHttpActionResult RemoveAssignment([FromBody] StudentAssignmentData data)
         {
             if (data.studentId == null || data.assignmentId == null)

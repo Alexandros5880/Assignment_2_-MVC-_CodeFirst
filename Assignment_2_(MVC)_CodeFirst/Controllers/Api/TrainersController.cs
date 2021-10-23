@@ -3,11 +3,8 @@ using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
@@ -62,7 +59,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.DbHundler.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
-        [Route("api/v1/{Trainers}/{RemoveCourse}"), HttpPost]
+        [Route("api/Trainers/RemoveCourse"), HttpPost]
         public IHttpActionResult RemoveCourse([FromBody] TrainerCourseData data)
         {
             if (data.trainerId == null || data.courseId == null)

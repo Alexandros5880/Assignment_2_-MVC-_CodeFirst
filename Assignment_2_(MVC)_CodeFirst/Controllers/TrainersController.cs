@@ -37,7 +37,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
-            foreach (Course course in Globals.courseRepo.GetAll())
+            foreach (Course course in Globals.courseRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -68,7 +68,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             trainer.School = Globals.schoolRepo.Get(trainerView.SchoolId);
             if (trainerView.SelectedCourses != null)
             {
-                var courses = Globals.courseRepo.GetAll();
+                var courses = Globals.courseRepo.GetAllBySchool(trainer.School.ID);
                 foreach (var id in trainerView.SelectedCourses)
                 {
                     var selectedCourse = Globals.courseRepo.Get(id);
@@ -110,7 +110,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (selectedSchool != null) selectedSchool.Selected = true;
 
             List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
-            foreach (Course course in Globals.courseRepo.GetAll())
+            foreach (Course course in Globals.courseRepo.GetAllBySchool(trainer.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -151,7 +151,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 .Get(trainerView.SchoolId);
             if (trainerView.SelectedCourses != null)
             {
-                var courses = Globals.courseRepo.GetAll();
+                var courses = Globals.courseRepo.GetAllBySchool(trainerDB.School.ID);
                 foreach (var id in trainerView.SelectedCourses)
                 {
                     var selectedCourse = Globals.courseRepo.Get(id);
@@ -173,7 +173,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (selectedSchool != null) selectedSchool.Selected = true;
 
             List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
-            foreach (Course course in Globals.courseRepo.GetAll())
+            foreach (Course course in Globals.courseRepo.GetAllBySchool(trainerDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {

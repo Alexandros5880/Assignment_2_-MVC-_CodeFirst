@@ -37,7 +37,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
             List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
-            foreach (Course course in Globals.courseRepo.GetAll())
+            foreach (Course course in Globals.courseRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -47,7 +47,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 coursesSelectListItems.Add(selectList);
             }
             List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
-            foreach (Assignment assignment in Globals.assignmentRepo.GetAll())
+            foreach (Assignment assignment in Globals.assignmentRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -80,7 +80,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             student.School = Globals.schoolRepo.Get(studentView.SchoolId);
             if (studentView.SelectedCourses != null)
             {
-                var courses = Globals.courseRepo.GetAll();
+                var courses = Globals.courseRepo.GetAllBySchool(student.School.ID);
                 foreach (var id in studentView.SelectedCourses)
                 {
                     var selectedCourse = Globals.courseRepo.Get(id);
@@ -101,7 +101,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             }
             if (studentView.SelectedAssignments != null)
             {
-                var assignments = Globals.assignmentRepo.GetAll();
+                var assignments = Globals.assignmentRepo.GetAllBySchool(student.School.ID);
                 foreach (var id in studentView.SelectedAssignments)
                 {
                     var selectedAssignment = Globals.assignmentRepo.Get(id);
@@ -143,7 +143,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (selectedSchool != null) selectedSchool.Selected = true;
 
             List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
-            foreach( Course course in Globals.courseRepo.GetAll() )
+            foreach( Course course in Globals.courseRepo.GetAllBySchool(student.School.ID) )
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -155,7 +155,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             }
 
             List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
-            foreach (Assignment assignment in Globals.assignmentRepo.GetAll())
+            foreach (Assignment assignment in Globals.assignmentRepo.GetAllBySchool(student.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -228,7 +228,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (selectedSchool != null) selectedSchool.Selected = true;
 
             List<SelectListItem> coursesSelectListItems = new List<SelectListItem>();
-            foreach (Course course in Globals.courseRepo.GetAll())
+            foreach (Course course in Globals.courseRepo.GetAllBySchool(studentDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -240,7 +240,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             }
 
             List<SelectListItem> assignmentSelectListItems = new List<SelectListItem>();
-            foreach (Assignment assignment in Globals.assignmentRepo.GetAll())
+            foreach (Assignment assignment in Globals.assignmentRepo.GetAllBySchool(studentDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {

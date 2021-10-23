@@ -71,8 +71,8 @@
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
                                             $.ajax({
-                                                type: "POST",
-                                                url: "/api/v1/Trainers/RemoveCourse",
+                                                method: "POST",
+                                                url: "../../api/Trainers/RemoveCourse",
                                                 data: JSON.stringify(
                                                     {
                                                         "trainerId": trainerId,
@@ -80,20 +80,11 @@
                                                     }
                                                 ),
                                                 contentType: "application/json; charset=utf-8",
-                                                dataType: "json",
-                                                success: function (response) {
-                                                    if (response != null) {
-                                                        location.reload();
-                                                    } else {
-                                                        console.log(response);
-                                                    }
-                                                },
-                                                failure: function (response) {
-                                                    console.log(response);
-                                                },
-                                                error: function (response) {
-                                                    console.log(response);
-                                                }
+                                                dataType: "json"
+                                            }).done(function (data) {
+                                                console.log(`Data: ${data}`);
+                                            }).fail(function (error) {
+                                                console.log(`Erros: ${error}`);
                                             });
                                         }
                                     }
@@ -125,7 +116,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index", "Schools")
+    @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.SchoolId }, null)
 </div>
 
 @section Scripts {

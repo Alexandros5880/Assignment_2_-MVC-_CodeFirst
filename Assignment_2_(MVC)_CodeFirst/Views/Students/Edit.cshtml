@@ -71,8 +71,8 @@
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
                                             $.ajax({
-                                                type: "POST",
-                                                url: "/api/v1/Students/RemoveCourse",
+                                                method: "POST",
+                                                url: "../../api/Students/RemoveCourse",
                                                 data: JSON.stringify(
                                                     {
                                                         "studentId": studentId,
@@ -80,21 +80,11 @@
                                                     }
                                                 ),
                                                 contentType: "application/json; charset=utf-8",
-                                                dataType: "json",
-                                                success: function (response) {
-                                                    if (response != null) {
-                                                        alert("Course Removed.");
-                                                    } else {
-                                                        alert("Something went wrong");
-                                                    }
-                                                    location.reload();
-                                                },
-                                                failure: function (response) {
-                                                    location.reload();
-                                                },
-                                                error: function (response) {
-                                                    location.reload();
-                                                }
+                                                dataType: "json"
+                                            }).done(function (data) {
+                                                console.log(`Data: ${data}`);
+                                            }).fail(function (error) {
+                                                console.log(`Erros: ${error}`);
                                             });
                                         }
                                     });
@@ -122,33 +112,15 @@
                         <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
                         <td>
                             @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
-                            @*<div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID); return false;" style="float: right;"><a>Remove</a></div>*@
                             <button class="btn-link js-delete" onclick="return removeAssignmentFromStudent(@Model.ID, @a.ID);">Delete</button>
                             <script type="text/javascript">
                                 function removeAssignmentFromStudent(studentId, assignmentId) {
                                     var button = $(this);
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
-                                            //$.ajax({
-                                            //    url: "/Students/RemoveAssignment",
-                                            //    method: "POST",
-                                            //    data: JSON.stringify(
-                                            //        {
-                                            //            "studentId": studentId,
-                                            //            "assignmentId": assignmentId
-                                            //        }
-                                            //    ),
-                                            //    contentType: "application/json; charset=utf-8",
-                                            //    dataType: "json"
-                                            //}).done(function (data) {
-                                            //    console.log(data);
-                                            //    return false;
-                                            //}).fail(function (error) {
-                                            //    console.log(error);
-                                            //});
                                             $.ajax({
-                                                type: "POST",
-                                                url: "/api/v1Students/RemoveAssignment",
+                                                method: "POST",
+                                                url: "../../api/Students/RemoveAssignment",
                                                 data: JSON.stringify(
                                                     {
                                                         "studentId": studentId,
@@ -156,21 +128,11 @@
                                                     }
                                                 ),
                                                 contentType: "application/json; charset=utf-8",
-                                                dataType: "json",
-                                                success: function (response) {
-                                                    if (response != null) {
-                                                        alert("Course Removed.");
-                                                    } else {
-                                                        alert("Something went wrong");
-                                                    }
-                                                    location.reload();
-                                                },
-                                                failure: function (response) {
-                                                    location.reload();
-                                                },
-                                                error: function (response) {
-                                                    location.reload();
-                                                }
+                                                dataType: "json"
+                                            }).done(function (data) {
+                                                console.log(`Data: ${data}`);
+                                            }).fail(function (error) {
+                                                console.log(`Erros: ${error}`);
                                             });
                                         }
                                     });
@@ -210,7 +172,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index", "Schools")
+    @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.SchoolId }, null)
 </div>
 
 @section Scripts {

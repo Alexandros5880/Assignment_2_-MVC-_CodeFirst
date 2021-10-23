@@ -1,6 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
-using Assignment_2__MVC__CodeFirst.Static;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -51,6 +50,13 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public IEnumerable<Course> GetAllEmpty()
         {
             return this._context.Courses;
+        }
+
+        public IEnumerable<Course> GetAllBySchool(int schoolId)
+        {
+            return this._context.Courses
+                .Include(c => c.Students)
+                .Where(c => c.School.ID == schoolId);
         }
 
         public void Update(Course obj)

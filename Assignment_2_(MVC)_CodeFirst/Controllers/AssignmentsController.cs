@@ -38,7 +38,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
+            foreach (Student student in Globals.studentRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -71,7 +71,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             assignment.School = Globals.schoolRepo.Get(assignmentView.SchoolId);
             if (assignmentView.SelectedStudents != null)
             {
-                var students = Globals.studentRepo.GetAll();
+                var students = Globals.studentRepo.GetAllBySchool(assignment.School.ID);
                 foreach (var id in assignmentView.SelectedStudents)
                 {
                     var student = Globals.studentRepo.Get(id);
@@ -112,7 +112,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignment.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
+            foreach (Student student in Globals.studentRepo.GetAllBySchool(assignment.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -149,7 +149,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             assignmentDB.School = Globals.schoolRepo.Get(assignmentView.SchoolId);
             if (assignmentView.SelectedStudents != null)
             {
-                var students = Globals.studentRepo.GetAll();
+                var students = Globals.studentRepo.GetAllBySchool(assignmentDB.School.ID);
                 foreach(var id in assignmentView.SelectedStudents)
                 {
                     var student = Globals.studentRepo.Get(id);
@@ -167,7 +167,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignmentDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAll())
+            foreach (Student student in Globals.studentRepo.GetAllBySchool(assignmentDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
