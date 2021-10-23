@@ -55,16 +55,12 @@
         @Html.LabelFor(model => model.Courses, "Courses", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <table>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
                 @foreach (var c in Model.MyCourses)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
+                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) | 
                             <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeCourseFromStudent(studentId, courseId) {
@@ -82,9 +78,9 @@
                                                 contentType: "application/json; charset=utf-8",
                                                 dataType: "json"
                                             }).done(function (data) {
-                                                console.log(`Data: ${data}`);
+                                                console.log(data);
                                             }).fail(function (error) {
-                                                console.log(`Erros: ${error}`);
+                                                console.log(error);
                                             });
                                         }
                                     });
@@ -102,16 +98,12 @@
         @Html.LabelFor(model => model.Assignments, "Assignments", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <table>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
                 @foreach (var a in Model.MyAssignments)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) |
+                            @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) | 
                             <button class="btn-link js-delete" onclick="return removeAssignmentFromStudent(@Model.ID, @a.ID);">Delete</button>
                             <script type="text/javascript">
                                 function removeAssignmentFromStudent(studentId, assignmentId) {

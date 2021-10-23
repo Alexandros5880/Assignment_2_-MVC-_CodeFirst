@@ -55,16 +55,12 @@
         @Html.LabelFor(model => model.Students, "Students", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <table>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
                 @foreach (var st in Model.MyStudents)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => st.FullName)&emsp;</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Students", new { id = st.ID }, null) |
+                            @Html.ActionLink("Details", "Details", "Students", new { id = st.ID }, null) | 
                             <div onclick="removeStudentFromAssignment(@Model.ID, @st.ID);" style="float: right;"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeStudentFromAssignment(assignmentId, studentId) {
@@ -87,7 +83,7 @@
                                                 console.log(`Erros: ${error}`);
                                             });
                                         }
-                                    }
+                                    });
                                 };
                             </script>
                         </td>

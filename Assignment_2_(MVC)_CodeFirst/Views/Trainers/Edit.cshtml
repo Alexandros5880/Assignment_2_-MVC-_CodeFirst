@@ -44,7 +44,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.SchoolId, "School", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.SchoolId, new SelectList(Assignment_2__MVC__CodeFirst.Static.Globals.schoolRepo.GetAll(), "ID", "Name") as SelectList, "Select School", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.SchoolId, @Model.Schools as SelectList, "Select School", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.SchoolId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -55,16 +55,12 @@
         @Html.LabelFor(model => model.Courses, "Courses", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <table>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
                 @foreach (var c in Model.MyCourses)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) |
+                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) | 
                             <div onclick="removeCourseFromTrainer(@Model.ID, @c.ID);" style="float: right;"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeCourseFromTrainer(trainerId, courseId) {
@@ -82,12 +78,12 @@
                                                 contentType: "application/json; charset=utf-8",
                                                 dataType: "json"
                                             }).done(function (data) {
-                                                console.log(`Data: ${data}`);
+                                                console.log(data);
                                             }).fail(function (error) {
-                                                console.log(`Erros: ${error}`);
+                                                console.log(error);
                                             });
                                         }
-                                    }
+                                    });
                                 };
                             </script>
                         </td>
