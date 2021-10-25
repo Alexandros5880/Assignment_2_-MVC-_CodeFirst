@@ -67,20 +67,20 @@
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
                                             $.ajax({
-                                                method: "POST",
+                                                type: "POST",
                                                 url: "../../api/Students/RemoveCourse",
+                                                contentType: "application/json; charset=utf-8",
+                                                dataType: "json",
                                                 data: JSON.stringify(
                                                     {
                                                         "studentId": studentId,
                                                         "courseId": courseId
                                                     }
-                                                ),
-                                                contentType: "application/json; charset=utf-8",
-                                                dataType: "json"
+                                                )
                                             }).done(function (data) {
-                                                console.log(data);
+                                                location.reload();
                                             }).fail(function (error) {
-                                                console.log(error);
+                                                console.log(`Error: ${error}`);
                                             });
                                         }
                                     });
@@ -104,27 +104,27 @@
                         <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
                         <td>
                             @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) | 
-                            <button class="btn-link js-delete" onclick="return removeAssignmentFromStudent(@Model.ID, @a.ID);">Delete</button>
+                            <div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeAssignmentFromStudent(studentId, assignmentId) {
                                     var button = $(this);
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
                                             $.ajax({
-                                                method: "POST",
+                                                type: "POST",
                                                 url: "../../api/Students/RemoveAssignment",
+                                                contentType: "application/json; charset=utf-8",
+                                                dataType: "json",
                                                 data: JSON.stringify(
                                                     {
                                                         "studentId": studentId,
                                                         "assignmentId": assignmentId
                                                     }
-                                                ),
-                                                contentType: "application/json; charset=utf-8",
-                                                dataType: "json"
+                                                )
                                             }).done(function (data) {
-                                                console.log(`Data: ${data}`);
+                                                location.reload();
                                             }).fail(function (error) {
-                                                console.log(`Erros: ${error}`);
+                                                console.log(`Error: ${error}`);
                                             });
                                         }
                                     });

@@ -75,7 +75,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
                 Globals.studentRepo.Update(student);
                 Globals.courseRepo.Update(course);
                 Globals.DbHundler.Save();
-                return Ok(student);
+                return Ok(200);
             }
             return BadRequest("Record Failed");
         }
@@ -95,7 +95,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
                 Globals.studentRepo.Update(student);
                 Globals.assignmentRepo.Update(assignment);
                 Globals.DbHundler.Save();
-                return Ok(student);
+                return Ok(200);
             }
             return BadRequest("Record Failed");
         }

@@ -78,7 +78,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
                 Globals.assignmentRepo.Update(assignment);
                 Globals.studentRepo.Update(student);
                 Globals.DbHundler.Save();
-                return Ok(assignment);
+                return Ok(200);
             }
 
             return BadRequest("Record Failed");

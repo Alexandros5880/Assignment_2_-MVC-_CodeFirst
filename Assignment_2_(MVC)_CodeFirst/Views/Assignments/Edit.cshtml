@@ -67,20 +67,20 @@
                                     bootbox.confirm("Are you sure you want to delete?", function (result) {
                                         if (result) {
                                             $.ajax({
-                                                method: "POST",
+                                                type: "POST",
                                                 url: "../../api/Assignments/RemoveStudent",
+                                                contentType: "application/json; charset=utf-8",
+                                                dataType: "json",
                                                 data: JSON.stringify(
                                                     {
                                                         "assignmentId": assignmentId,
                                                         "studentId": studentId
                                                     }
-                                                ),
-                                                contentType: "application/json; charset=utf-8",
-                                                dataType: "json"
+                                                )
                                             }).done(function (data) {
-                                                console.log(`Data: ${data}`);
+                                                location.reload();
                                             }).fail(function (error) {
-                                                console.log(`Erros: ${error}`);
+                                                console.log(`Error: ${error}`);
                                             });
                                         }
                                     });

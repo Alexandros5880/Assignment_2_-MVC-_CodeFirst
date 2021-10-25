@@ -78,7 +78,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
                 Globals.courseRepo.Update(course);
                 Globals.studentRepo.Update(student);
                 Globals.DbHundler.Save();
-                return Ok(course);
+                return Ok(200);
             }
             else
             {
