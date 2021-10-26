@@ -63,6 +63,20 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .Where(s => s.School.ID == schoolId);
         }
 
+        public IEnumerable<Student> GetAllByIds(ICollection<int?> ids)
+        {
+            return this._context.Students
+                .Where(s => ids.Contains(s.ID))
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments);
+        }
+
+        public IEnumerable<Student> GetAllByIdsEmpty(ICollection<int?> ids)
+        {
+            return this._context.Students
+                .Where(s => ids.Contains(s.ID));
+        }
+
         public void Update(Student obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;

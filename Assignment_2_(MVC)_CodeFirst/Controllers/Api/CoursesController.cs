@@ -3,6 +3,7 @@ using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -84,6 +85,23 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             {
                 return BadRequest("Record Failed");
             }
+        }
+        [Route("api/Courses/AddStudents"), HttpPost]
+        public IHttpActionResult AddStudents([FromBody] List<CourseStudentData> data)
+        {
+            if (data.Count == 0)
+                return BadRequest();
+            var course = Globals.courseRepo.GetEmpty(data[0].courseId);
+            if (course == null)
+                return BadRequest();
+            var studentsIds = data.Select(d => d.studentId).ToList();
+            var students = Globals.studentRepo.GetAllByIdsEmpty(studentsIds);
+            foreach (var student in students)
+            {
+                course.Students.Add(student);
+            }
+            Globals.DbHundler.Save();
+            return Ok(200);
         }
     }
 }
