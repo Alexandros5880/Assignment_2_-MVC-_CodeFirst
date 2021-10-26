@@ -3,8 +3,10 @@ using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
@@ -59,9 +61,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Globals.DbHundler.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
-
         [Route("api/Assignments/RemoveStudent"), HttpPost]
-        public IHttpActionResult RemoveStudent([FromBody] AssignmentStudentData data)
+        public async Task<IHttpActionResult> RemoveStudentAsync([FromBody] AssignmentStudentData data)
         {
             if (data.assignmentId == null || data.studentId == null)
                 return BadRequest();
@@ -77,11 +78,28 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             {
                 Globals.assignmentRepo.Update(assignment);
                 Globals.studentRepo.Update(student);
-                Globals.DbHundler.Save();
+                _ = await Globals.DbHundler.SaveAsync();
                 return Ok(200);
             }
 
             return BadRequest("Record Failed");
+        }
+        [Route("api/Assignments/AddStudents"), HttpPost]
+        public async Task<IHttpActionResult> AddStudentsAsync([FromBody] List<AssignmentStudentData> data)
+        {
+            if (data.Count == 0)
+                return BadRequest("data.Count == 0");
+            var assignment = Globals.assignmentRepo.GetEmpty(data[0].assignmentId);
+            if (assignment == null)
+                return BadRequest("assignment == null");
+            var studentsIds = data.Select(d => d.studentId).ToList();
+            var students = Globals.studentRepo.GetAllByIdsEmpty(studentsIds);
+            foreach (var student in students)
+            {
+                assignment.Students.Add(student);
+            }
+            _ = await Globals.DbHundler.SaveAsync();
+            return Ok(200);
         }
     }
 }

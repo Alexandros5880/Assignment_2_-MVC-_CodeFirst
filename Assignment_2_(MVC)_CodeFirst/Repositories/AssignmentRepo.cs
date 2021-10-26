@@ -45,19 +45,36 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public IEnumerable<Assignment> GetAll()
         {
             return this._context.Assignments
-                .Include(a => a.Students);
+                .Include(a => a.Students)
+                .ToList();
         }
 
         public IEnumerable<Assignment> GetAllEmpty()
         {
-            return this._context.Assignments;
+            return this._context.Assignments.ToList();
         }
 
         public IEnumerable<Assignment> GetAllBySchool(int schoolId)
         {
             return this._context.Assignments
                 .Include(s => s.Students)
-                .Where(s => s.School.ID == schoolId);
+                .Where(s => s.School.ID == schoolId)
+                .ToList();
+        }
+
+        public IEnumerable<Assignment> GetAllByIds(ICollection<int?> ids)
+        {
+            return this._context.Assignments
+                .Where(a => ids.Contains(a.ID))
+                .Include(a => a.Students)
+                .ToList();
+        }
+
+        public IEnumerable<Assignment> GetAllByIdsEmpty(ICollection<int?> ids)
+        {
+            return this._context.Assignments
+                .Where(a => ids.Contains(a.ID))
+                .ToList();
         }
 
         public void Update(Assignment obj)

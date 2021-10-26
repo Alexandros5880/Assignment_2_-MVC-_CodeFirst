@@ -1,10 +1,9 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Assignment_2__MVC__CodeFirst.Models;
-using Assignment_2__MVC__CodeFirst.Models.Entities;
+using System.Data.Entity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Assignment_2__MVC__CodeFirst.Models
 {

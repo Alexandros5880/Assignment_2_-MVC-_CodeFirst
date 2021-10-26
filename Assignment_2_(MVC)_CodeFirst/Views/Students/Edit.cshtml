@@ -142,16 +142,86 @@
     <div class="form-group">
         @Html.LabelFor(model => model.SelectedCourses, "Add Courses", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.ListBoxFor(model => model.SelectedCourses, Model.Courses, new { @class = "form-control" })
+            @Html.ListBoxFor(model => model.SelectedCourses, Model.Courses, new { @class = "form-control", @id = "selectedCoursesListSt" })
             @Html.ValidationMessageFor(model => model.SelectedCourses, "", new { @class = "text-danger" })
+            <br />
+            <div style="width: 30%;">
+                <button onclick="AddCoursesToStudent(@Model.ID); return false;" style="float:right;" class="btn btn-primary">Add</button>
+                <script type="text/javascript">
+                    function AddCoursesToStudent(studentId) {
+                        var courses = [];
+                        var listBox = $("#selectedCoursesListSt")[0];
+                        for (var i = 0; i < listBox.options.length; i++) {
+                            if (listBox.options[i].selected) {
+                                var text = listBox.options[i].innerHTML;
+                                var value = listBox.options[i].value;
+                                courses.push(
+                                    {
+                                        "studentId": studentId,
+                                        "courseId": value
+                                    }
+                                );
+                            }
+                        }
+                        if (courses.length > 0) {
+                            $.ajax({
+                                type: "POST",
+                                url: "../../api/Students/AddCourse",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: JSON.stringify(courses)
+                            }).done(function (data) {
+                                location.reload();
+                            }).fail(function (error) {
+                                console.log(`Error: ${error}`);
+                            });
+                        }
+                    };
+                </script>
+            </div>
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.SelectedAssignments, "Add Assignments", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.ListBoxFor(model => model.SelectedAssignments, Model.Assignments, new { @class = "form-control" })
+            @Html.ListBoxFor(model => model.SelectedAssignments, Model.Assignments, new { @class = "form-control", @id = "selectedAssignmentsListSt" })
             @Html.ValidationMessageFor(model => model.SelectedAssignments, "", new { @class = "text-danger" })
+            <br />
+            <div style="width: 30%;">
+                <button onclick="AddAssignmentsToStudent(@Model.ID); return false;" style="float:right;" class="btn btn-primary">Add</button>
+                <script type="text/javascript">
+                    function AddAssignmentsToStudent(studentId) {
+                        var assignments = [];
+                        var listBox = $("#selectedAssignmentsListSt")[0];
+                        for (var i = 0; i < listBox.options.length; i++) {
+                            if (listBox.options[i].selected) {
+                                var text = listBox.options[i].innerHTML;
+                                var value = listBox.options[i].value;
+                                assignments.push(
+                                    {
+                                        "studentId": studentId,
+                                        "assignmentId": value
+                                    }
+                                );
+                            }
+                        }
+                        if (assignments.length > 0) {
+                            $.ajax({
+                                type: "POST",
+                                url: "../../api/Students/AddAssingment",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: JSON.stringify(assignments)
+                            }).done(function (data) {
+                                location.reload();
+                            }).fail(function (error) {
+                                console.log(`Error: ${error}`);
+                            });
+                        }
+                    };
+                </script>
+            </div>
         </div>
     </div>
 

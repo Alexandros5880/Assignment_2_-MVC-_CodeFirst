@@ -1,5 +1,6 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
@@ -43,9 +44,9 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return this._context.SaveChanges() > 0;
         }
 
-        public async void SaveAsync()
+        public async Task<int> SaveAsync()
         {
-            await this._context.SaveChangesAsync();
+            return await this._context.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)

@@ -6,11 +6,11 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    //[Route("api/[controller]")]
     public class CoursesController : ApiController, IMyController<IHttpActionResult, CourseDto>
     {
         [HttpPost]
@@ -62,7 +62,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Courses/RemoveStudent"), HttpPost]
-        public IHttpActionResult RemoveStudent([FromBody] CourseStudentData data)
+        public async Task<IHttpActionResult> RemoveStudentAsync([FromBody] CourseStudentData data)
         {
             if (data.studentId == null || data.courseId == null)
                 return BadRequest();
@@ -78,7 +78,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             {
                 Globals.courseRepo.Update(course);
                 Globals.studentRepo.Update(student);
-                Globals.DbHundler.Save();
+                _ = await Globals.DbHundler.SaveAsync();
                 return Ok(200);
             }
             else
@@ -87,7 +87,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             }
         }
         [Route("api/Courses/AddStudents"), HttpPost]
-        public IHttpActionResult AddStudents([FromBody] List<CourseStudentData> data)
+        public async Task<IHttpActionResult> AddStudentsAsync([FromBody] List<CourseStudentData> data)
         {
             if (data.Count == 0)
                 return BadRequest();
@@ -100,7 +100,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             {
                 course.Students.Add(student);
             }
-            Globals.DbHundler.Save();
+            _ = await Globals.DbHundler.SaveAsync();
             return Ok(200);
         }
     }

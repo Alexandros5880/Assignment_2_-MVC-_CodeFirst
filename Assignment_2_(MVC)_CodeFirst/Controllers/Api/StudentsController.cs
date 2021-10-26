@@ -3,8 +3,10 @@ using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
@@ -60,7 +62,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Students/RemoveCourse"), HttpPost]
-        public IHttpActionResult RemoveCourse([FromBody] StudentCourseData data)
+        public async Task<IHttpActionResult> RemoveCourseAsync([FromBody] StudentCourseData data)
         {
             if (data.studentId == null || data.courseId == null)
                 return BadRequest();
@@ -74,13 +76,13 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             {
                 Globals.studentRepo.Update(student);
                 Globals.courseRepo.Update(course);
-                Globals.DbHundler.Save();
+                _ = await Globals.DbHundler.SaveAsync();
                 return Ok(200);
             }
             return BadRequest("Record Failed");
         }
         [Route("api/Students/RemoveAssignment"), HttpPost]
-        public IHttpActionResult RemoveAssignment([FromBody] StudentAssignmentData data)
+        public async Task<IHttpActionResult> RemoveAssignmentAsync([FromBody] StudentAssignmentData data)
         {
             if (data.studentId == null || data.assignmentId == null)
                 return BadRequest();
@@ -94,10 +96,44 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             {
                 Globals.studentRepo.Update(student);
                 Globals.assignmentRepo.Update(assignment);
-                Globals.DbHundler.Save();
+                _ = await Globals.DbHundler.SaveAsync();
                 return Ok(200);
             }
             return BadRequest("Record Failed");
+        }
+        [Route("api/Students/AddCourse"), HttpPost]
+        public async Task<IHttpActionResult> AddCoursesAsync([FromBody] List<StudentCourseData> data)
+        {
+            if (data.Count == 0)
+                return BadRequest("data.Count == 0");
+            var student = Globals.studentRepo.GetEmpty(data[0].studentId);
+            if (student == null)
+                return BadRequest("student == null");
+            var coursesIds = data.Select(d => d.courseId).ToList();
+            var courses = Globals.courseRepo.GetAllByIdsEmpty(coursesIds);
+            foreach (var course in courses)
+            {
+                student.Courses.Add(course);
+            }
+            _ = await Globals.DbHundler.SaveAsync();
+            return Ok(200);
+        }
+        [Route("api/Students/AddAssingment"), HttpPost]
+        public async Task<IHttpActionResult> AddAssignmentsAsync([FromBody] List<StudentAssignmentData> data)
+        {
+            if (data.Count == 0)
+                return BadRequest("data.Count == 0");
+            var student = Globals.studentRepo.GetEmpty(data[0].studentId);
+            if (student == null)
+                return BadRequest("student == null");
+            var assignmentsIds = data.Select(d => d.assignmentId).ToList();
+            var assignments = Globals.assignmentRepo.GetAllByIdsEmpty(assignmentsIds);
+            foreach (var assignment in assignments)
+            {
+                student.Assignments.Add(assignment);
+            }
+            _ = await Globals.DbHundler.SaveAsync();
+            return Ok(200);
         }
     }
 }

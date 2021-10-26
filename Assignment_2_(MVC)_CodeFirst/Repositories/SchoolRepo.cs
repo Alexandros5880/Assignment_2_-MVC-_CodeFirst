@@ -1,10 +1,9 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Entity;
 using System;
-using Assignment_2__MVC__CodeFirst.Static;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
@@ -52,12 +51,13 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments)
                 .Include(s => s.Trainers)
-                .Include(s => s.Students);
+                .Include(s => s.Students)
+                .ToList();
         }
 
         public IEnumerable<School> GetAllEmpty()
         {
-            return this._context.Schools;
+            return this._context.Schools.ToList();
         }
 
         public void Update(School obj)

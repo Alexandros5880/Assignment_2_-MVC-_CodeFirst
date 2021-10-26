@@ -47,12 +47,14 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         {
             return this._context.Students
                 .Include(s => s.Courses)
-                .Include(s => s.Assignments);
+                .Include(s => s.Assignments)
+                .ToList();
         }
 
         public IEnumerable<Student> GetAllEmpty()
         {
-            return this._context.Students;
+            return this._context.Students
+                .ToList();
         }
 
         public IEnumerable<Student> GetAllBySchool(int schoolId)
@@ -60,7 +62,8 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return this._context.Students
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments)
-                .Where(s => s.School.ID == schoolId);
+                .Where(s => s.School.ID == schoolId)
+                .ToList();
         }
 
         public IEnumerable<Student> GetAllByIds(ICollection<int?> ids)
@@ -68,13 +71,15 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return this._context.Students
                 .Where(s => ids.Contains(s.ID))
                 .Include(s => s.Courses)
-                .Include(s => s.Assignments);
+                .Include(s => s.Assignments)
+                .ToList();
         }
 
         public IEnumerable<Student> GetAllByIdsEmpty(ICollection<int?> ids)
         {
             return this._context.Students
-                .Where(s => ids.Contains(s.ID));
+                .Where(s => ids.Contains(s.ID))
+                .ToList();
         }
 
         public void Update(Student obj)

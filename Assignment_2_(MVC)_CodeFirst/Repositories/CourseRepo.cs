@@ -44,19 +44,36 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public IEnumerable<Course> GetAll()
         {
             return this._context.Courses
-                .Include(c => c.Students);
+                .Include(c => c.Students)
+                .ToList();
         }
 
         public IEnumerable<Course> GetAllEmpty()
         {
-            return this._context.Courses;
+            return this._context.Courses.ToList();
         }
 
         public IEnumerable<Course> GetAllBySchool(int schoolId)
         {
             return this._context.Courses
                 .Include(c => c.Students)
-                .Where(c => c.School.ID == schoolId);
+                .Where(c => c.School.ID == schoolId)
+                .ToList();
+        }
+
+        public IEnumerable<Course> GetAllByIds(ICollection<int?> ids)
+        {
+            return this._context.Courses
+                .Where(c => ids.Contains(c.ID))
+                .Include(c => c.Students)
+                .ToList();
+        }
+
+        public IEnumerable<Course> GetAllByIdsEmpty(ICollection<int?> ids)
+        {
+            return this._context.Courses
+                .Where(c => ids.Contains(c.ID))
+                .ToList();
         }
 
         public void Update(Course obj)
