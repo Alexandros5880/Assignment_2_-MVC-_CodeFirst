@@ -75,3 +75,7 @@ body {
 a:hover {
     cursor: pointer;
 }
+
+.main-col {
+    color: black;
+}

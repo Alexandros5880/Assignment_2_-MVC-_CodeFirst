@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
     
-<div class="form-horizontal">
+<div class="form-horizontal container text-center">
     <h4>Trainer</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -58,9 +58,8 @@
                 @foreach (var c in Model.MyCourses)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
+                        <td>@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, new { @class = "main-col" }) &emsp;&emsp;</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) | 
                             <div onclick="removeCourseFromTrainer(@Model.ID, @c.ID);" style="float: right;"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeCourseFromTrainer(trainerId, courseId) {

@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+<div class="form-horizontal container text-center">
     <h4>Student</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -58,9 +58,8 @@
                 @foreach (var c in Model.MyCourses)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model => c.Title)&emsp;</td>
+                        <td>@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, new { @class = "main-col" })&emsp;&emsp;</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Courses", new { id = c.ID }, null) | 
                             <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeCourseFromStudent(studentId, courseId) {
@@ -101,9 +100,8 @@
                 @foreach (var a in Model.MyAssignments)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model => a.Title)&emsp;</td>
+                        <td>@Html.ActionLink(a.Title, "Details", "Assignments", new { id = a.ID }, new { @class = "main-col" })&emsp;&emsp;</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Assignments", new { id = a.ID }, null) | 
                             <div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
                                 function removeAssignmentFromStudent(studentId, assignmentId) {
