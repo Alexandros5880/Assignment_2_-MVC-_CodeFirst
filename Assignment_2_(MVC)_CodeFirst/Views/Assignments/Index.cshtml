@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { onclick = "loadingShow();" })
 </p>
 <table class="table">
     <tr>
@@ -26,7 +26,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @Html.ActionLink(item.Title, "Details", new { id = item.ID }, new { onclick = "loadingShow();" })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StartDate)
@@ -35,9 +35,8 @@
             @Html.DisplayFor(modelItem => item.EndDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }, new { onclick = "loadingShow();" }) | 
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }, new { onclick = "loadingShow();" })
         </td>
     </tr>
 }

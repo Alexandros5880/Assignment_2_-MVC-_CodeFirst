@@ -14,7 +14,7 @@
 }
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { onclick = "loadingShow();" })
 </p>
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -32,14 +32,14 @@
         {
             <tr scope="row">
                 <td scope="col">
-                    @Html.ActionLink(item.Name, "Details", new { id = item.ID })
+                    @Html.ActionLink(item.Name, "Details", new { id = item.ID }, new { onclick = "loadingShow();" })
                 </td>
                 <td scope="col">
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </td>
                 <td scope="col">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { onclick = "loadingShow();" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { onclick = "loadingShow();" })
                 </td>
             </tr>
         }

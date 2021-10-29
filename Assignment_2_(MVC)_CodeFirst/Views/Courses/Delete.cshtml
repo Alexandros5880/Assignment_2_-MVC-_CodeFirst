@@ -49,7 +49,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.School.ID }, null)
+            @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.School.ID }, new { onclick = "loadingShow();" })
         </div>
     }
 </div>

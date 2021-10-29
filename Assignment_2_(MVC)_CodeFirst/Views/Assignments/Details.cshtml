@@ -63,11 +63,10 @@
                         @foreach (var s in Model.Students)
                         {
                             <tr class="text-center" scope="row">
-                                <td scope="col">@Html.DisplayFor(model => s.FullName)&emsp;</td>
+                                <td scope="col">@Html.ActionLink(s.FullName, "Details", "Students", new { id = s.ID }, new { onclick = "loadingShow();" })&emsp;</td>
                                 <td scope="col">
-                                    @Html.ActionLink("Edit", "Edit", "Students", new { id = s.ID }, null) |
-                                    @Html.ActionLink("Details", "Details", "Students", new { id = s.ID }, null) |
-                                    @Html.ActionLink("Delete", "Delete", "Students", new { id = s.ID }, null)
+                                    @Html.ActionLink("Edit", "Edit", "Students", new { id = s.ID }, new { onclick = "loadingShow();" }) | 
+                                    @Html.ActionLink("Delete", "Delete", "Students", new { id = s.ID }, new { onclick = "loadingShow();" })
                                 </td>
                             </tr>
                         }
@@ -77,6 +76,6 @@
         </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back", "Details", "Schools", new { id = @Model.School.ID }, null)
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { onclick = "loadingShow();" }) |
+    @Html.ActionLink("Back", "Details", "Schools", new { id = @Model.School.ID }, new { onclick = "loadingShow();" })
 </p>

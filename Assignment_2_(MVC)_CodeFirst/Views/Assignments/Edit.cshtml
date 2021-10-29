@@ -58,7 +58,7 @@
                 @foreach (var st in Model.MyStudents)
                 {
                     <tr>
-                        <td>@Html.ActionLink(st.FullName, "Details", "Students", new { id = st.ID }, new { @class = "main-col" }) &emsp; &emsp;</td>
+                        <td>@Html.ActionLink(st.FullName, "Details", "Students", new { id = st.ID }, new { @class = "main-col", onclick = "loadingShow();" }) &emsp; &emsp;</td>
                         <td>
                             <div onclick="removeStudentFromAssignment(@Model.ID, @st.ID); return false;" style="float: right;"><a>Remove</a></div>
                             <script type="text/javascript">
@@ -77,6 +77,7 @@
                                                     }
                                                 )
                                             }).done(function (data) {
+                                                loadingShow();
                                                 location.reload();
                                             }).fail(function (error) {
                                                 console.log(`Error: ${error}`);
@@ -126,6 +127,7 @@
                                 dataType: "json",
                                 data: JSON.stringify(students)
                             }).done(function (data) {
+                                loadingShow();
                                 location.reload();
                             }).fail(function (error) {
                                 console.log(`Error: ${error}`);
@@ -139,14 +141,14 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-default" onclick="loadingShow();"/>
         </div>
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.SchoolId }, null)
+    @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.SchoolId }, new { onclick = "loadingShow();" })
 </div>
 
 @section Scripts {

@@ -17,11 +17,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Schools", "Index", "Schools", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Schools", "Index", "Schools", new { area = "" }, new { @class = "navbar-brand", onclick = "loadingShow();" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <!--<li>@Html.ActionLink("Schools", "Index", "Schools")</li>-->
+                    <!--<li>@Html.ActionLink("Schools", "Index", "Schools", null, new { onclick = "loadingShow();" })</li>-->
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -35,6 +35,9 @@
     <br />
 
     <div class="container body-content body">
+        <div class="loading">
+            Loading&#8230;
+        </div>
         @RenderBody()
     </div>
 
@@ -48,5 +51,23 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script>
+        function loadingShow() {
+            $(".loading").show();
+        }
+        function loadingHide() {
+            window.setTimeout(function () {
+                $(".loading").hide();
+            }, 1000);
+        }
+        $(window).on('load', function () {
+            //loadingShow();
+        });
+        $(window).ready(function () {
+            loadingHide();
+        });
+    </script>
+
 </body>
 </html>

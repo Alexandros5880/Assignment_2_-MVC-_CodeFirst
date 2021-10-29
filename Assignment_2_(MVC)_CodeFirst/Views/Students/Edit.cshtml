@@ -58,7 +58,7 @@
                 @foreach (var c in Model.MyCourses)
                 {
                     <tr>
-                        <td>@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, new { @class = "main-col" })&emsp;&emsp;</td>
+                        <td>@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, new { @class = "main-col", onclick = "loadingShow();" })&emsp;&emsp;</td>
                         <td>
                             <div onclick="removeCourseFromStudent(@Model.ID, @c.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
@@ -77,6 +77,7 @@
                                                     }
                                                 )
                                             }).done(function (data) {
+                                                loadingShow();
                                                 location.reload();
                                             }).fail(function (error) {
                                                 console.log(`Error: ${error}`);
@@ -100,7 +101,7 @@
                 @foreach (var a in Model.MyAssignments)
                 {
                     <tr>
-                        <td>@Html.ActionLink(a.Title, "Details", "Assignments", new { id = a.ID }, new { @class = "main-col" })&emsp;&emsp;</td>
+                        <td>@Html.ActionLink(a.Title, "Details", "Assignments", new { id = a.ID }, new { @class = "main-col", onclick = "loadingShow();" })&emsp;&emsp;</td>
                         <td>
                             <div onclick="removeAssignmentFromStudent(@Model.ID, @a.ID);" style="float: right;" data-id="Model.ID"><a>Remove</a></div>
                             <script type="text/javascript">
@@ -120,6 +121,7 @@
                                                     }
                                                 )
                                             }).done(function (data) {
+                                                loadingShow();
                                                 location.reload();
                                             }).fail(function (error) {
                                                 console.log(`Error: ${error}`);
@@ -169,6 +171,7 @@
                                 dataType: "json",
                                 data: JSON.stringify(courses)
                             }).done(function (data) {
+                                loadingShow();
                                 location.reload();
                             }).fail(function (error) {
                                 console.log(`Error: ${error}`);
@@ -212,6 +215,7 @@
                                 dataType: "json",
                                 data: JSON.stringify(assignments)
                             }).done(function (data) {
+                                loadingShow();
                                 location.reload();
                             }).fail(function (error) {
                                 console.log(`Error: ${error}`);
@@ -225,14 +229,14 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-default" onclick="loadingShow();"/>
         </div>
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.SchoolId }, null)
+    @Html.ActionLink("Back", "Details", "Schools", new { Id = @Model.SchoolId }, new { onclick = "loadingShow();" })
 </div>
 
 @section Scripts {

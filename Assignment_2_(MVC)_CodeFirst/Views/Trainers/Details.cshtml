@@ -53,10 +53,10 @@
                         @foreach (var c in Model.Courses)
                         {
                             <tr class="text-center" scope="row">
-                                <td scope="col">@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, null)</td>
+                                <td scope="col">@Html.ActionLink(c.Title, "Details", "Courses", new { id = c.ID }, new { onclick= "loadingShow();" })</td>
                                 <td scope="col">
-                                    @Html.ActionLink("Edit", "Edit", "Courses", new { id = c.ID }, null) | 
-                                    @Html.ActionLink("Delete", "Delete", "Courses", new { id = c.ID }, null)
+                                    @Html.ActionLink("Edit", "Edit", "Courses", new { id = c.ID }, new { onclick = "loadingShow();" }) | 
+                                    @Html.ActionLink("Delete", "Delete", "Courses", new { id = c.ID }, new { onclick = "loadingShow();" })
                                 </td>
                             </tr>
                         }
@@ -69,6 +69,6 @@
 
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-        @Html.ActionLink("Back", "Details", "Schools", new { id = @Model.School.ID }, null)
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { onclick = "loadingShow();" }) |
+        @Html.ActionLink("Back", "Details", "Schools", new { id = @Model.School.ID }, new { onclick = "loadingShow();" })
     </p>
