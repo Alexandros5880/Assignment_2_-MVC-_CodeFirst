@@ -4,11 +4,25 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Trainers</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { onclick = "loadingShow();" })
-</p>
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "Trainers", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken();
+            @Html.TextBox("Search", "", "", new { placeholder = "Search", @class = "form-input" });
+            <input type="submit" name="SaveButton" value="Save" />
+        }
+    </div>
+    <div class="col-md-6">
+        <p>
+            @Html.ActionLink("Create New", "Create", null, new { onclick = "loadingShow();" })
+        </p>
+    </div>
+</div>
+
+
 <table class="table">
     <tr>
         <th>

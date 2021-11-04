@@ -17,6 +17,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             return View(Globals.trainerRepo.GetAll());
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(string Search)
+        {
+            if (Search != null && Search.Length > 0)
+                return View(Globals.trainerRepo.GetAllByName(Search));
+            else
+                return View(Globals.trainerRepo.GetAll());
+        }
+
         // GET: Trainers/Details/5
         public ActionResult Details(int? id)
         {

@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Assignment_2__MVC__CodeFirst.Models;
-using Assignment_2__MVC__CodeFirst.Models.Entities;
-using Assignment_2__MVC__CodeFirst.Repositories;
-using Assignment_2__MVC__CodeFirst.ViewModels;
+﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Static;
+using Assignment_2__MVC__CodeFirst.ViewModels;
+using System.Net;
+using System.Web.Mvc;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers
 {
@@ -20,6 +12,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Index()
         {
             return View(Globals.schoolRepo.GetAll());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(string Search)
+        {
+            if (Search != null && Search.Length > 0)
+                return View(Globals.schoolRepo.GetAllByName(Search));
+            else
+                return View(Globals.schoolRepo.GetAll());
         }
 
         // GET: Schools/Details/5

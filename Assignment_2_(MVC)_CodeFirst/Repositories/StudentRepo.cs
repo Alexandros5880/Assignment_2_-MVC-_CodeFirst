@@ -51,6 +51,16 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Student> GetAllByName(string search)
+        {
+            return this._context.Students
+                .Where(s => s.FirstName.Equals(search) || s.FirstName.Contains(search) ||
+                        s.LastName.Equals(search) || s.LastName.Contains(search))
+                .Include(s => s.Courses)
+                .Include(s => s.Assignments)
+                .ToList();
+        }
+
         public IEnumerable<Student> GetAllEmpty()
         {
             return this._context.Students
