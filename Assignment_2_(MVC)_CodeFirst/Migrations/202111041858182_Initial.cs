@@ -1,9 +1,8 @@
 namespace Assignment_2__MVC__CodeFirst.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
-    public partial class initial : DbMigration
+
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -152,8 +151,8 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                         Assignment_ID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Student_ID, t.Assignment_ID })
-                .ForeignKey("dbo.Students", t => t.Student_ID, cascadeDelete: true)
-                .ForeignKey("dbo.Assignments", t => t.Assignment_ID, cascadeDelete: false)
+                .ForeignKey("dbo.Students", t => t.Student_ID, cascadeDelete: false)
+                .ForeignKey("dbo.Assignments", t => t.Assignment_ID, cascadeDelete: true)
                 .Index(t => t.Student_ID)
                 .Index(t => t.Assignment_ID);
             
@@ -165,8 +164,8 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
                         Course_ID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Student_ID, t.Course_ID })
-                .ForeignKey("dbo.Students", t => t.Student_ID, cascadeDelete: true)
-                .ForeignKey("dbo.Courses", t => t.Course_ID, cascadeDelete: false)
+                .ForeignKey("dbo.Students", t => t.Student_ID, cascadeDelete: false)
+                .ForeignKey("dbo.Courses", t => t.Course_ID, cascadeDelete: true)
                 .Index(t => t.Student_ID)
                 .Index(t => t.Course_ID);
             
