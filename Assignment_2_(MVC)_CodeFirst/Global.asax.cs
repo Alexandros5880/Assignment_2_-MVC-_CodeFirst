@@ -12,6 +12,7 @@ namespace Assignment_2__MVC__CodeFirst
         protected void Application_Start()
         {
             ContainerConfig.RegisterContainer();
+            ContainerConfig.RegisterContainerApi();
             Mapper.Initialize(c => c.AddProfile<MappingProfile>());
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();

@@ -1,5 +1,6 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Repositories;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
 using System.Linq;
@@ -8,8 +9,13 @@ using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    public class SchoolsController : ApiController, IMyController<IHttpActionResult, SchoolDto>
+    public class SchoolsApiController : ApiController, IMyController<IHttpActionResult, SchoolDto>
     {
+        private SchoolRepo _schoolRepo;
+        public SchoolsApiController(IRepository<School> repo)
+        {
+            this._schoolRepo = (SchoolRepo)repo;
+        }
         [HttpPost]
         public IHttpActionResult Create(SchoolDto schoolDto)
         {

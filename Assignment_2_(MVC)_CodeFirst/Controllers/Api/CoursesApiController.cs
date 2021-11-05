@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    public class CoursesController : ApiController, IMyController<IHttpActionResult, CourseDto>
+    public class CoursesApiController : ApiController, IMyController<IHttpActionResult, CourseDto>
     {
         [HttpPost]
         public IHttpActionResult Create(CourseDto courseDto)
