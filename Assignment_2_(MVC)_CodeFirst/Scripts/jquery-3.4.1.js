@@ -2584,7 +2584,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				}
 			}
 
-			// Override manipulation of globals by nested matchers
+			// Override manipulation of Repos by nested matchers
 			if ( outermost ) {
 				dirruns = dirrunsUnique;
 				outermostContext = contextBackup;
@@ -9150,7 +9150,7 @@ jQuery.extend( {
 			completed,
 
 			// To know if global events are to be dispatched
-			fireGlobals,
+			fireRepos,
 
 			// Loop variable
 			i,
@@ -9311,10 +9311,10 @@ jQuery.extend( {
 
 		// We can fire global events as of now if asked to
 		// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
-		fireGlobals = jQuery.event && s.global;
+		fireRepos = jQuery.event && s.global;
 
 		// Watch for a new set of requests
-		if ( fireGlobals && jQuery.active++ === 0 ) {
+		if ( fireRepos && jQuery.active++ === 0 ) {
 			jQuery.event.trigger( "ajaxStart" );
 		}
 
@@ -9413,7 +9413,7 @@ jQuery.extend( {
 			jqXHR.readyState = 1;
 
 			// Send global event
-			if ( fireGlobals ) {
+			if ( fireRepos ) {
 				globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
 			}
 
@@ -9539,7 +9539,7 @@ jQuery.extend( {
 			jqXHR.statusCode( statusCode );
 			statusCode = undefined;
 
-			if ( fireGlobals ) {
+			if ( fireRepos ) {
 				globalEventContext.trigger( isSuccess ? "ajaxSuccess" : "ajaxError",
 					[ jqXHR, s, isSuccess ? success : error ] );
 			}
@@ -9547,7 +9547,7 @@ jQuery.extend( {
 			// Complete
 			completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
 
-			if ( fireGlobals ) {
+			if ( fireRepos ) {
 				globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
 
 				// Handle the global AJAX counter

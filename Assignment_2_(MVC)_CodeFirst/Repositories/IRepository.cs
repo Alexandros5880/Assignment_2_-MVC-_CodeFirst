@@ -2,7 +2,7 @@
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
-    interface IRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         T Get(int? id);
         IEnumerable<T> GetAll();

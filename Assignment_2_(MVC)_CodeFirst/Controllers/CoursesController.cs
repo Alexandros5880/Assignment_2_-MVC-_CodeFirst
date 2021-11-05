@@ -1,4 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Repositories;
 using Assignment_2__MVC__CodeFirst.Static;
 using Assignment_2__MVC__CodeFirst.ViewModels;
 using System.Collections.Generic;
@@ -10,10 +11,15 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 {
     public class CoursesController : Controller
     {
+        private CourseRepo _courseRepo;
+        public CoursesController(IRepository<Course> repo)
+        {
+            this._courseRepo = (CourseRepo)repo;
+        }
         // GET: Courses
         public ActionResult Index()
         {
-            return View(Globals.courseRepo.GetAll());
+            return View(this._courseRepo.GetAll());
         }
 
         [HttpPost]
@@ -21,9 +27,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Index(string Search)
         {
             if (Search != null && Search.Length > 0)
-                return View(Globals.courseRepo.GetAllByName(Search));
+                return View(this._courseRepo.GetAllByName(Search));
             else
-                return View(Globals.courseRepo.GetAll());
+                return View(this._courseRepo.GetAll());
         }
 
         // GET: Courses/Details/5
@@ -33,7 +39,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = Globals.courseRepo.Get(id);
+            Course course = this._courseRepo.Get(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -44,10 +50,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Courses/Create
         public ActionResult Create(int schoolId)
         {
-            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
-            var trainers = new SelectList(Globals.trainerRepo.GetAllBySchool(schoolId), "ID", "FullName");
+            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
+            var trainers = new SelectList(Repos.trainerRepo.GetAllBySchool(schoolId), "ID", "FullName");
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAllBySchool(schoolId))
+            foreach (Student student in Repos.studentRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -78,14 +84,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             course.Title = courseView.Title;
             course.StartDate = courseView.StartDate;
             course.EndDate = courseView.EndDate;
-            course.School = Globals.schoolRepo.Get(courseView.SchoolId);
-            course.Trainer = Globals.trainerRepo.Get(courseView.TrainerId);
+            course.School = Repos.schoolRepo.Get(courseView.SchoolId);
+            course.Trainer = Repos.trainerRepo.Get(courseView.TrainerId);
             if (courseView.SelectedStudents != null)
             {
-                var students = Globals.studentRepo.GetAllBySchool(course.School.ID);
+                var students = Repos.studentRepo.GetAllBySchool(course.School.ID);
                 foreach (var id in courseView.SelectedStudents)
                 {
-                    var selectedStudent = Globals.studentRepo.Get(id);
+                    var selectedStudent = Repos.studentRepo.Get(id);
                     if (students.Contains(selectedStudent))
                     {
                         if (course.Students != null)
@@ -103,8 +109,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 
             if (ModelState.IsValid)
             {
-                Globals.courseRepo.Add(course);
-                Globals.DbHundler.Save();
+                this._courseRepo.Add(course);
+                Repos.DbHundler.Save();
                 return RedirectToAction("Details", "Schools", new { id = course.School.ID });
             }
 
@@ -116,20 +122,20 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Course course = Globals.courseRepo.Get(id);
+            Course course = this._courseRepo.Get(id);
             if (course == null)
                 return HttpNotFound();
 
-            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var trainers = new SelectList(Globals.trainerRepo.GetAllBySchool(course.School.ID), "ID", "FullName");
+            var trainers = new SelectList(Repos.trainerRepo.GetAllBySchool(course.School.ID), "ID", "FullName");
             var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedTrainer != null) selectedTrainer.Selected = true;
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAllBySchool(course.School.ID))
+            foreach (Student student in Repos.studentRepo.GetAllBySchool(course.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -163,18 +169,18 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CourseViewModel courseView)
         {
-            Course courseDB = Globals.courseRepo.Get(courseView.ID);
+            Course courseDB = this._courseRepo.Get(courseView.ID);
             courseDB.Title = courseView.Title;
             courseDB.StartDate = courseView.StartDate;
             courseDB.EndDate = courseView.EndDate;
-            courseDB.School = Globals.schoolRepo.Get(courseView.SchoolId);
-            courseDB.Trainer = Globals.trainerRepo.Get(courseView.TrainerId);
+            courseDB.School = Repos.schoolRepo.Get(courseView.SchoolId);
+            courseDB.Trainer = Repos.trainerRepo.Get(courseView.TrainerId);
             if(courseView.SelectedStudents != null)
             {
-                var students = Globals.studentRepo.GetAllBySchool(courseDB.School.ID);
+                var students = Repos.studentRepo.GetAllBySchool(courseDB.School.ID);
                 foreach(var id in courseView.SelectedStudents)
                 {
-                    var selectedStudent = Globals.studentRepo.Get(id);
+                    var selectedStudent = Repos.studentRepo.Get(id);
                     if (students.Contains(selectedStudent))
                         courseDB.Students.Add(selectedStudent);
                 }
@@ -182,21 +188,21 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 
             if (ModelState.IsValid)
             {
-                Globals.courseRepo.Update(courseDB);
-                Globals.DbHundler.Save();
+                this._courseRepo.Update(courseDB);
+                Repos.DbHundler.Save();
                 return RedirectToAction("Details", "Schools", new { id = courseDB.School.ID });
             }
 
-            var schools = new SelectList(Globals.schoolRepo.GetAll(), "ID", "Name");
+            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var trainers = new SelectList(Globals.trainerRepo.GetAllBySchool(courseDB.School.ID), "ID", "FullName");
+            var trainers = new SelectList(Repos.trainerRepo.GetAllBySchool(courseDB.School.ID), "ID", "FullName");
             var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
             if (selectedTrainer != null) selectedTrainer.Selected = true;
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Globals.studentRepo.GetAllBySchool(courseDB.School.ID))
+            foreach (Student student in Repos.studentRepo.GetAllBySchool(courseDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -232,7 +238,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = Globals.courseRepo.Get(id);
+            Course course = this._courseRepo.Get(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -245,9 +251,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Course course = Globals.courseRepo.Get(id);
-            Globals.courseRepo.Delete(course);
-            Globals.DbHundler.Save();
+            Course course = this._courseRepo.Get(id);
+            this._courseRepo.Delete(course);
+            Repos.DbHundler.Save();
             return RedirectToAction("Index");
         }
 
@@ -255,12 +261,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                //Globals.schoolRepo.Dispose();
-                //Globals.courseRepo.Dispose();
-                //Globals.assignmentRepo.Dispose();
-                //Globals.trainerRepo.Dispose();
-                //Globals.studentRepo.Dispose();
-                //Globals.DbHundler.Dispose();
+                //Repos.schoolRepo.Dispose();
+                //this._courseRepo.Dispose();
+                //Repos.assignmentRepo.Dispose();
+                //Repos.trainerRepo.Dispose();
+                //Repos.studentRepo.Dispose();
+                //Repos.DbHundler.Dispose();
                 base.Dispose(disposing);
             }
             base.Dispose(disposing);

@@ -1,13 +1,8 @@
-﻿using Assignment_2__MVC__CodeFirst.Models;
-using Assignment_2__MVC__CodeFirst.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Assignment_2__MVC__CodeFirst.Repositories;
 
 namespace Assignment_2__MVC__CodeFirst.Static
 {
-    public static class Globals
+    public static class Repos
     {
         public static RepositoryHundler DbHundler = new RepositoryHundler();
         public static SchoolRepo schoolRepo;
@@ -15,8 +10,9 @@ namespace Assignment_2__MVC__CodeFirst.Static
         public static AssignmentRepo assignmentRepo;
         public static TrainerRepo trainerRepo;
         public static StudentRepo studentRepo;
+        public static RolesRepo rolesRepo;
 
-        static Globals()
+        static Repos()
         {
             if (DbHundler == null)
                 DbHundler = new RepositoryHundler();
@@ -30,6 +26,8 @@ namespace Assignment_2__MVC__CodeFirst.Static
                 trainerRepo = DbHundler.GetTrainerRepo();
             if (studentRepo == null)
                 studentRepo = DbHundler.GetStudentRepo();
+            if (rolesRepo == null)
+                rolesRepo = DbHundler.GetRolesRepo();
         }
     }
 }

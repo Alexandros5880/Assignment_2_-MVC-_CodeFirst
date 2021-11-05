@@ -19,25 +19,25 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
             var course = Mapper.Map<CourseDto, Course>(courseDto);
-            Globals.courseRepo.Add(course);
-            Globals.DbHundler.Save();
+            Repos.courseRepo.Add(course);
+            Repos.DbHundler.Save();
             return Ok(courseDto);
         }
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var course = Globals.courseRepo.Get(id);
+            var course = Repos.courseRepo.Get(id);
             if (course == null)
                 return NotFound();
-            Globals.courseRepo.Delete(course);
-            Globals.DbHundler.Save();
+            Repos.courseRepo.Delete(course);
+            Repos.DbHundler.Save();
             var courseDto = Mapper.Map<Course, CourseDto>(course);
             return Ok(courseDto);
         }
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            Course course = Globals.courseRepo.GetEmpty(id);
+            Course course = Repos.courseRepo.GetEmpty(id);
             if (course == null)
                 return NotFound();
             var courseDto = Mapper.Map<Course, CourseDto>(course);
@@ -46,7 +46,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var courses = Globals.courseRepo.GetAllEmpty().Select(Mapper.Map<Course, CourseDto>);
+            var courses = Repos.courseRepo.GetAllEmpty().Select(Mapper.Map<Course, CourseDto>);
             return Ok(courses);
         }
         [HttpPut]
@@ -54,11 +54,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            var course = Globals.courseRepo.Get(id);
+            var course = Repos.courseRepo.Get(id);
             if (course == null)
                 return NotFound();
             Mapper.Map(courseDto, course);
-            Globals.DbHundler.Save();
+            Repos.DbHundler.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Courses/RemoveStudent"), HttpPost]
@@ -66,8 +66,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.studentId == null || data.courseId == null)
                 return BadRequest();
-            Course course = Globals.courseRepo.Get(data.courseId);
-            Student student = Globals.studentRepo.Get(data.studentId);
+            Course course = Repos.courseRepo.Get(data.courseId);
+            Student student = Repos.studentRepo.Get(data.studentId);
             if (course == null || student == null)
                 return BadRequest();
 
@@ -76,9 +76,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 
             if (ModelState.IsValid)
             {
-                Globals.courseRepo.Update(course);
-                Globals.studentRepo.Update(student);
-                _ = await Globals.DbHundler.SaveAsync();
+                Repos.courseRepo.Update(course);
+                Repos.studentRepo.Update(student);
+                _ = await Repos.DbHundler.SaveAsync();
                 return Ok(200);
             }
             else
@@ -91,16 +91,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.Count == 0)
                 return BadRequest();
-            var course = Globals.courseRepo.GetEmpty(data[0].courseId);
+            var course = Repos.courseRepo.GetEmpty(data[0].courseId);
             if (course == null)
                 return BadRequest();
             var studentsIds = data.Select(d => d.studentId).ToList();
-            var students = Globals.studentRepo.GetAllByIdsEmpty(studentsIds);
+            var students = Repos.studentRepo.GetAllByIdsEmpty(studentsIds);
             foreach (var student in students)
             {
                 course.Students.Add(student);
             }
-            _ = await Globals.DbHundler.SaveAsync();
+            _ = await Repos.DbHundler.SaveAsync();
             return Ok(200);
         }
     }

@@ -19,25 +19,25 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
             var trainer = Mapper.Map<TrainerDto, Trainer>(trainerDto);
-            Globals.trainerRepo.Add(trainer);
-            Globals.DbHundler.Save();
+            Repos.trainerRepo.Add(trainer);
+            Repos.DbHundler.Save();
             return Ok(trainerDto);
         }
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var trainer = Globals.trainerRepo.Get(id);
+            var trainer = Repos.trainerRepo.Get(id);
             if (trainer == null)
                 return NotFound();
-            Globals.trainerRepo.Delete(trainer);
-            Globals.DbHundler.Save();
+            Repos.trainerRepo.Delete(trainer);
+            Repos.DbHundler.Save();
             var trainerDto = Mapper.Map<Trainer, TrainerDto>(trainer);
             return Ok(trainerDto);
         }
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            var trainer = Globals.trainerRepo.GetEmpty(id);
+            var trainer = Repos.trainerRepo.GetEmpty(id);
             if (trainer == null)
                 return NotFound();
             var trainerDto = Mapper.Map<Trainer, TrainerDto>(trainer);
@@ -46,7 +46,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var trainers = Globals.trainerRepo.GetAllEmpty().Select(Mapper.Map<Trainer, TrainerDto>);
+            var trainers = Repos.trainerRepo.GetAllEmpty().Select(Mapper.Map<Trainer, TrainerDto>);
             return Ok(trainers);
         }
         [HttpPut]
@@ -54,11 +54,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            var trainer = Globals.trainerRepo.Get(id);
+            var trainer = Repos.trainerRepo.Get(id);
             if (trainer == null)
                 return NotFound();
             Mapper.Map(trainerDto, trainer);
-            Globals.DbHundler.Save();
+            Repos.DbHundler.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Trainers/RemoveCourse"), HttpPost]
@@ -66,8 +66,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.trainerId == null || data.courseId == null)
                 return BadRequest();
-            Trainer trainer = Globals.trainerRepo.Get(data.trainerId);
-            Course course = Globals.courseRepo.Get(data.courseId);
+            Trainer trainer = Repos.trainerRepo.Get(data.trainerId);
+            Course course = Repos.courseRepo.Get(data.courseId);
             if (trainer == null || course == null)
                 return BadRequest();
 
@@ -76,9 +76,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 
             if (ModelState.IsValid)
             {
-                Globals.trainerRepo.Update(trainer);
-                Globals.courseRepo.Update(course);
-                _ = await Globals.DbHundler.SaveAsync();
+                Repos.trainerRepo.Update(trainer);
+                Repos.courseRepo.Update(course);
+                _ = await Repos.DbHundler.SaveAsync();
                 return Ok(200);
             }
             return BadRequest("Record Failed");
@@ -88,16 +88,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.Count == 0)
                 return BadRequest("data.Count == 0");
-            var trainer = Globals.trainerRepo.GetEmpty(data[0].trainerId);
+            var trainer = Repos.trainerRepo.GetEmpty(data[0].trainerId);
             if (trainer == null)
                 return BadRequest("assignment == null");
             var coursesIds = data.Select(d => d.courseId).ToList();
-            var courses = Globals.courseRepo.GetAllByIdsEmpty(coursesIds);
+            var courses = Repos.courseRepo.GetAllByIdsEmpty(coursesIds);
             foreach (var course in courses)
             {
                 trainer.Courses.Add(course);
             }
-            _ = await Globals.DbHundler.SaveAsync();
+            _ = await Repos.DbHundler.SaveAsync();
             return Ok(200);
         }
     }

@@ -39,6 +39,11 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return new StudentRepo(this._context);
         }
 
+        public RolesRepo GetRolesRepo()
+        {
+            return new RolesRepo(this._context);
+        }
+
         public bool Save()
         {
             return this._context.SaveChanges() > 0;

@@ -2,7 +2,7 @@
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
-    interface IRepositoryHundler
+    public interface IRepositoryHundler
     {
         bool Save();
         Task<int> SaveAsync();

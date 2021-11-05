@@ -1,9 +1,5 @@
 using Assignment_2__MVC__CodeFirst.App_Start;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -15,6 +11,7 @@ namespace Assignment_2__MVC__CodeFirst
     {
         protected void Application_Start()
         {
+            ContainerConfig.RegisterContainer();
             Mapper.Initialize(c => c.AddProfile<MappingProfile>());
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();

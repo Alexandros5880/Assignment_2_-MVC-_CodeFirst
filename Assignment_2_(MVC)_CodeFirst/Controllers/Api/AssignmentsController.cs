@@ -19,25 +19,25 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
             var assignment = Mapper.Map<AssignmentDto, Assignment>(assignmentDto);
-            Globals.assignmentRepo.Add(assignment);
-            Globals.DbHundler.Save();
+            Repos.assignmentRepo.Add(assignment);
+            Repos.DbHundler.Save();
             return Ok(assignmentDto);
         }
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var assignment = Globals.assignmentRepo.Get(id);
+            var assignment = Repos.assignmentRepo.Get(id);
             if (assignment == null)
                 return NotFound();
-            Globals.assignmentRepo.Delete(assignment);
-            Globals.DbHundler.Save();
+            Repos.assignmentRepo.Delete(assignment);
+            Repos.DbHundler.Save();
             var assignmentDto = Mapper.Map<Assignment, AssignmentDto>(assignment);
             return Ok(assignmentDto);
         }
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            var assignment = Globals.assignmentRepo.GetEmpty(id);
+            var assignment = Repos.assignmentRepo.GetEmpty(id);
             if (assignment == null)
                 return NotFound();
             var assignmentDto = Mapper.Map<Assignment, AssignmentDto>(assignment);
@@ -46,7 +46,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var assignments = Globals.assignmentRepo.GetAllEmpty().Select(Mapper.Map<Assignment, AssignmentDto>);
+            var assignments = Repos.assignmentRepo.GetAllEmpty().Select(Mapper.Map<Assignment, AssignmentDto>);
             return Ok(assignments);
         }
         [HttpPut]
@@ -54,11 +54,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            var assignment = Globals.assignmentRepo.Get(id);
+            var assignment = Repos.assignmentRepo.Get(id);
             if (assignment == null)
                 return NotFound();
             Mapper.Map(assignmentDto, assignment);
-            Globals.DbHundler.Save();
+            Repos.DbHundler.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Assignments/RemoveStudent"), HttpPost]
@@ -66,8 +66,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.assignmentId == null || data.studentId == null)
                 return BadRequest();
-            Assignment assignment = Globals.assignmentRepo.Get(data.assignmentId);
-            Student student = Globals.studentRepo.Get(data.studentId);
+            Assignment assignment = Repos.assignmentRepo.Get(data.assignmentId);
+            Student student = Repos.studentRepo.Get(data.studentId);
             if (assignment == null || student == null)
                 return BadRequest();
 
@@ -76,9 +76,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 
             if (ModelState.IsValid)
             {
-                Globals.assignmentRepo.Update(assignment);
-                Globals.studentRepo.Update(student);
-                _ = await Globals.DbHundler.SaveAsync();
+                Repos.assignmentRepo.Update(assignment);
+                Repos.studentRepo.Update(student);
+                _ = await Repos.DbHundler.SaveAsync();
                 return Ok(200);
             }
 
@@ -89,16 +89,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.Count == 0)
                 return BadRequest("data.Count == 0");
-            var assignment = Globals.assignmentRepo.GetEmpty(data[0].assignmentId);
+            var assignment = Repos.assignmentRepo.GetEmpty(data[0].assignmentId);
             if (assignment == null)
                 return BadRequest("assignment == null");
             var studentsIds = data.Select(d => d.studentId).ToList();
-            var students = Globals.studentRepo.GetAllByIdsEmpty(studentsIds);
+            var students = Repos.studentRepo.GetAllByIdsEmpty(studentsIds);
             foreach (var student in students)
             {
                 assignment.Students.Add(student);
             }
-            _ = await Globals.DbHundler.SaveAsync();
+            _ = await Repos.DbHundler.SaveAsync();
             return Ok(200);
         }
     }

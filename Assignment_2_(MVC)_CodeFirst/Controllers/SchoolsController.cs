@@ -1,4 +1,5 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Entities;
+using Assignment_2__MVC__CodeFirst.Repositories;
 using Assignment_2__MVC__CodeFirst.Static;
 using Assignment_2__MVC__CodeFirst.ViewModels;
 using System.Net;
@@ -8,10 +9,15 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 {
     public class SchoolsController : Controller
     {
+        private SchoolRepo _schoolRepo;
+        public SchoolsController(IRepository<School> repo)
+        {
+            this._schoolRepo = (SchoolRepo)repo;
+        }
         // GET: Schools
         public ActionResult Index()
         {
-            return View(Globals.schoolRepo.GetAll());
+            return View(this._schoolRepo.GetAll());
         }
 
         [HttpPost]
@@ -19,9 +25,9 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult Index(string Search)
         {
             if (Search != null && Search.Length > 0)
-                return View(Globals.schoolRepo.GetAllByName(Search));
+                return View(this._schoolRepo.GetAllByName(Search));
             else
-                return View(Globals.schoolRepo.GetAll());
+                return View(this._schoolRepo.GetAll());
         }
 
         // GET: Schools/Details/5
@@ -31,7 +37,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
+            School school = this._schoolRepo.Get(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -60,8 +66,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             school.Students = schoolView.Students;
             if (ModelState.IsValid)
             {
-                Globals.schoolRepo.Add(school);
-                Globals.DbHundler.Save();
+                this._schoolRepo.Add(school);
+                Repos.DbHundler.Save();
                 return RedirectToAction("Index");
             }
 
@@ -75,7 +81,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
+            School school = this._schoolRepo.Get(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -101,8 +107,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             school.Students = schoolView.Students;
             if (ModelState.IsValid)
             {
-                Globals.schoolRepo.Update(school);
-                Globals.DbHundler.Save();
+                this._schoolRepo.Update(school);
+                Repos.DbHundler.Save();
                 return RedirectToAction("Index");
             }
             return View(schoolView);
@@ -115,7 +121,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = Globals.schoolRepo.Get(id);
+            School school = this._schoolRepo.Get(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -128,8 +134,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Globals.schoolRepo.Delete(Globals.schoolRepo.Get(id));
-            Globals.DbHundler.Save();
+            this._schoolRepo.Delete(this._schoolRepo.Get(id));
+            Repos.DbHundler.Save();
             return RedirectToAction("Details", "Schools", new { id = id });
         }
 
@@ -137,12 +143,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                //Globals.schoolRepo.Dispose();
-                //Globals.courseRepo.Dispose();
-                //Globals.assignmentRepo.Dispose();
-                //Globals.trainerRepo.Dispose();
-                //Globals.studentRepo.Dispose();
-                //Globals.DbHundler.Dispose();
+                //this._schoolRepo.Dispose();
+                //Repos.courseRepo.Dispose();
+                //Repos.assignmentRepo.Dispose();
+                //Repos.trainerRepo.Dispose();
+                //Repos.studentRepo.Dispose();
+                //Repos.DbHundler.Dispose();
                 base.Dispose(disposing);
             }
         }
