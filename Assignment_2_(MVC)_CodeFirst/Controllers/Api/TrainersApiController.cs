@@ -1,6 +1,7 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models.Dto;
 using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Models.Other;
+using Assignment_2__MVC__CodeFirst.Repositories;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
 using System.Collections.Generic;
@@ -13,23 +14,28 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public class TrainersApiController : ApiController, IMyController<IHttpActionResult, TrainerDto>
     {
+        private TrainerRepo _trainerRepo;
+        public TrainersApiController(IRepository<Trainer> repo)
+        {
+            this._trainerRepo = (TrainerRepo)repo;
+        }
         [HttpPost]
         public IHttpActionResult Create(TrainerDto trainerDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
             var trainer = Mapper.Map<TrainerDto, Trainer>(trainerDto);
-            Repos.trainerRepo.Add(trainer);
+            this._trainerRepo.Add(trainer);
             Repos.DbHundler.Save();
             return Ok(trainerDto);
         }
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var trainer = Repos.trainerRepo.Get(id);
+            var trainer = this._trainerRepo.Get(id);
             if (trainer == null)
                 return NotFound();
-            Repos.trainerRepo.Delete(trainer);
+            this._trainerRepo.Delete(trainer);
             Repos.DbHundler.Save();
             var trainerDto = Mapper.Map<Trainer, TrainerDto>(trainer);
             return Ok(trainerDto);
@@ -37,7 +43,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            var trainer = Repos.trainerRepo.GetEmpty(id);
+            var trainer = this._trainerRepo.GetEmpty(id);
             if (trainer == null)
                 return NotFound();
             var trainerDto = Mapper.Map<Trainer, TrainerDto>(trainer);
@@ -46,7 +52,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var trainers = Repos.trainerRepo.GetAllEmpty().Select(Mapper.Map<Trainer, TrainerDto>);
+            var trainers = this._trainerRepo.GetAllEmpty().Select(Mapper.Map<Trainer, TrainerDto>);
             return Ok(trainers);
         }
         [HttpPut]
@@ -54,7 +60,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            var trainer = Repos.trainerRepo.Get(id);
+            var trainer = this._trainerRepo.Get(id);
             if (trainer == null)
                 return NotFound();
             Mapper.Map(trainerDto, trainer);
@@ -66,7 +72,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.trainerId == null || data.courseId == null)
                 return BadRequest();
-            Trainer trainer = Repos.trainerRepo.Get(data.trainerId);
+            Trainer trainer = this._trainerRepo.Get(data.trainerId);
             Course course = Repos.courseRepo.Get(data.courseId);
             if (trainer == null || course == null)
                 return BadRequest();
@@ -76,7 +82,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 
             if (ModelState.IsValid)
             {
-                Repos.trainerRepo.Update(trainer);
+                this._trainerRepo.Update(trainer);
                 Repos.courseRepo.Update(course);
                 _ = await Repos.DbHundler.SaveAsync();
                 return Ok(200);
@@ -88,7 +94,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (data.Count == 0)
                 return BadRequest("data.Count == 0");
-            var trainer = Repos.trainerRepo.GetEmpty(data[0].trainerId);
+            var trainer = this._trainerRepo.GetEmpty(data[0].trainerId);
             if (trainer == null)
                 return BadRequest("assignment == null");
             var coursesIds = data.Select(d => d.courseId).ToList();
