@@ -4,6 +4,7 @@ using Assignment_2__MVC__CodeFirst.Models.Other;
 using Assignment_2__MVC__CodeFirst.Repositories;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,7 @@ using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    public class AssignmentsApiController : ApiController, IMyController<IHttpActionResult, AssignmentDto>
+    public class AssignmentsApiController : ApiController, IMyController<IHttpActionResult, AssignmentDto>, IDisposable
     {
         private Repos _repositories;
         private AssignmentRepo _assignmentRepo;
@@ -110,6 +111,17 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             }
             _ = await this._assignmentRepo.SaveAsync();
             return Ok(200);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._repositories.Dispose();
+                this._assignmentRepo.Dispose();
+                this._studentRepo.Dispose();
+                base.Dispose(disposing);
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -3,13 +3,14 @@ using Assignment_2__MVC__CodeFirst.Models.Entities;
 using Assignment_2__MVC__CodeFirst.Repositories;
 using Assignment_2__MVC__CodeFirst.Static;
 using AutoMapper;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
 
 namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
-    public class SchoolsApiController : ApiController, IMyController<IHttpActionResult, SchoolDto>
+    public class SchoolsApiController : ApiController, IMyController<IHttpActionResult, SchoolDto>, IDisposable
     {
         private Repos _repositories;
         private SchoolRepo _schoolRepo;
@@ -67,6 +68,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             Mapper.Map(schoolDto, schoolDB);
             this._schoolRepo.Save();
             return StatusCode(HttpStatusCode.NoContent);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._repositories.Dispose();
+                this._schoolRepo.Dispose();
+                base.Dispose(disposing);
+            }
+            base.Dispose(disposing);
         }
     }
 }
