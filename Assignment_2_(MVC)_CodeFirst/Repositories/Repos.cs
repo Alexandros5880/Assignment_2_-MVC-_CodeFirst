@@ -13,7 +13,7 @@ namespace Assignment_2__MVC__CodeFirst.Static
         public readonly AssignmentRepo Assignments;
         public readonly TrainerRepo Trainers;
         public readonly StudentRepo Students;
-        public readonly RolesRepo Roles;
+        public readonly IdentityRolesRepo Roles;
 
         public Repos(ApplicationDbContext context)
         {
@@ -30,7 +30,7 @@ namespace Assignment_2__MVC__CodeFirst.Static
             if (Students == null)
                 Students = new StudentRepo(this._context);
             if (Roles == null)
-                Roles = new RolesRepo(this._context);
+                Roles = new IdentityRolesRepo(this._context);
         }
 
         protected virtual void Dispose(bool disposing)
