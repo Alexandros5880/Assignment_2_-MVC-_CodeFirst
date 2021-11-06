@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Assignment_2__MVC__CodeFirst.CustomAnotations;
 
 namespace Assignment_2__MVC__CodeFirst.Models.Entities
 {

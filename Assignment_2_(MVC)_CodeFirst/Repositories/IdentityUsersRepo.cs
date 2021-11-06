@@ -1,5 +1,4 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,39 +7,38 @@ using System.Threading.Tasks;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
-    public class IdentityRolesRepo : IRepositoryIdentity<IdentityRole>, IDisposable
+    public class IdentityUsersRepo : IRepositoryIdentity<ApplicationUser>
     {
         private ApplicationDbContext _context;
         private bool disposedValue;
 
-        public IdentityRolesRepo(ApplicationDbContext context)
+        public IdentityUsersRepo(ApplicationDbContext context)
         {
             this._context = context;
         }
-
-        public void Add(IdentityRole obj)
+        public void Add(ApplicationUser obj)
         {
-            this._context.Roles.Add(obj);
+            this._context.Users.Add(obj);
         }
 
-        public void Delete(IdentityRole obj)
+        public void Delete(ApplicationUser obj)
         {
-            this._context.Roles.Remove(obj);
+            this._context.Users.Remove(obj);
         }
 
-        public IdentityRole Get(string id)
+        public ApplicationUser Get(string id)
         {
-            return this._context.Roles.FirstOrDefault(r => r.Id == id);
+            return this._context.Users.FirstOrDefault(u => u.Id == id);
         }
 
-        public IEnumerable<IdentityRole> GetAll()
+        public IEnumerable<ApplicationUser> GetAll()
         {
-            return this._context.Roles.ToList();
+            return this._context.Users.ToList();
         }
 
         public bool Save()
         {
-            return this._context.SaveChanges()>0? true:false;
+            return this._context.SaveChanges() > 0 ? true : false;
         }
 
         public async Task<int> SaveAsync()
@@ -48,7 +46,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return await this._context.SaveChangesAsync();
         }
 
-        public void Update(IdentityRole obj)
+        public void Update(ApplicationUser obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;
         }
