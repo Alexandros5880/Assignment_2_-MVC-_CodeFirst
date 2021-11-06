@@ -1,11 +1,12 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
+using System;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
-    public class RolesRepo// : IRepository<Role>, IDisposable
+    public class RolesRepo : IDisposable//, IRepository<Role>
     {
         private ApplicationDbContext _context;
-        //private bool disposedValue;
+        private bool disposedValue;
 
         public RolesRepo(ApplicationDbContext context)
         {
@@ -56,22 +57,22 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         //{
         //    throw new NotImplementedException();
         //}
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!disposedValue)
-        //    {
-        //        if (disposing)
-        //        {
-        //            ((IDisposable)_context).Dispose();
-        //        }
-        //        disposedValue = true;
-        //    }
-        //}
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    ((IDisposable)_context).Dispose();
+                }
+                disposedValue = true;
+            }
+        }
 
-        //public void Dispose()
-        //{
-        //    Dispose(disposing: true);
-        //    GC.SuppressFinalize(this);
-        //}
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

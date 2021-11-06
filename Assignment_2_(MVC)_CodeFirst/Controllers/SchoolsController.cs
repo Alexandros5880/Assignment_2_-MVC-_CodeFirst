@@ -126,12 +126,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                //this._schoolRepo.Dispose();
-                //Repos.courseRepo.Dispose();
-                //Repos.assignmentRepo.Dispose();
-                //Repos.trainerRepo.Dispose();
-                //Repos.studentRepo.Dispose();
-                //this._schoolRepo.Dispose();
+                this._repositories.Dispose();
+                this._schoolRepo.Dispose();
                 base.Dispose(disposing);
             }
         }

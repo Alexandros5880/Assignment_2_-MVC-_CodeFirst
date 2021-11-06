@@ -35,6 +35,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return this._context.Students
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments)
+                .Include(c => c.School)
                 .FirstOrDefault(s => s.ID == id);
         }
 
@@ -49,6 +50,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return this._context.Students
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments)
+                .Include(c => c.School)
                 .ToList();
         }
 
@@ -59,6 +61,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                         s.LastName.Equals(search) || s.LastName.Contains(search))
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments)
+                .Include(c => c.School)
                 .ToList();
         }
 
@@ -74,6 +77,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments)
                 .Where(s => s.School.ID == schoolId)
+                .Include(c => c.School)
                 .ToList();
         }
 
@@ -83,6 +87,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
                 .Where(s => ids.Contains(s.ID))
                 .Include(s => s.Courses)
                 .Include(s => s.Assignments)
+                .Include(c => c.School)
                 .ToList();
         }
 

@@ -1,11 +1,13 @@
 ﻿using Assignment_2__MVC__CodeFirst.Models;
 using Assignment_2__MVC__CodeFirst.Repositories;
+using System;
 
 namespace Assignment_2__MVC__CodeFirst.Static
 {
-    public class Repos : IRepos
+    public class Repos : IRepos, IDisposable
     {
         private ApplicationDbContext _context;
+        private bool disposedValue;
         public readonly SchoolRepo Schools;
         public readonly CourseRepo Courses;
         public readonly AssignmentRepo Assignments;
@@ -29,6 +31,28 @@ namespace Assignment_2__MVC__CodeFirst.Static
                 Students = new StudentRepo(this._context);
             if (Roles == null)
                 Roles = new RolesRepo(this._context);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    this._context.Dispose();
+                    this.Schools.Dispose();
+                    this.Courses.Dispose();
+                    this.Assignments.Dispose();
+                    this.Trainers.Dispose();
+                    this.Roles.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
