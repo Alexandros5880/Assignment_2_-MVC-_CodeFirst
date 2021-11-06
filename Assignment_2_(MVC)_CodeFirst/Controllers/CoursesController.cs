@@ -11,10 +11,18 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 {
     public class CoursesController : Controller
     {
+        private Repos _repositories;
         private CourseRepo _courseRepo;
-        public CoursesController(IRepository<Course> repo)
+        private SchoolRepo _schoolRepo;
+        private TrainerRepo _trainerRepo;
+        private StudentRepo _studentRepo;
+        public CoursesController(IRepos repo)
         {
-            this._courseRepo = (CourseRepo)repo;
+            this._repositories = (Repos)repo;
+            this._courseRepo = this._repositories.Courses;
+            this._schoolRepo = this._repositories.Schools;
+            this._trainerRepo = this._repositories.Trainers;
+            this._studentRepo = this._repositories.Students;
         }
         // GET: Courses
         public ActionResult Index()
@@ -50,10 +58,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Courses/Create
         public ActionResult Create(int schoolId)
         {
-            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
-            var trainers = new SelectList(Repos.trainerRepo.GetAllBySchool(schoolId), "ID", "FullName");
+            var schools = new SelectList(this._schoolRepo.GetAll(), "ID", "Name");
+            var trainers = new SelectList(this._trainerRepo.GetAllBySchool(schoolId), "ID", "FullName");
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Repos.studentRepo.GetAllBySchool(schoolId))
+            foreach (Student student in this._studentRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -84,14 +92,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             course.Title = courseView.Title;
             course.StartDate = courseView.StartDate;
             course.EndDate = courseView.EndDate;
-            course.School = Repos.schoolRepo.Get(courseView.SchoolId);
-            course.Trainer = Repos.trainerRepo.Get(courseView.TrainerId);
+            course.School = this._schoolRepo.Get(courseView.SchoolId);
+            course.Trainer = this._trainerRepo.Get(courseView.TrainerId);
             if (courseView.SelectedStudents != null)
             {
-                var students = Repos.studentRepo.GetAllBySchool(course.School.ID);
+                var students = this._studentRepo.GetAllBySchool(course.School.ID);
                 foreach (var id in courseView.SelectedStudents)
                 {
-                    var selectedStudent = Repos.studentRepo.Get(id);
+                    var selectedStudent = this._studentRepo.Get(id);
                     if (students.Contains(selectedStudent))
                     {
                         if (course.Students != null)
@@ -110,7 +118,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (ModelState.IsValid)
             {
                 this._courseRepo.Add(course);
-                Repos.DbHundler.Save();
+                this._courseRepo.Save();
                 return RedirectToAction("Details", "Schools", new { id = course.School.ID });
             }
 
@@ -126,16 +134,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (course == null)
                 return HttpNotFound();
 
-            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
+            var schools = new SelectList(this._schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var trainers = new SelectList(Repos.trainerRepo.GetAllBySchool(course.School.ID), "ID", "FullName");
+            var trainers = new SelectList(this._trainerRepo.GetAllBySchool(course.School.ID), "ID", "FullName");
             var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == course.ID);
             if (selectedTrainer != null) selectedTrainer.Selected = true;
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Repos.studentRepo.GetAllBySchool(course.School.ID))
+            foreach (Student student in this._studentRepo.GetAllBySchool(course.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -173,14 +181,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             courseDB.Title = courseView.Title;
             courseDB.StartDate = courseView.StartDate;
             courseDB.EndDate = courseView.EndDate;
-            courseDB.School = Repos.schoolRepo.Get(courseView.SchoolId);
-            courseDB.Trainer = Repos.trainerRepo.Get(courseView.TrainerId);
+            courseDB.School = this._schoolRepo.Get(courseView.SchoolId);
+            courseDB.Trainer = this._trainerRepo.Get(courseView.TrainerId);
             if(courseView.SelectedStudents != null)
             {
-                var students = Repos.studentRepo.GetAllBySchool(courseDB.School.ID);
+                var students = this._studentRepo.GetAllBySchool(courseDB.School.ID);
                 foreach(var id in courseView.SelectedStudents)
                 {
-                    var selectedStudent = Repos.studentRepo.Get(id);
+                    var selectedStudent = this._studentRepo.Get(id);
                     if (students.Contains(selectedStudent))
                         courseDB.Students.Add(selectedStudent);
                 }
@@ -189,20 +197,20 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (ModelState.IsValid)
             {
                 this._courseRepo.Update(courseDB);
-                Repos.DbHundler.Save();
+                this._courseRepo.Save();
                 return RedirectToAction("Details", "Schools", new { id = courseDB.School.ID });
             }
 
-            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
+            var schools = new SelectList(this._schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
 
-            var trainers = new SelectList(Repos.trainerRepo.GetAllBySchool(courseDB.School.ID), "ID", "FullName");
+            var trainers = new SelectList(this._trainerRepo.GetAllBySchool(courseDB.School.ID), "ID", "FullName");
             var selectedTrainer = trainers.FirstOrDefault(x => int.Parse(x.Value) == courseDB.ID);
             if (selectedTrainer != null) selectedTrainer.Selected = true;
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Repos.studentRepo.GetAllBySchool(courseDB.School.ID))
+            foreach (Student student in this._studentRepo.GetAllBySchool(courseDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -253,7 +261,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             Course course = this._courseRepo.Get(id);
             this._courseRepo.Delete(course);
-            Repos.DbHundler.Save();
+            this._courseRepo.Save();
             return RedirectToAction("Index");
         }
 
@@ -261,12 +269,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                //Repos.schoolRepo.Dispose();
+                //this._schoolRepo.Dispose();
                 //this._courseRepo.Dispose();
-                //Repos.assignmentRepo.Dispose();
-                //Repos.trainerRepo.Dispose();
-                //Repos.studentRepo.Dispose();
-                //Repos.DbHundler.Dispose();
+                //this._assignmentRepo.Dispose();
+                //this._trainerRepo.Dispose();
+                //this._studentRepo.Dispose();
+                //this._courseRepo.Dispose();
                 base.Dispose(disposing);
             }
             base.Dispose(disposing);

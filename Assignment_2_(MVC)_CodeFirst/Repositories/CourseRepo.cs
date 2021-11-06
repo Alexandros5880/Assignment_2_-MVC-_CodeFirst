@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
@@ -82,6 +83,15 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
             return this._context.Courses
                 .Where(c => ids.Contains(c.ID))
                 .ToList();
+        }
+        public bool Save()
+        {
+            return this._context.SaveChanges() > 0;
+        }
+
+        public async Task<int> SaveAsync()
+        {
+            return await this._context.SaveChangesAsync();
         }
 
         public void Update(Course obj)

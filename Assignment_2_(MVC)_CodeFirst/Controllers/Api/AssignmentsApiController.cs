@@ -14,10 +14,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public class AssignmentsApiController : ApiController, IMyController<IHttpActionResult, AssignmentDto>
     {
+        private Repos _repositories;
         private AssignmentRepo _assignmentRepo;
-        public AssignmentsApiController(IRepository<Assignment> repo)
+        private StudentRepo _studentRepo;
+        public AssignmentsApiController(IRepos repo)
         {
-            this._assignmentRepo = (AssignmentRepo)repo;
+            this._repositories = (Repos)repo;
+            this._assignmentRepo = this._repositories.Assignments;
+            this._studentRepo = this._repositories.Students;
         }
         [HttpPost]
         public IHttpActionResult Create(AssignmentDto assignmentDto)
@@ -26,7 +30,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
                 return BadRequest();
             var assignment = Mapper.Map<AssignmentDto, Assignment>(assignmentDto);
             this._assignmentRepo.Add(assignment);
-            Repos.DbHundler.Save();
+            this._assignmentRepo.Save();
             return Ok(assignmentDto);
         }
         [HttpDelete]
@@ -36,7 +40,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (assignment == null)
                 return NotFound();
             this._assignmentRepo.Delete(assignment);
-            Repos.DbHundler.Save();
+            this._assignmentRepo.Save();
             var assignmentDto = Mapper.Map<Assignment, AssignmentDto>(assignment);
             return Ok(assignmentDto);
         }
@@ -64,7 +68,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (assignment == null)
                 return NotFound();
             Mapper.Map(assignmentDto, assignment);
-            Repos.DbHundler.Save();
+            this._assignmentRepo.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Assignments/RemoveStudent"), HttpPost]
@@ -73,7 +77,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (data.assignmentId == null || data.studentId == null)
                 return BadRequest();
             Assignment assignment = this._assignmentRepo.Get(data.assignmentId);
-            Student student = Repos.studentRepo.Get(data.studentId);
+            Student student = this._studentRepo.Get(data.studentId);
             if (assignment == null || student == null)
                 return BadRequest();
 
@@ -83,8 +87,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (ModelState.IsValid)
             {
                 this._assignmentRepo.Update(assignment);
-                Repos.studentRepo.Update(student);
-                _ = await Repos.DbHundler.SaveAsync();
+                this._studentRepo.Update(student);
+                _ = await this._assignmentRepo.SaveAsync();
                 return Ok(200);
             }
 
@@ -99,12 +103,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (assignment == null)
                 return BadRequest("assignment == null");
             var studentsIds = data.Select(d => d.studentId).ToList();
-            var students = Repos.studentRepo.GetAllByIdsEmpty(studentsIds);
+            var students = this._studentRepo.GetAllByIdsEmpty(studentsIds);
             foreach (var student in students)
             {
                 assignment.Students.Add(student);
             }
-            _ = await Repos.DbHundler.SaveAsync();
+            _ = await this._assignmentRepo.SaveAsync();
             return Ok(200);
         }
     }

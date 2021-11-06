@@ -14,10 +14,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public class TrainersApiController : ApiController, IMyController<IHttpActionResult, TrainerDto>
     {
+        private Repos _repositories;
         private TrainerRepo _trainerRepo;
-        public TrainersApiController(IRepository<Trainer> repo)
+        private CourseRepo _courseRepo;
+        public TrainersApiController(IRepos repo)
         {
-            this._trainerRepo = (TrainerRepo)repo;
+            this._repositories = (Repos)repo;
+            this._trainerRepo = this._repositories.Trainers;
+            this._courseRepo = this._repositories.Courses;
         }
         [HttpPost]
         public IHttpActionResult Create(TrainerDto trainerDto)
@@ -26,7 +30,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
                 return BadRequest();
             var trainer = Mapper.Map<TrainerDto, Trainer>(trainerDto);
             this._trainerRepo.Add(trainer);
-            Repos.DbHundler.Save();
+            this._trainerRepo.Save();
             return Ok(trainerDto);
         }
         [HttpDelete]
@@ -36,7 +40,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (trainer == null)
                 return NotFound();
             this._trainerRepo.Delete(trainer);
-            Repos.DbHundler.Save();
+            this._trainerRepo.Save();
             var trainerDto = Mapper.Map<Trainer, TrainerDto>(trainer);
             return Ok(trainerDto);
         }
@@ -64,7 +68,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (trainer == null)
                 return NotFound();
             Mapper.Map(trainerDto, trainer);
-            Repos.DbHundler.Save();
+            this._trainerRepo.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Trainers/RemoveCourse"), HttpPost]
@@ -73,7 +77,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (data.trainerId == null || data.courseId == null)
                 return BadRequest();
             Trainer trainer = this._trainerRepo.Get(data.trainerId);
-            Course course = Repos.courseRepo.Get(data.courseId);
+            Course course = this._courseRepo.Get(data.courseId);
             if (trainer == null || course == null)
                 return BadRequest();
 
@@ -83,8 +87,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (ModelState.IsValid)
             {
                 this._trainerRepo.Update(trainer);
-                Repos.courseRepo.Update(course);
-                _ = await Repos.DbHundler.SaveAsync();
+                this._courseRepo.Update(course);
+                _ = await this._trainerRepo.SaveAsync();
                 return Ok(200);
             }
             return BadRequest("Record Failed");
@@ -98,12 +102,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (trainer == null)
                 return BadRequest("assignment == null");
             var coursesIds = data.Select(d => d.courseId).ToList();
-            var courses = Repos.courseRepo.GetAllByIdsEmpty(coursesIds);
+            var courses = this._courseRepo.GetAllByIdsEmpty(coursesIds);
             foreach (var course in courses)
             {
                 trainer.Courses.Add(course);
             }
-            _ = await Repos.DbHundler.SaveAsync();
+            _ = await this._trainerRepo.SaveAsync();
             return Ok(200);
         }
     }

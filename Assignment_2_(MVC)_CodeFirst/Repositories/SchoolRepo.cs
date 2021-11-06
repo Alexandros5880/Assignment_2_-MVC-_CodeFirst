@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
@@ -74,6 +75,15 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         public void Update(School obj)
         {
             this._context.Entry(obj).State = EntityState.Modified;
+        }
+        public bool Save()
+        {
+            return this._context.SaveChanges() > 0;
+        }
+
+        public async Task<int> SaveAsync()
+        {
+            return await this._context.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)

@@ -9,10 +9,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 {
     public class SchoolsController : Controller
     {
+        private Repos _repositories;
         private SchoolRepo _schoolRepo;
-        public SchoolsController(IRepository<School> repo)
+        public SchoolsController(IRepos repo)
         {
-            this._schoolRepo = (SchoolRepo)repo;
+            this._repositories = (Repos)repo;
+            this._schoolRepo = this._repositories.Schools;
         }
         // GET: Schools
         public ActionResult Index()
@@ -54,25 +56,6 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(SchoolViewModel schoolView)
-        {
-            School school = new School();
-            school.ID = schoolView.ID;
-            school.Name = schoolView.Name;
-            school.StartDate = schoolView.StartDate;
-            school.Courses = schoolView.Courses;
-            school.Assignments = schoolView.Assignments;
-            school.Trainers = schoolView.Trainers;
-            school.Students = schoolView.Students;
-            if (ModelState.IsValid)
-            {
-                this._schoolRepo.Add(school);
-                Repos.DbHundler.Save();
-                return RedirectToAction("Index");
-            }
-
-            return View(schoolView);
-        }
 
         // GET: Schools/Edit/5
         public ActionResult Edit(int? id)
@@ -108,7 +91,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (ModelState.IsValid)
             {
                 this._schoolRepo.Update(school);
-                Repos.DbHundler.Save();
+                this._schoolRepo.Save();
                 return RedirectToAction("Index");
             }
             return View(schoolView);
@@ -135,7 +118,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             this._schoolRepo.Delete(this._schoolRepo.Get(id));
-            Repos.DbHundler.Save();
+            this._schoolRepo.Save();
             return RedirectToAction("Details", "Schools", new { id = id });
         }
 
@@ -148,7 +131,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
                 //Repos.assignmentRepo.Dispose();
                 //Repos.trainerRepo.Dispose();
                 //Repos.studentRepo.Dispose();
-                //Repos.DbHundler.Dispose();
+                //this._schoolRepo.Dispose();
                 base.Dispose(disposing);
             }
         }

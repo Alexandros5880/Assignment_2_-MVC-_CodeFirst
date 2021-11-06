@@ -11,10 +11,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public class SchoolsApiController : ApiController, IMyController<IHttpActionResult, SchoolDto>
     {
+        private Repos _repositories;
         private SchoolRepo _schoolRepo;
-        public SchoolsApiController(IRepository<School> repo)
+        public SchoolsApiController(IRepos repo)
         {
-            this._schoolRepo = (SchoolRepo)repo;
+            this._repositories = (Repos)repo;
+            this._schoolRepo = this._repositories.Schools;
         }
         [HttpPost]
         public IHttpActionResult Create(SchoolDto schoolDto)
@@ -22,19 +24,19 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
             var school = Mapper.Map<SchoolDto, School>(schoolDto);
-            Repos.schoolRepo.Add(school);
-            Repos.DbHundler.Save();
+            this._schoolRepo.Add(school);
+            this._schoolRepo.Save();
             return Ok(schoolDto);
         }
 
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var school = Repos.schoolRepo.Get(id);
+            var school = this._schoolRepo.Get(id);
             if (school == null)
                 return NotFound();
-            Repos.schoolRepo.Delete(school);
-            Repos.DbHundler.Save();
+            this._schoolRepo.Delete(school);
+            this._schoolRepo.Save();
             var schoolDto = Mapper.Map<School, SchoolDto>(school);
             return Ok(schoolDto);
         }
@@ -42,7 +44,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            School school = Repos.schoolRepo.GetEmpty(id);
+            School school = this._schoolRepo.GetEmpty(id);
             if (school == null) return NotFound();
             return Ok(Mapper.Map<School, SchoolDto>(school));
         }
@@ -50,7 +52,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var schools = Repos.schoolRepo.GetAllEmpty().Select(Mapper.Map<School, SchoolDto>);
+            var schools = this._schoolRepo.GetAllEmpty().Select(Mapper.Map<School, SchoolDto>);
             return Ok(schools);
         }
 
@@ -59,11 +61,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            var schoolDB = Repos.schoolRepo.Get(id);
+            var schoolDB = this._schoolRepo.Get(id);
             if (schoolDB == null)
                 return NotFound();
             Mapper.Map(schoolDto, schoolDB);
-            Repos.DbHundler.Save();
+            this._schoolRepo.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
     }

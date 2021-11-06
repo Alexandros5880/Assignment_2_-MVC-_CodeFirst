@@ -11,10 +11,16 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
 {
     public class AssignmentsController : Controller
     {
+        private Repos _repositories;
+        private SchoolRepo _schoolRepo;
         private AssignmentRepo _assignmentRepo;
-        public AssignmentsController(IRepository<Assignment> repo)
+        private StudentRepo _studentRepo;
+        public AssignmentsController(IRepos repo)
         {
-            this._assignmentRepo = (AssignmentRepo)repo;
+            this._repositories = (Repos)repo;
+            this._schoolRepo = this._repositories.Schools;
+            this._assignmentRepo = this._repositories.Assignments;
+            this._studentRepo = this._repositories.Students;
         }
         // GET: Assignments
         public ActionResult Index()
@@ -50,10 +56,10 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         // GET: Assignments/Create
         public ActionResult Create(int schoolId)
         {
-            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
+            var schools = new SelectList(this._schoolRepo.GetAll(), "ID", "Name");
 
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Repos.studentRepo.GetAllBySchool(schoolId))
+            foreach (Student student in this._studentRepo.GetAllBySchool(schoolId))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -83,13 +89,13 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             assignment.Title = assignmentView.Title;
             assignment.StartDate = assignmentView.StartDate;
             assignment.EndDate = assignmentView.EndDate;
-            assignment.School = Repos.schoolRepo.Get(assignmentView.SchoolId);
+            assignment.School = this._schoolRepo.Get(assignmentView.SchoolId);
             if (assignmentView.SelectedStudents != null)
             {
-                var students = Repos.studentRepo.GetAllBySchool(assignment.School.ID);
+                var students = this._studentRepo.GetAllBySchool(assignment.School.ID);
                 foreach (var id in assignmentView.SelectedStudents)
                 {
-                    var student = Repos.studentRepo.Get(id);
+                    var student = this._studentRepo.Get(id);
                     if (students.Contains(student))
                     {
                         if (assignment.Students != null)
@@ -108,7 +114,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (ModelState.IsValid)
             {
                 this._assignmentRepo.Add(assignment);
-                Repos.DbHundler.Save();
+                this._assignmentRepo.Save();
                 return RedirectToAction("Details", "Schools", new { id = assignment });
             }
 
@@ -123,11 +129,11 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             Assignment assignment = this._assignmentRepo.Get(id);
             if (assignment == null)
                 return HttpNotFound();
-            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
+            var schools = new SelectList(this._schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignment.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Repos.studentRepo.GetAllBySchool(assignment.School.ID))
+            foreach (Student student in this._studentRepo.GetAllBySchool(assignment.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -161,13 +167,13 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             assignmentDB.Title = assignmentView.Title;
             assignmentDB.StartDate = assignmentView.StartDate;
             assignmentDB.EndDate = assignmentView.EndDate;
-            assignmentDB.School = Repos.schoolRepo.Get(assignmentView.SchoolId);
+            assignmentDB.School = this._schoolRepo.Get(assignmentView.SchoolId);
             if (assignmentView.SelectedStudents != null)
             {
-                var students = Repos.studentRepo.GetAllBySchool(assignmentDB.School.ID);
+                var students = this._studentRepo.GetAllBySchool(assignmentDB.School.ID);
                 foreach(var id in assignmentView.SelectedStudents)
                 {
-                    var student = Repos.studentRepo.Get(id);
+                    var student = this._studentRepo.Get(id);
                     if (students.Contains(student))
                         assignmentDB.Students.Add(student);
                 }
@@ -175,14 +181,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
             if (ModelState.IsValid)
             {
                 this._assignmentRepo.Update(assignmentDB);
-                Repos.DbHundler.Save();
+                this._assignmentRepo.Save();
                 return RedirectToAction("Details", "Schools", new { id = assignmentDB.School.ID });
             }
-            var schools = new SelectList(Repos.schoolRepo.GetAll(), "ID", "Name");
+            var schools = new SelectList(this._schoolRepo.GetAll(), "ID", "Name");
             var selectedSchool = schools.FirstOrDefault(x => int.Parse(x.Value) == assignmentDB.ID);
             if (selectedSchool != null) selectedSchool.Selected = true;
             List<SelectListItem> studentsSelectListItems = new List<SelectListItem>();
-            foreach (Student student in Repos.studentRepo.GetAllBySchool(assignmentDB.School.ID))
+            foreach (Student student in this._studentRepo.GetAllBySchool(assignmentDB.School.ID))
             {
                 SelectListItem selectList = new SelectListItem()
                 {
@@ -229,7 +235,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             Assignment assignment = this._assignmentRepo.Get(id);
             this._assignmentRepo.Delete(assignment);
-            Repos.DbHundler.Save();
+            this._assignmentRepo.Save();
             return RedirectToAction("Details", "Schools", new { id = assignment.School.ID });
         }
 
@@ -237,12 +243,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers
         {
             if (disposing)
             {
-                //Repos.schoolRepo.Dispose();
-                //Repos.courseRepo.Dispose();
+                //this._schoolRepo.Dispose();
+                //this._courseRepo.Dispose();
                 //this._assignmentRepo.Dispose();
-                //Repos.trainerRepo.Dispose();
-                //Repos.studentRepo.Dispose();
-                //Repos.DbHundler.Dispose();
+                //this._trainerRepo.Dispose();
+                //this._studentRepo.Dispose();
+                //this._assignmentRepo.Dispose();
                 base.Dispose(disposing);
             }
             base.Dispose(disposing);

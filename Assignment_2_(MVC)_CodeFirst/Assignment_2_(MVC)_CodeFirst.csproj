@@ -262,13 +262,12 @@
     <Compile Include="Repositories\AssignmentRepo.cs" />
     <Compile Include="Repositories\CourseRepo.cs" />
     <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\IRepositoryHundler.cs" />
-    <Compile Include="Repositories\RepositoryHundler.cs" />
     <Compile Include="Repositories\RolesRepo.cs" />
     <Compile Include="Repositories\SchoolRepo.cs" />
     <Compile Include="Repositories\StudentRepo.cs" />
     <Compile Include="Repositories\TrainerRepo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Static\IRepos.cs" />
     <Compile Include="Static\Repos.cs" />
     <Compile Include="ViewModels\AssignmentViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />

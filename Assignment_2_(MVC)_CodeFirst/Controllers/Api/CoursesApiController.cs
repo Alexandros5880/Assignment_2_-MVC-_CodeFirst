@@ -14,10 +14,14 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
 {
     public class CoursesApiController : ApiController, IMyController<IHttpActionResult, CourseDto>
     {
+        private Repos _repositories;
         private CourseRepo _courseRepo;
-        public CoursesApiController(IRepository<Course> repo)
+        private StudentRepo _studentRepo;
+        public CoursesApiController(IRepos repo)
         {
-            this._courseRepo = (CourseRepo)repo;
+            this._repositories = (Repos)repo;
+            this._courseRepo = this._repositories.Courses;
+            this._studentRepo = this._repositories.Students;
         }
         [HttpPost]
         public IHttpActionResult Create(CourseDto courseDto)
@@ -26,7 +30,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
                 return BadRequest();
             var course = Mapper.Map<CourseDto, Course>(courseDto);
             this._courseRepo.Add(course);
-            Repos.DbHundler.Save();
+            this._courseRepo.Save();
             return Ok(courseDto);
         }
         [HttpDelete]
@@ -36,7 +40,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (course == null)
                 return NotFound();
             this._courseRepo.Delete(course);
-            Repos.DbHundler.Save();
+            this._courseRepo.Save();
             var courseDto = Mapper.Map<Course, CourseDto>(course);
             return Ok(courseDto);
         }
@@ -64,7 +68,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (course == null)
                 return NotFound();
             Mapper.Map(courseDto, course);
-            Repos.DbHundler.Save();
+            this._courseRepo.Save();
             return StatusCode(HttpStatusCode.NoContent);
         }
         [Route("api/Courses/RemoveStudent"), HttpPost]
@@ -73,7 +77,7 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (data.studentId == null || data.courseId == null)
                 return BadRequest();
             Course course = this._courseRepo.Get(data.courseId);
-            Student student = Repos.studentRepo.Get(data.studentId);
+            Student student = this._studentRepo.Get(data.studentId);
             if (course == null || student == null)
                 return BadRequest();
 
@@ -83,8 +87,8 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (ModelState.IsValid)
             {
                 this._courseRepo.Update(course);
-                Repos.studentRepo.Update(student);
-                _ = await Repos.DbHundler.SaveAsync();
+                this._studentRepo.Update(student);
+                _ = await this._courseRepo.SaveAsync();
                 return Ok(200);
             }
             else
@@ -101,12 +105,12 @@ namespace Assignment_2__MVC__CodeFirst.Controllers.Api
             if (course == null)
                 return BadRequest();
             var studentsIds = data.Select(d => d.studentId).ToList();
-            var students = Repos.studentRepo.GetAllByIdsEmpty(studentsIds);
+            var students = this._studentRepo.GetAllByIdsEmpty(studentsIds);
             foreach (var student in students)
             {
                 course.Students.Add(student);
             }
-            _ = await Repos.DbHundler.SaveAsync();
+            _ = await this._courseRepo.SaveAsync();
             return Ok(200);
         }
     }

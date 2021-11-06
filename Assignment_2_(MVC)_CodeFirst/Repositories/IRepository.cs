@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Assignment_2__MVC__CodeFirst.Repositories
 {
@@ -11,5 +12,7 @@ namespace Assignment_2__MVC__CodeFirst.Repositories
         void Add(T obj);
         void Delete(T obj);
         void Update(T obj);
+        bool Save();
+        Task<int> SaveAsync();
     }
 }
