@@ -1,12 +1,13 @@
 namespace Assignment_2__MVC__CodeFirst.Migrations
 {
+    using Assignment_2__MVC__CodeFirst.Models;
     using Assignment_2__MVC__CodeFirst.Models.Entities;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using Assignment_2__MVC__CodeFirst.Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Assignment_2__MVC__CodeFirst.Models.ApplicationDbContext>
     {
@@ -17,6 +18,34 @@ namespace Assignment_2__MVC__CodeFirst.Migrations
 
         protected override void Seed(ApplicationDbContext context)
         {
+            // Create Role
+            if (!context.Roles.Any(r => r.Name == "Admin"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Admin" };
+                manager.Create(role);
+            }
+
+            if (!context.Roles.Any(r => r.Name == "Guest"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Guest" };
+                manager.Create(role);
+            }
+
+
+            // Create User
+            if (!context.Users.Any(u => u.UserName == "alexandrosplatanios28@gmail.com"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { Id = "936DA01F-9ABD-4d9d-80C7-02AF85C822A8", UserName = "alexandrosplatanios28@gmail.com" };
+                manager.Create(user, "-Plat1234");
+                manager.AddToRole("936DA01F-9ABD-4d9d-80C7-02AF85C822A8", "Admin");
+            }
+
             var schools = new List<School>()
             {
                 new School()
